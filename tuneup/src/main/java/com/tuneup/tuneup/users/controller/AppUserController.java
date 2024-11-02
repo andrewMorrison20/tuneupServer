@@ -15,8 +15,6 @@ import java.util.List;
 public class AppUserController {
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private AppUserService appUserService;
 
     @GetMapping

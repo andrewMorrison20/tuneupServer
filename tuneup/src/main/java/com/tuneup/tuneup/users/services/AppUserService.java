@@ -12,12 +12,10 @@ import java.util.stream.Collectors;
 @Service
 public class AppUserService {
     private final UserRepository userRepository;
-    private final AppUserService appUserService;
     private final AppUserMapper appUserMapper;
 
-    public AppUserService(UserRepository userRepository, AppUserService appUserService, AppUserMapper appUserMapper) {
+    public AppUserService(UserRepository userRepository, AppUserMapper appUserMapper) {
         this.userRepository = userRepository;
-        this.appUserService = appUserService;
         this.appUserMapper = appUserMapper;
     }
 
