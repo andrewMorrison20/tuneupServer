@@ -2,7 +2,6 @@ package com.tuneup.tuneup.users.validators;
 
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
-import com.tuneup.tuneup.users.repository.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package com.tuneup.tuneup.users.services;
 
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
-import com.tuneup.tuneup.users.repository.AppUser;
+import com.tuneup.tuneup.users.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.validators.AppUserValidator;
 import jakarta.transaction.Transactional;
