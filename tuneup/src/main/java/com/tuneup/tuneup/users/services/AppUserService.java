@@ -4,6 +4,8 @@ import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
 import com.tuneup.tuneup.users.repository.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
+import com.tuneup.tuneup.users.validators.AppUserValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +15,18 @@ import java.util.List;
 public class AppUserService {
     private final AppUserRepository appUserRepository;
     private final AppUserMapper appUserMapper;
+    private final AppUserValidator appUserValidator;
 
-    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper) {
+
+    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator) {
         this.appUserRepository = appUserRepository;
         this.appUserMapper = appUserMapper;
+        this.appUserValidator = appUserValidator;
     }
 
+    @Transactional
     public AppUserDto createUser(AppUserDto appUserDto) {
-        //validation here
+        appUserValidator.validateAppUser(appUserDto);
         AppUser appUser = appUserMapper.toAppUser(appUserDto);
         appUserRepository.save(appUser);
         return  appUserMapper.toAppUserDto(appUser);
