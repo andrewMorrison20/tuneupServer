@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.users.repository;
+package com.tuneup.tuneup.users;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
