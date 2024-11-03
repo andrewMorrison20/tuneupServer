@@ -17,7 +17,6 @@ public class AppUserService {
     private final AppUserMapper appUserMapper;
     private final AppUserValidator appUserValidator;
 
-
     public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator) {
         this.appUserRepository = appUserRepository;
         this.appUserMapper = appUserMapper;
