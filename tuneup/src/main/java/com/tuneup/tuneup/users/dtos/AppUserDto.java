@@ -9,6 +9,8 @@ public class AppUserDto {
     private String name;
     private String email;
     private String password;
+    private String username;
+
 
     public Long getId() {
         return id;
@@ -34,4 +36,17 @@ public class AppUserDto {
         this.email = email;
     }
 
+    public String getUsername() {
+        return this.username;
+    }
+    public void setUsername() {
+        this.username = username;
+    }
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword() {
+        this.password = password;
+    }
 }
