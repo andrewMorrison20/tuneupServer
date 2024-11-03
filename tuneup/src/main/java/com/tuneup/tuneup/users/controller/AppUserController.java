@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.users.controller;
 
 import com.tuneup.tuneup.users.dtos.AppUserDto;
-import com.tuneup.tuneup.users.repository.UserRepository;
+import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +23,7 @@ public class AppUserController {
         return ResponseEntity.ok(allUsers);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE )
+    @PostMapping("/createNew")
     public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserDto appUserDto){
       AppUserDto createdUser = appUserService.createUser(appUserDto);
       return ResponseEntity.ok().body(createdUser);
