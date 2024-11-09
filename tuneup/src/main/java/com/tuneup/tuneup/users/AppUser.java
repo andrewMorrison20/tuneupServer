@@ -1,9 +1,11 @@
 package com.tuneup.tuneup.users;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.tuneup.tuneup.roles.services.Role;
+import jakarta.persistence.*;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class AppUser {
@@ -14,7 +16,14 @@ public class AppUser {
     private String email;
     private String password;
     private String username;
-
+  
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -55,4 +64,9 @@ public class AppUser {
     public void setPassword() {
         this.password = password;
     }
+
+    public Set<Role> getRoles() {
+        return this.roles;
+    }
+
 }
