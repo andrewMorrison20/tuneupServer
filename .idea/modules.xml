@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tuneup.main.iml" filepath="$PROJECT_DIR$/.idea/modules/tuneup.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tuneup.test.iml" filepath="$PROJECT_DIR$/.idea/modules/tuneup.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/tuneupServer.iml" filepath="$PROJECT_DIR$/.idea/tuneupServer.iml" />
     </modules>
   </component>

@@ -15,7 +15,6 @@ public class AppUserValidator {
     }
 
     public void validateAppUser(AppUserDto appUserDto) {
-        // Check for null or invalid fields
         checkUsername(appUserDto.getUsername());
         checkPassword(appUserDto.getPassword());
         checkEmail(appUserDto.getEmail());
@@ -35,7 +34,6 @@ public class AppUserValidator {
         if (password == null || password.length() < 8) {
             throw new ValidationException("Password must be at least 8 characters long");
         }
-        // Add more password checks as necessary (e.g., complexity)
     }
 
     private void checkEmail(String email) {
