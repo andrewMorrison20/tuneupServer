@@ -16,6 +16,7 @@ public class AppUser {
     private String email;
     private String password;
     private String username;
+  
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
@@ -67,4 +68,5 @@ public class AppUser {
     public Set<Role> getRoles() {
         return this.roles;
     }
+
 }
