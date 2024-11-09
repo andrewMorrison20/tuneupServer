@@ -13,8 +13,9 @@ public class AppUser {
     private String name;
     private String email;
     private String password;
+    private String username;
 
-    // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -37,5 +38,21 @@ public class AppUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername() {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword() {
+        this.password = password;
     }
 }
