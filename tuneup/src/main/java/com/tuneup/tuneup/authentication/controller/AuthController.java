@@ -37,18 +37,18 @@ public class AuthController {
 
     // Endpoint to handle login and generate JWT
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequest) throws JOSEException {
+    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequest) throws Exception {
         // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Generate JWT token
-        String token = jwtUtil.generateToken(loginRequest.getUsername());
+        String token = jwtUtil.generateToken(loginRequest.getEmail());
         return new LoginResponseDto(token);
     }
 

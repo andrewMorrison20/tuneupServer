@@ -6,6 +6,7 @@ import com.tuneup.tuneup.users.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.validators.AppUserValidator;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,17 +17,20 @@ public class AppUserService {
     private final AppUserRepository appUserRepository;
     private final AppUserMapper appUserMapper;
     private final AppUserValidator appUserValidator;
+    private final PasswordEncoder passwordEncoder;
 
-    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator) {
+    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator, PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
         this.appUserMapper = appUserMapper;
         this.appUserValidator = appUserValidator;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public AppUserDto createUser(AppUserDto appUserDto) {
         appUserValidator.validateAppUser(appUserDto);
         AppUser appUser = appUserMapper.toAppUser(appUserDto);
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUserRepository.save(appUser);
         return  appUserMapper.toAppUserDto(appUser);
     }
