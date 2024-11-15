@@ -3,12 +3,12 @@ package com.tuneup.tuneup.profiles.controllers;
 
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
-import org.hibernate.query.Page;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -24,11 +24,14 @@ public class ProfileController {
     }
 
     @GetMapping("/profiles")
-    public Page<ProfileDto> getAllProfiles(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        return profileService.getAllProfiles(page, size);
+    public Page<ProfileDto> getAllProfiles(@RequestParam Pageable page) {
+        return profileService.findProfilesDto(page);
     }
 
+    @PostMapping
+    public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profileDto) {
+        ProfileDto createdProfile = profileService.createProfile(profileDto);
+        return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
+
+    }
 }

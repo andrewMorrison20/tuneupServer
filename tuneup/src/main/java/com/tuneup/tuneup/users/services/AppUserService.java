@@ -41,4 +41,9 @@ public class AppUserService {
                 .map(appUserMapper::toAppUserDto)
                 .toList();
     }
+
+    public AppUser findById(Long appUserId) {
+        return appUserRepository.findById(appUserId)
+                .orElseThrow(() -> new RuntimeException("AppUser with ID " + appUserId + " not found"));
+    }
 }
