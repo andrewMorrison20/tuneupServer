@@ -12,10 +12,12 @@ public interface AppUserMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "id", target = "id")
+    @Mapping(source = "password", target = "password")
     AppUser toAppUser(AppUserDto appUserDto);
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "id", target = "id")
+    @Mapping(source = "password", target = "password")
     AppUserDto toAppUserDto(AppUser appUser);
 }
