@@ -1,7 +1,6 @@
 package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.Instrument;
-import com.tuneup.tuneup.profiles.dtos.ProfileType;
 import com.tuneup.tuneup.users.AppUser;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,7 +33,6 @@ public class Profile {
             inverseJoinColumns = @JoinColumn(name = "instrument_id")
     )
     private Set<Instrument> instruments;
-
 
 
 }

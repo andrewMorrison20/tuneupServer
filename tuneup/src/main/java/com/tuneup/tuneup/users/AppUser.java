@@ -54,7 +54,13 @@ public class AppUser {
     }
 
     public void setUsername() {
-        this.username = username;
+        if(username == null){
+            this.username = this.email;
+        }
+        else {
+            this.username = username;
+        }
+
     }
 
     public String getPassword() {

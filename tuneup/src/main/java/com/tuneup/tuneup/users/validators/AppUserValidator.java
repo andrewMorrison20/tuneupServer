@@ -16,7 +16,7 @@ public class AppUserValidator {
 
     public void validateAppUser(AppUserDto appUserDto) {
 
-        checkUsername(appUserDto.getUsername());
+        //checkUsername(appUserDto.getUsername());
         checkPassword(appUserDto.getPassword());
         checkEmail(appUserDto.getEmail());
         checkAppUserId(appUserDto.getId());
