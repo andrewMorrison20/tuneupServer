@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/login", "/api/users/createNew","api/instruments").permitAll()
+                        .requestMatchers("/auth/login", "/api/users/createNew","api/instruments", "/api/profiles").permitAll()
                         .anyRequest().authenticated())  // All other requests require authentication
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Set session management to stateless
