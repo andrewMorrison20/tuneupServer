@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/profile")
+@RequestMapping("/api/profiles")
 public class UserProfileController {
 
     private final ProfileService profileService;
@@ -21,8 +21,8 @@ public class UserProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/profiles")
-    public Page<ProfileDto> getAllProfiles(@RequestParam Pageable page) {
+    @GetMapping()
+    public Page<ProfileDto> getAllProfiles(Pageable page) {
         return profileService.findProfilesDto(page);
     }
 
