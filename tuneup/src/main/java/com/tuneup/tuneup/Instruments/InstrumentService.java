@@ -1,18 +1,30 @@
 package com.tuneup.tuneup.Instruments;
 
+import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class InstrumentService {
     private final InstrumentValidator instrumentValidator;
+    private final InstrumentRepository instrumentRepository;
+    private final InstrumentMapper instrumentMapper;
 
-    public InstrumentService(InstrumentValidator instrumentValidator) {
+    public InstrumentService(InstrumentValidator instrumentValidator, InstrumentRepository instrumentRepository, InstrumentMapper instrumentMapper) {
         this.instrumentValidator = instrumentValidator;
+        this.instrumentRepository = instrumentRepository;
+        this.instrumentMapper = instrumentMapper;
     }
 
-    public static void findall() {
-
+    public Set<InstrumentDto> findall() {
+       List<Instrument> instruments = instrumentRepository.findAll();
+        return instruments.stream()
+                .map(instrumentMapper :: toInstrumentDto)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -23,7 +35,8 @@ public class InstrumentService {
     @Transactional
     public InstrumentDto createInstrument(InstrumentDto instrumentDto){
         instrumentValidator.validateInstrumentDto(instrumentDto);
-        return instrumentDto;
-
+        Instrument instrument = instrumentMapper.toInstrument(instrumentDto);
+        Instrument createdInstrument = instrumentRepository.save(instrument);
+        return instrumentMapper.toInstrumentDto(createdInstrument);
     }
 }

@@ -25,6 +25,10 @@ public class Instrument {
     // Constructors, getters, and setters
     public Instrument() {}
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Instrument(String name) {
         this.name = name;
     }

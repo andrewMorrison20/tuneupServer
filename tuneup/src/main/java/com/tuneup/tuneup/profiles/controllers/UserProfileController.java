@@ -10,15 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RestController
 @RequestMapping("/api/profile")
-public class ProfileController {
+public class UserProfileController {
 
     private final ProfileService profileService;
 
-    public ProfileController(final ProfileService profileService) {
+    public UserProfileController(final ProfileService profileService) {
 
         this.profileService = profileService;
     }

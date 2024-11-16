@@ -1,17 +1,30 @@
 package com.tuneup.tuneup.Instruments;
 
+import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/instruments")
 public class InstrumentController {
 
+    private final InstrumentService instrumentService;
+
+    public InstrumentController(InstrumentService instrumentService) {
+        this.instrumentService = instrumentService;
+    }
+
+
     @GetMapping
-    public ResponseEntity<String> getAllInstruments() {
-        InstrumentService.findall();
-        return ResponseEntity.ok("All instruments");
+    public ResponseEntity<Set<InstrumentDto>> getAllInstruments() {
+        return ResponseEntity.ok(instrumentService.findall());
+    }
+
+    @PostMapping
+    public ResponseEntity<InstrumentDto> createInstrument(@RequestBody InstrumentDto instrumentDto) {
+        InstrumentDto createdInstrument = instrumentService.createInstrument(instrumentDto);
+        return ResponseEntity.ok(createdInstrument);
     }
 }

@@ -1,12 +1,25 @@
 package com.tuneup.tuneup.Instruments;
+import org.springframework.stereotype.Component;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+@Component
 public class InstrumentDto {
 
     private String name;
-    private long Id;
+    private Long id;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
