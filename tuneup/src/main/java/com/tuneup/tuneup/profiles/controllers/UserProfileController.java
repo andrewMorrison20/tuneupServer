@@ -26,6 +26,12 @@ public class UserProfileController {
         return profileService.findProfilesDto(page);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfileDto> getProfileById(@PathVariable Long id) {
+        ProfileDto profile = profileService.getProfileDto(id);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profileDto) {
         ProfileDto createdProfile = profileService.createProfile(profileDto);
