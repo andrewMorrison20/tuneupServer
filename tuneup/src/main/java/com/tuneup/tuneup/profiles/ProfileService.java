@@ -55,7 +55,11 @@ public class ProfileService {
     }
 
     public ProfileDto getProfileDto(Long id) {
-        return profileMapper.toProfileDto(profileRepository.findById(id).orElse(null));
+            return profileRepository.findById(id)
+                    .map(profileMapper::toProfileDto)
+                    .orElse(null);
+        }
+
     }
-}
+
 
