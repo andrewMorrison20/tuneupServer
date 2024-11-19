@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -74,5 +75,10 @@ public class AppUser {
     public Set<Role> getRoles() {
         return this.roles;
     }
+
+    public void  setRoles(Set<Role> roles ) {
+        this.roles = roles;
+    }
+
 
 }
