@@ -53,5 +53,17 @@ public class ProfileService {
         Profile savedProfile = profileRepository.save(profile);
         return profileMapper.toProfileDto(savedProfile);
     }
-}
+
+
+    public ProfileDto getProfileDto(Long id) {
+            return profileRepository.findById(id)
+                    .map(profileMapper::toProfileDto)
+                    .orElse(null);
+        }
+
+    }
+
+
+
+
 
