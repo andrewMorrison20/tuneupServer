@@ -31,7 +31,6 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/api/users/createNew","api/instruments", "/api/profiles", "/api/profiles/**").permitAll()
                         .anyRequest().authenticated())  // All other requests require authentication
                 .sessionManagement(session -> session
-
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Set session management to stateless
 
         // Add the JWT filter before the UsernamePasswordAuthenticationFilter
