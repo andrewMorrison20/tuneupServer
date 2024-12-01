@@ -1,4 +1,4 @@
-package com.tuneup.tuneup;
+package com.tuneup.tuneup.reviews.dtos;
 
 import org.springframework.stereotype.Component;
 

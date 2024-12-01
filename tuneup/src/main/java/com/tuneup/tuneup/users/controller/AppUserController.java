@@ -17,16 +17,27 @@ public class AppUserController {
     @Autowired
     private AppUserService appUserService;
 
-    @GetMapping
+    @GetMapping("/findall")
     public ResponseEntity<List<AppUserDto>> getAllUsers(){
         List<AppUserDto> allUsers = appUserService.findAll();
         return ResponseEntity.ok(allUsers);
+    }
+
+    @GetMapping()
+    public ResponseEntity<AppUserDto> getUserByUsername(@RequestParam("email") String email){
+        AppUserDto user = appUserService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/createNew")
     public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserDto appUserDto){
       AppUserDto createdUser = appUserService.createUser(appUserDto);
       return ResponseEntity.ok().body(createdUser);
+    }
+
+    @GetMapping("/resetPassword")
+    public ResponseEntity<AppUserDto> resetPassword(@RequestBody AppUserDto appUserDto){
+        return null;
     }
 }
 

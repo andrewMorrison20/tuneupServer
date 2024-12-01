@@ -1,10 +1,8 @@
 package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.Instrument;
-import com.tuneup.tuneup.users.AppUser;
+import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Set;
 

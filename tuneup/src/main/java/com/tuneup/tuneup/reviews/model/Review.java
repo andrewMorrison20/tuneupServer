@@ -1,7 +1,6 @@
-package com.tuneup.tuneup;
+package com.tuneup.tuneup.reviews.model;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 public class Review {

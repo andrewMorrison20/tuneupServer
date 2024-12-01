@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.junit.services;
 
 import com.tuneup.tuneup.roles.services.Role;
-import com.tuneup.tuneup.users.AppUser;
+import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserDetailsService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;

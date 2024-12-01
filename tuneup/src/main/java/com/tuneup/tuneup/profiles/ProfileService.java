@@ -1,10 +1,9 @@
 package com.tuneup.tuneup.profiles;
 
-import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
-import com.tuneup.tuneup.users.AppUser;
+import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
