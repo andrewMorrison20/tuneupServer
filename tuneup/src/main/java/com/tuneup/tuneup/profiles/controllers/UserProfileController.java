@@ -38,4 +38,11 @@ public class UserProfileController {
         return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
 
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<ProfileDto> updateProfile(@RequestBody ProfileDto profileDto) {
+        ProfileDto updatedProfile = profileService.updateProfile(profileDto);
+        return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
+
+    }
 }

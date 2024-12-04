@@ -4,7 +4,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PriceDto {
-    private String period; // ONE_HOUR, TWO_HOURS, CUSTOM, etc.
+    private long id;
+    private String period;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     private Double rate;
     private String description;
 
@@ -33,4 +43,4 @@ public class PriceDto {
         this.description = description;
     }
 }
-}
+

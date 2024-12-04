@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
-@Mapper
+@Mapper(componentModel = "spring" )
 public interface PriceMapper {
 
     PriceDto toPriceDto(Price price);

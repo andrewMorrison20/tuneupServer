@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -14,9 +15,6 @@ public class PriceController {
     @Autowired
     private PriceService priceService;
 
-    @Autowired
-    private PriceMapper priceMapper;
-
     @PostMapping
     public ResponseEntity<PriceDto> createPrice(@RequestBody PriceDto priceDto) {
         PriceDto createdPrice = priceService.createPrice(priceDto);
@@ -24,23 +22,18 @@ public class PriceController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<PriceDto>> getAllPrices() {
-        List<Price> prices = priceService.getAllPrices();
-        List<PriceDto> priceDTOs = prices.stream()
-                .map(priceMapper::toPriceDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(priceDTOs);
+    public ResponseEntity<Set<PriceDto>> getAllPrices() {
+        Set<PriceDto> priceDtos = priceService.getAllPrices();
+        return ResponseEntity.ok(priceDtos);
     }
 
-
-    @GetMapping("/{id}")
+  @GetMapping("/{id}")
     public ResponseEntity<PriceDto> getPriceById(@PathVariable Long id) {
-        return priceService.getPriceById(id)
-                .map(price -> ResponseEntity.ok(priceMapper.toPriceDto(price)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        PriceDto price = priceService.getById(id);
+        return ResponseEntity.ok(price);
     }
 
-
+    /*
     @PutMapping("/{id}")
     public ResponseEntity<PriceDto> updatePrice(@PathVariable Long id, @RequestBody PriceDto updatedPriceDto) {
         Optional<Price> existingPrice = priceService.getPriceById(id);
@@ -52,7 +45,7 @@ public class PriceController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
 
 
     @DeleteMapping("/{id}")
