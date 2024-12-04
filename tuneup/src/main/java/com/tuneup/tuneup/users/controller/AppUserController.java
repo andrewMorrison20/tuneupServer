@@ -29,6 +29,12 @@ public class AppUserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AppUserDto> getUserDetails(@RequestParam("email") String email){
+        AppUserDto user = appUserService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
+    }
+
     @PostMapping("/createNew")
     public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserDto appUserDto){
       AppUserDto createdUser = appUserService.createUser(appUserDto);

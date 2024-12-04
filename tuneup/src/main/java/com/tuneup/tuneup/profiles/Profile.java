@@ -58,24 +58,35 @@ public class Profile {
         this.bio = bio;
     }
     public void setOnlineLessons(Boolean onlineLessons) {
+
         this.onlineLessons = onlineLessons;
     }
+
     public ProfileType getProfileType() {
+
         return profileType;
     }
+
     public void setProfileType(ProfileType profileType) {
+
         this.profileType = profileType;
     }
     public AppUser getAppUser() {
+
         return appUser;
     }
+
     public String getDisplayName() {
+
         return displayName;
     }
     public void setDisplayName(String displayName) {
+
         this.displayName = displayName;
     }
+
     public void setInstruments(Set<Instrument> instruments) {
+
         this.instruments = instruments;
     }
 
