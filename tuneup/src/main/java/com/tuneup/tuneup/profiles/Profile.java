@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.Instrument;
+import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;
 
@@ -30,8 +31,24 @@ public class Profile {
     )
     private Set<Instrument> instruments;
 
+    @ManyToMany
+    @JoinTable(
+            name = "profile_price",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "price_id")
+    )
+    private Set<Price> prices;
+
     public long getId() {
         return id;
+    }
+
+    public Set<Price> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(Set<Price> prices) {
+        this.prices = prices;
     }
 
     public void setId(long id) {
@@ -58,24 +75,35 @@ public class Profile {
         this.bio = bio;
     }
     public void setOnlineLessons(Boolean onlineLessons) {
+
         this.onlineLessons = onlineLessons;
     }
+
     public ProfileType getProfileType() {
+
         return profileType;
     }
+
     public void setProfileType(ProfileType profileType) {
+
         this.profileType = profileType;
     }
     public AppUser getAppUser() {
+
         return appUser;
     }
+
     public String getDisplayName() {
+
         return displayName;
     }
     public void setDisplayName(String displayName) {
+
         this.displayName = displayName;
     }
+
     public void setInstruments(Set<Instrument> instruments) {
+
         this.instruments = instruments;
     }
 

@@ -2,6 +2,7 @@ package com.tuneup.tuneup.profiles.dtos;
 
 import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.Instruments.InstrumentDto;
+import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileType;
 import org.springframework.stereotype.Component;
 
@@ -10,15 +11,23 @@ import java.util.Set;
 @Component
 public class ProfileDto {
 
-    private int id;
+    private long id;
     private String displayName;
     private String bio;
     private boolean onlineLessons;
     private ProfileType profileType;
     private Set<InstrumentDto> instruments;
     private long appUserId;
+    private Set<PriceDto> prices;
 
-    public int getId() {
+    public Set<PriceDto> getPrices() {
+        return prices;
+    }
+    public void setPrices(Set<PriceDto> prices) {
+        this.prices = prices;
+    }
+
+    public long getId() {
         return id;
     }
 
