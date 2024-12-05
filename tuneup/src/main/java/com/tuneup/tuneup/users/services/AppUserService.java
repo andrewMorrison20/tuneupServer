@@ -2,7 +2,7 @@ package com.tuneup.tuneup.users.services;
 
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
-import com.tuneup.tuneup.users.AppUser;
+import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.validators.AppUserValidator;
 import jakarta.transaction.Transactional;
@@ -32,7 +32,7 @@ public class AppUserService {
         AppUser appUser = appUserMapper.toAppUser(appUserDto);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUserRepository.save(appUser);
-        return  appUserMapper.toAppUserDto(appUser);
+        return appUserMapper.toAppUserDto(appUser);
     }
 
     public List<AppUserDto> findAll() {
@@ -46,4 +46,10 @@ public class AppUserService {
         return appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new RuntimeException("AppUser with ID " + appUserId + " not found"));
     }
+
+    public AppUserDto getUserByEmail(String email) {
+        AppUser user = appUserRepository.findByEmail(email);
+        return appUserMapper.toAppUserDto(user);
+    }
+
 }

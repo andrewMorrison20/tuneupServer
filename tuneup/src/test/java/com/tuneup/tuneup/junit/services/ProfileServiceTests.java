@@ -7,7 +7,7 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileValidator;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
-import com.tuneup.tuneup.users.AppUser;
+import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

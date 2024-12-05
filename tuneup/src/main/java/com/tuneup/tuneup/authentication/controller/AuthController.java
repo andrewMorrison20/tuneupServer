@@ -3,10 +3,12 @@ package com.tuneup.tuneup.authentication.controller;
 
 
 import com.nimbusds.jose.JOSEException;
+import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.LoginRequestDto;
 import com.tuneup.tuneup.users.dtos.LoginResponseDto;
-import com.tuneup.tuneup.users.AppUser;
+import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
+import com.tuneup.tuneup.users.services.AppUserService;
 import com.tuneup.tuneup.utils.Jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,6 +27,9 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    AppUserService appUserService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -47,9 +52,11 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        AppUserDto userDetails = appUserService.getUserByEmail(loginRequest.getEmail());
+
         // Generate JWT token
         String token = jwtUtil.generateToken(loginRequest.getEmail());
-        return new LoginResponseDto(token);
+        return new LoginResponseDto(token,userDetails);
     }
 
 }

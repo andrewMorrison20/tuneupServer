@@ -1,11 +1,9 @@
-package com.tuneup.tuneup.users;
+package com.tuneup.tuneup.users.model;
 
 import com.tuneup.tuneup.roles.services.Role;
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

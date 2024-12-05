@@ -1,5 +1,7 @@
-package com.tuneup.tuneup;
+package com.tuneup.tuneup.reviews.controllers;
 
+import com.tuneup.tuneup.reviews.dtos.ReviewDto;
+import com.tuneup.tuneup.reviews.services.ReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
