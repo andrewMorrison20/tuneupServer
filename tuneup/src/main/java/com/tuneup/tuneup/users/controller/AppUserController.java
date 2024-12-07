@@ -47,6 +47,12 @@ public class AppUserController {
         return ResponseEntity.ok(appUserMapper.toAppUserDto(user));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<AppUserDto> updateUser(@RequestBody AppUserDto appUserDto){
+        AppUserDto updatedAppUserDto = appUserService.updateUser(appUserDto);
+        return ResponseEntity.ok(updatedAppUserDto);
+    }
+
     @PostMapping("/createNew")
     public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserDto appUserDto){
       AppUserDto createdUser = appUserService.createUser(appUserDto);

@@ -13,7 +13,8 @@ public class AppUserDto {
 
 
     public Long getId() {
-        return id;
+
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -21,15 +22,17 @@ public class AppUserDto {
     }
 
     public String getName() {
-        return name;
+
+        return this.name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -39,7 +42,8 @@ public class AppUserDto {
     public String getUsername() {
         return this.username;
     }
-    public void setUsername() {
+
+    public void setUsername(String username) {
         this.username = username;
     }
 

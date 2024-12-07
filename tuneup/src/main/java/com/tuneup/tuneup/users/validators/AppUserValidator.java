@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.users.validators;
 
+import com.tuneup.tuneup.users.Operation;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
@@ -14,15 +15,14 @@ public class AppUserValidator {
         this.appUserRepository = appUserRepository;
     }
 
-    public void validateAppUser(AppUserDto appUserDto) {
-
-        //checkUsername(appUserDto.getUsername());
+    public void validateAppUserCreation(AppUserDto appUserDto) {
+        checkAppUserId(appUserDto.getId());
+        checkUsername(appUserDto.getUsername());
         checkPassword(appUserDto.getPassword());
         checkEmail(appUserDto.getEmail());
-        checkAppUserId(appUserDto.getId());
     }
 
-    private void checkUsername(String username) {
+    public void checkUsername(String username) {
         if (username == null || username.isEmpty()) {
             throw new ValidationException("Username cannot be null or empty");
         }
@@ -31,14 +31,14 @@ public class AppUserValidator {
         }
     }
 
-    private void checkPassword(String password) {
+    public void checkPassword(String password) {
         if (password == null || password.length() < 8) {
             throw new ValidationException("Password must be at least 8 characters long");
         }
 
     }
 
-    private void checkEmail(String email) {
+    public void checkEmail(String email) {
         if (email == null || !email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
             throw new ValidationException("Invalid email format");
         }
@@ -47,7 +47,7 @@ public class AppUserValidator {
          }
     }
 
-    private void checkAppUserId(Long appUserId) {
+    protected void checkAppUserId(Long appUserId) {
         if (appUserId != null && appUserRepository.existsById(appUserId)) {
             throw new ValidationException("App user already exists");
         }

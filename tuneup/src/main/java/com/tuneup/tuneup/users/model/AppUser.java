@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.users.model;
 
 import com.tuneup.tuneup.roles.services.Role;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class AppUser {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -52,7 +53,7 @@ public class AppUser {
         return this.username;
     }
 
-    public void setUsername() {
+    public void setUsername(String username) {
         if(username == null){
             this.username = this.email;
         }
