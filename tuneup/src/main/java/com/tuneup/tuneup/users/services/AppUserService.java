@@ -1,5 +1,8 @@
 package com.tuneup.tuneup.users.services;
 
+import com.tuneup.tuneup.address.Address;
+import com.tuneup.tuneup.address.AddressDto;
+import com.tuneup.tuneup.address.AddressService;
 import com.tuneup.tuneup.users.Operation;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
@@ -19,12 +22,14 @@ public class AppUserService {
     private final AppUserMapper appUserMapper;
     private final AppUserValidator appUserValidator;
     private final PasswordEncoder passwordEncoder;
+    private final AddressService addressService;
 
-    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator, PasswordEncoder passwordEncoder) {
+    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator, PasswordEncoder passwordEncoder,AddressService addressService) {
         this.appUserRepository = appUserRepository;
         this.appUserMapper = appUserMapper;
         this.appUserValidator = appUserValidator;
         this.passwordEncoder = passwordEncoder;
+        this.addressService = addressService;
     }
 
     @Transactional
@@ -81,6 +86,10 @@ public class AppUserService {
             existingUserDto.setEmail(appUserDto.getEmail());
         }
 
+        if(appUserDto.getAddress()!=null){
+           AddressDto userAddress = addressService.createAddress(appUserDto.getAddress());
+           existingUserDto.setAddress(userAddress);
+        }
         AppUser appUser = appUserMapper.toAppUser(existingUserDto);
         AppUserDto updateUserDto= appUserMapper.toAppUserDto(appUserRepository.save(appUser));
         return updateUserDto;

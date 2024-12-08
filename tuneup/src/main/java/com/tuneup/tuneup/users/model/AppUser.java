@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.users.model;
 
+import com.tuneup.tuneup.address.Address;
 import com.tuneup.tuneup.roles.services.Role;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ public class AppUser {
     private String email;
     private String password;
     private String username;
-  
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
@@ -24,6 +25,18 @@ public class AppUser {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;

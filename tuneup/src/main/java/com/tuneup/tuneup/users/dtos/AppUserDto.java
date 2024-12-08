@@ -1,5 +1,8 @@
 package com.tuneup.tuneup.users.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tuneup.tuneup.address.AddressDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -8,8 +11,10 @@ public class AppUserDto {
     private Long id;
     private String name;
     private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String username;
+    private AddressDto address;
 
 
     public Long getId() {
@@ -49,6 +54,14 @@ public class AppUserDto {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public AddressDto getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(AddressDto address) {
+        this.address = address;
     }
 
     public void setPassword(String password) {

@@ -12,6 +12,5 @@ public interface AppUserMapper {
 
     AppUser toAppUser(AppUserDto appUserDto);
 
-    @Mapping(target = "password", ignore = true)
     AppUserDto toAppUserDto(AppUser appUser);
 }
