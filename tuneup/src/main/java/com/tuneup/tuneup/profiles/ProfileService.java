@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.profiles;
 
+import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
@@ -25,14 +26,17 @@ public class ProfileService {
     private final ProfileValidator profileValidator;
     private final AppUserService appUserService;
     private final PriceMapper priceMapper;
+    private final GenreMapper genreMapper;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService,PriceMapper priceMapper) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper) {
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
         this.profileValidator = profileValidator;
         this.priceMapper = priceMapper;
+        this.genreMapper = genreMapper;
     }
+
 
     /**
      * Get Page of profiles from db
@@ -72,13 +76,25 @@ public class ProfileService {
         Profile existingProfile = profileRepository.findById(profileDto.getId())
                 .orElseThrow();
         //TO-DO extend this either using beansUtils or Mapper and custom logic to cover all fields of profile
-        //logic here
-        Set<Price> updatedPrices= profileDto.getPrices()
-                .stream()
-                .map(priceMapper::toPrice)
-                .collect(Collectors.toSet());
+        //Need to think about fetching from db as oppossed to front end always sending names with sub dtos.
 
-        existingProfile.setPrices(updatedPrices);
+
+        if(profileDto.getPrices() !=null) {
+            Set<Price> updatedPrices = profileDto.getPrices()
+                    .stream()
+                    .map(priceMapper::toPrice)
+                    .collect(Collectors.toSet());
+            existingProfile.setPrices(updatedPrices);
+        }
+
+        if(profileDto.getGenres()!=null){
+            existingProfile.setGenres(
+                    profileDto.getGenres().stream()
+                            .map(genreMapper:: toGenre)
+                            .collect(Collectors.toSet())
+            );
+        }
+
         Profile profile = profileRepository.save(existingProfile);
 
         return profileMapper.toProfileDto(profile);
