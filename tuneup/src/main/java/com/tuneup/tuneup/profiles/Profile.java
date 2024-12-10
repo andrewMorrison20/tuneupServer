@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.Instrument;
+import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;
@@ -38,6 +39,22 @@ public class Profile {
             inverseJoinColumns = @JoinColumn(name = "price_id")
     )
     private Set<Price> prices;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "profile_genre",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
+
+    public Set<Genre> getGenres() {
+        return this.genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
 
     public long getId() {
         return id;
