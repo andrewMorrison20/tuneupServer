@@ -1,17 +1,22 @@
 package com.tuneup.tuneup.users.controller;
 
 import com.tuneup.tuneup.users.dtos.AppUserDto;
+import com.tuneup.tuneup.users.dtos.PasswordResetRequestDto;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
 import com.tuneup.tuneup.users.model.AppUser;
+import com.tuneup.tuneup.users.model.PasswordResetToken;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserService;
+import com.tuneup.tuneup.users.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -21,6 +26,8 @@ public class AppUserController {
     private AppUserService appUserService;
     @Autowired
     private AppUserMapper appUserMapper;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/findall")
     public ResponseEntity<List<AppUserDto>> getAllUsers(){
@@ -59,9 +66,30 @@ public class AppUserController {
       return ResponseEntity.ok().body(createdUser);
     }
 
-    @GetMapping("/resetPassword")
-    public ResponseEntity<AppUserDto> resetPassword(@RequestBody AppUserDto appUserDto){
-        return null;
+    @PostMapping("/requestResetPasswordEmail")
+    public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String token = appUserService.generateResetToken(email);
+        String resetUrl = "http://localhost:4200/login/update-password?token=" + token;
+
+        emailService.sendResetEmail(email, resetUrl);
+
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Password reset email sent successfully.");
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+    @PostMapping("/updatePassword")
+    public ResponseEntity<Map<String,String>> updatePassword(@RequestBody PasswordResetRequestDto passwordResetRequestDto) {
+        appUserService.verifyPasswordReset(passwordResetRequestDto.getToken(), passwordResetRequestDto.getPassword());
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Password reset successfully.");
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 }
 
