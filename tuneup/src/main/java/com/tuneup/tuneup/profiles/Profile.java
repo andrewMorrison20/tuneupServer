@@ -3,6 +3,7 @@ package com.tuneup.tuneup.profiles;
 import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.pricing.Price;
+import com.tuneup.tuneup.regions.Region;
 import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;
 
@@ -47,6 +48,10 @@ public class Profile {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private Set<Genre> genres;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tuition_region_id")
+    private Region tuitionRegion;
 
     public Set<Genre> getGenres() {
         return this.genres;
@@ -124,4 +129,11 @@ public class Profile {
         this.instruments = instruments;
     }
 
+    public Region getTuitionRegion() {
+        return tuitionRegion;
+    }
+
+    public void setTuitionRegion(Region tuitionRegion) {
+        this.tuitionRegion = tuitionRegion;
+    }
 }

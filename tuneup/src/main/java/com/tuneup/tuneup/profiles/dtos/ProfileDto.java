@@ -6,6 +6,7 @@ import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.genres.GenreDto;
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileType;
+import com.tuneup.tuneup.regions.RegionDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -22,6 +23,16 @@ public class ProfileDto {
     private long appUserId;
     private Set<PriceDto> prices;
     private Set<GenreDto> genres;
+
+    public RegionDto getTuitionRegion() {
+        return tuitionRegion;
+    }
+
+    public void setTuitionRegion(RegionDto tuitionRegion) {
+        this.tuitionRegion = tuitionRegion;
+    }
+
+    private RegionDto tuitionRegion;
 
     public void setId(long id) {
         this.id = id;
