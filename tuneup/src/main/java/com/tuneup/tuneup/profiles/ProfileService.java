@@ -6,6 +6,9 @@ import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
+import com.tuneup.tuneup.regions.RegionDto;
+import com.tuneup.tuneup.regions.RegionMapper;
+import com.tuneup.tuneup.regions.RegionService;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,14 +30,16 @@ public class ProfileService {
     private final AppUserService appUserService;
     private final PriceMapper priceMapper;
     private final GenreMapper genreMapper;
+    private final RegionMapper regionMapper;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper) {
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
         this.profileValidator = profileValidator;
         this.priceMapper = priceMapper;
         this.genreMapper = genreMapper;
+        this.regionMapper = regionMapper;
     }
 
 
@@ -65,11 +70,18 @@ public class ProfileService {
     }
 
 
+    public ProfileDto getProfileDtoByUserId(Long userId) {
+        profileValidator.existsByUser(userId);
+        Profile profile =  profileRepository.findByAppUserId(userId);
+        return profileMapper.toProfileDto(profile);
+    }
+
     public ProfileDto getProfileDto(Long id) {
             return profileRepository.findById(id)
                     .map(profileMapper::toProfileDto)
                     .orElse(null);
         }
+
 
     @Transactional
     public ProfileDto updateProfile(ProfileDto profileDto) {
@@ -93,6 +105,20 @@ public class ProfileService {
                             .map(genreMapper:: toGenre)
                             .collect(Collectors.toSet())
             );
+        }
+
+        if(profileDto.getProfileType()!=null){
+            existingProfile.setProfileType(profileDto.getProfileType());
+        }
+
+        if(profileDto.getBio()!=null){
+            existingProfile.setBio(profileDto.getBio());
+        }
+
+        if(profileDto.getTuitionRegion()!=null){
+            RegionDto regionDto = profileDto.getTuitionRegion();
+
+            existingProfile.setTuitionRegion(regionMapper.toRegion(profileDto.getTuitionRegion()));
         }
 
         Profile profile = profileRepository.save(existingProfile);

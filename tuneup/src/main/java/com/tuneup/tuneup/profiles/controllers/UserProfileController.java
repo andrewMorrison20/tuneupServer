@@ -32,6 +32,11 @@ public class UserProfileController {
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<ProfileDto> getProfileByAppUserId(@PathVariable Long id) {
+        ProfileDto profile = profileService.getProfileDtoByUserId(id);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profileDto) {

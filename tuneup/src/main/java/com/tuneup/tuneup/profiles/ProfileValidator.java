@@ -6,6 +6,7 @@ import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
 import com.tuneup.tuneup.genres.GenreDto;
 import com.tuneup.tuneup.genres.GenreRepository;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +17,12 @@ public class ProfileValidator {
 
     private final InstrumentRepository instrumentRepository;
     private final GenreRepository genreRepository;
+    private final ProfileRepository profileRepository;
 
-    public ProfileValidator(InstrumentRepository instrumentRepository, GenreRepository genreRepository) {
+    public ProfileValidator(InstrumentRepository instrumentRepository, GenreRepository genreRepository, ProfileRepository profileRepository) {
         this.instrumentRepository = instrumentRepository;
         this.genreRepository = genreRepository;
+        this.profileRepository = profileRepository;
     }
 
     public void validatorProfileDto(ProfileDto profileDto) {
@@ -55,5 +58,12 @@ public class ProfileValidator {
         if (displayName == null || displayName.trim().isEmpty()) {
             throw new ValidationException("Display name cannot be empty");
         }
+    }
+
+    public void existsByUser(Long userId) {
+        if(!profileRepository.existsByAppUserId(userId)){
+            throw new ValidationException("Profile with id " + userId + " does not exist");
+        };
+
     }
 }

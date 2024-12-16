@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/login", "/api/users/createNew","/api/users/requestResetPasswordEmail","/api/users/updatePassword","api/instruments", "/api/profiles", "/api/review/**").permitAll()
+                        .requestMatchers("/auth/login","/api/profiles/**","/api/users/createNew","/api/users/requestResetPasswordEmail","/api/users/updatePassword","api/instruments","/api/genres","/api/profiles", "/api/review/**").permitAll()
                         .anyRequest().authenticated())  // All other requests require authentication
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Set session management to stateless
