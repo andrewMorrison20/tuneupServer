@@ -11,14 +11,14 @@ public class Region {
 
     private String name; // Primary name (e.g., "London")
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_region_id")
-    private Region parentRegion; // Parent region (e.g., "Greater London")
+    private Region parentRegion;
 
     private Double latitude;
     private Double longitude;
 
-    private String country; // Optional for filtering (e.g., "United Kingdom")
+    private String country;
 
     // Getters and Setters
     public Long getId() {
@@ -30,7 +30,7 @@ public class Region {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -38,7 +38,7 @@ public class Region {
     }
 
     public Region getParentRegion() {
-        return parentRegion;
+        return this.parentRegion;
     }
 
     public void setParentRegion(Region parentRegion) {

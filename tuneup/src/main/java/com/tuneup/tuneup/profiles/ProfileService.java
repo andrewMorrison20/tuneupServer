@@ -1,5 +1,8 @@
 package com.tuneup.tuneup.profiles;
 
+import com.tuneup.tuneup.Instruments.InstrumentMapper;
+import com.tuneup.tuneup.Instruments.InstrumentMapperImpl;
+import com.tuneup.tuneup.Instruments.InstrumentService;
 import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceMapper;
@@ -31,8 +34,9 @@ public class ProfileService {
     private final PriceMapper priceMapper;
     private final GenreMapper genreMapper;
     private final RegionMapper regionMapper;
+    private final InstrumentMapper instrumentMapper;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper) {
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
@@ -40,6 +44,7 @@ public class ProfileService {
         this.priceMapper = priceMapper;
         this.genreMapper = genreMapper;
         this.regionMapper = regionMapper;
+        this.instrumentMapper = instrumentMapper;
     }
 
 
@@ -89,7 +94,12 @@ public class ProfileService {
                 .orElseThrow();
         //TO-DO extend this either using beansUtils or Mapper and custom logic to cover all fields of profile
         //Need to think about fetching from db as oppossed to front end always sending names with sub dtos.
-
+        if(profileDto.getInstruments() != null) {
+            existingProfile.setInstruments(profileDto.getInstruments()
+                    .stream()
+                    .map(instrumentMapper::toInstrument)
+                    .collect(Collectors.toSet()));
+        }
 
         if(profileDto.getPrices() !=null) {
             Set<Price> updatedPrices = profileDto.getPrices()

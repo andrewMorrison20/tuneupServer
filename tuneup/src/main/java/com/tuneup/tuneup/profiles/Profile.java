@@ -49,7 +49,7 @@ public class Profile {
     )
     private Set<Genre> genres;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tuition_region_id")
     private Region tuitionRegion;
 
