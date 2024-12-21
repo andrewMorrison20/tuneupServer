@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.profiles.controllers;
 
 
+import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -49,6 +52,10 @@ public class UserProfileController {
     public ResponseEntity<ProfileDto> updateProfile(@RequestBody ProfileDto profileDto) {
         ProfileDto updatedProfile = profileService.updateProfile(profileDto);
         return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
-
     }
+
+    /*@PutMapping("/update/pricing/{id}")
+    public ResponseEntity<ProfileDto> updatePricing(@RequestBody Set<PriceDto> priceDtoSet) {
+        updatedProfile
+    }*/
 }
