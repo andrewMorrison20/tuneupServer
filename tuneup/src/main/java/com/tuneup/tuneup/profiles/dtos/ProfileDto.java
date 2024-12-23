@@ -4,6 +4,7 @@ import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.Instruments.InstrumentDto;
 import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.genres.GenreDto;
+import com.tuneup.tuneup.images.ImageDto;
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.regions.RegionDto;
@@ -23,6 +24,15 @@ public class ProfileDto {
     private long appUserId;
     private Set<PriceDto> prices;
     private Set<GenreDto> genres;
+    private ImageDto image;
+
+    public ImageDto getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDto image) {
+        this.image = image;
+    }
 
     public RegionDto getTuitionRegion() {
         return tuitionRegion;

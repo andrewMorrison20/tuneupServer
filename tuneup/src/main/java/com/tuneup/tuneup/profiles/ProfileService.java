@@ -94,6 +94,10 @@ public class ProfileService {
                 .orElseThrow();
         //TO-DO extend this either using beansUtils or Mapper and custom logic to cover all fields of profile
         //Need to think about fetching from db as oppossed to front end always sending names with sub dtos.
+
+        if(profileDto.getImage()!=null){
+
+        }
         if(profileDto.getInstruments() != null) {
             existingProfile.setInstruments(profileDto.getInstruments()
                     .stream()

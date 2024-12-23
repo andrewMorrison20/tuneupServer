@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "tuneup-445408",
+  "private_key_id": "5c53d27111939201fcd0b8bb366b4891f551899e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDuRyJ8OyeJSzGD\nlOU2gAbOwonN0aCapua0ml/R2dgAkU/U354yHf1yDwAJKltvcr1rKJIPEuT8myH3\nLcKiSwQDM9ZFyLS4VXiCCbacHlm3I8wkkVD3Xx7XI2QAhMzAImspLw/b2kwQbI49\n7O3h8I1nsUXf/WLPxEG1GVjWE11N2DvEJRlpZ7FurVUfdpHgGMoKFWqrI7WT2bFv\nM4lpaaDFQAd08WQXcaJQ74HXE2OPlf6N8pq6OFD27jc5cIrbRBW49Yxr/ODckURM\nErn0ysuGfc7Z1XIirhSuvfFy0lwyj7/vGm4maVLODHQ6mE3V7F8BoMXIsqDz6AmK\nI3gooU1FAgMBAAECggEAMeiGaZz+T/yG93eVdw/j3STUNl8FE7+HrSZ0kYDehGfr\nX7wi535umphXupO7qSFQWYSa6zta6SoZOCvGi7XItl8CL4W1jLKiViJwtEyLIBgI\nZ1RksBulWwyXoqAuPsQ2y96GpNcZfYsvU/svbFa1V5XC/AKX0srZtHQFrnlJ3sbX\nYuHEwsN4W3OVvShJf2P+GFQYixt116hCMlxw6Bd5BXs21vw//zjr7Q2/cKdpDPnx\nutl2VvRlX1/IF2Hs79CFyaEJet0hqI+b13zyJ3m+X4H2kx5Shk6GIspMsDHFc04S\nmS1601udpPOHOO6QzgLEKOL96zhOB+CD7S6qLJkiFQKBgQD+oYLwhWLG/MiQ3eiP\nJy1hwWICsLh6cuBKLc6CxfMPT2ETJ+Ga93Kc6CMyDJpJJIkE85ZRFOrPPP3MQ/KV\nrRgCqJN8QY23J/LeJtBJfmIp6CYpFZOyXUeX/o31d8tGoQjhun8RgJuWE62LUkG2\nf1+6DdhnCyDNWAjqj3goqDi05wKBgQDvjx0tfLdLeqQpYLekeXJTmIkEvbcPbl4E\n+vZy42LajFbKCa4Go/XvpWCaMcZV9VrEXON5NmZcOgnwrANekqV9RPV8BFc+osjz\nCi9BehWk+IF+xO4dAZmA5aptXA1DiapqXpqUHSuLJbtjiYwjcKqhHfI0SmMMndtb\nhUwxLDz68wKBgC3zkcC8IZZNehiCo3xqEouIrZpUsAYRAx7/4zvAY1vI9HjTgqhH\nrZxZXDilA5bdjAijuOXLA5EArcCWJooSYbnhGDSdU+jQwciLcp1AvJBZf8F8Tloq\n8UehvZal1r5ZQ1QRJutOrUVJKdFxt8AqfmkCJKJ75KCKGZnS6FlV+l3TAoGBAKfK\nVsZ4dy3f3cG5o4cJJWGWEkqG0wR06leUrC+2QpQO/e8PLpwqFWVgMTRvLpsgeg3V\nfeJ1juaEJFg1Mzr3fgAq38KYi78sZ5GLjaPP7f8ZrCHtr1YTu7/DnUZx1jx63SkZ\n0C1z7P7OU90ZB1X/YRPulKm5fHzmyDDnQYGjmaavAoGAXHZyGez58APMcJXGaPEH\nbWN6gM5klv9au7zWf+oFIcXn4a/bW7iwd5j+UjDwvJplfwus6pqF8bxuDNLlP5MN\n3UHMORTNQyZGKfdgRq17Ns8ITVm21f3Ei7HwRdcA3a6VX/pH/vH6P/jp7i7amB1J\nxmN3DIOrwt0JvKjHyJXL9Xg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "tuneupadmin@tuneup-445408.iam.gserviceaccount.com",
+  "client_id": "102418631700071190523",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tuneupadmin%40tuneup-445408.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

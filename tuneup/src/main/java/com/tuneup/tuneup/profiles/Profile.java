@@ -2,6 +2,7 @@ package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.genres.Genre;
+import com.tuneup.tuneup.images.Image;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.regions.Region;
 import com.tuneup.tuneup.users.model.AppUser;
@@ -20,6 +21,10 @@ public class Profile {
     private Boolean onlineLessons;
     @Enumerated(EnumType.STRING)
     private ProfileType profileType;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @ManyToOne
     @JoinColumn(name = "app_user_id", nullable = false)
