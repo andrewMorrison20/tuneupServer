@@ -5,12 +5,14 @@ import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 
+import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -58,4 +60,12 @@ public class UserProfileController {
     public ResponseEntity<ProfileDto> updatePricing(@RequestBody Set<PriceDto> priceDtoSet) {
         updatedProfile
     }*/
+
+    @PostMapping("/search")
+    public Page<ProfileDto> findBySpec(@RequestBody(required = false) ProfileSearchCriteria criteria, Pageable pageable) {
+        if (criteria == null) {
+            criteria = new ProfileSearchCriteria();
+        }
+        return profileService.searchProfiles(criteria, pageable);
+    }
 }

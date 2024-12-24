@@ -6,8 +6,10 @@ import com.tuneup.tuneup.images.ImageService;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
+import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
 import com.tuneup.tuneup.regions.RegionDto;
 import com.tuneup.tuneup.regions.RegionMapper;
 import com.tuneup.tuneup.users.model.AppUser;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -137,6 +140,11 @@ public class ProfileService {
         Profile profile = profileRepository.save(existingProfile);
 
         return profileMapper.toProfileDto(profile);
+    }
+
+    public Page<ProfileDto> searchProfiles(ProfileSearchCriteria criteria, Pageable page) {
+        return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria),page)
+                .map(profileMapper::toProfileDto);
     }
 }
 
