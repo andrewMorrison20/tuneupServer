@@ -1,9 +1,8 @@
 package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.InstrumentMapper;
-import com.tuneup.tuneup.Instruments.InstrumentMapperImpl;
-import com.tuneup.tuneup.Instruments.InstrumentService;
 import com.tuneup.tuneup.genres.GenreMapper;
+import com.tuneup.tuneup.images.ImageService;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
@@ -11,10 +10,8 @@ import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
 import com.tuneup.tuneup.regions.RegionDto;
 import com.tuneup.tuneup.regions.RegionMapper;
-import com.tuneup.tuneup.regions.RegionService;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,8 +32,9 @@ public class ProfileService {
     private final GenreMapper genreMapper;
     private final RegionMapper regionMapper;
     private final InstrumentMapper instrumentMapper;
+    private final ImageService imageService;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService) {
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
@@ -45,6 +43,7 @@ public class ProfileService {
         this.genreMapper = genreMapper;
         this.regionMapper = regionMapper;
         this.instrumentMapper = instrumentMapper;
+        this.imageService = imageService;
     }
 
 
@@ -95,8 +94,8 @@ public class ProfileService {
         //TO-DO extend this either using beansUtils or Mapper and custom logic to cover all fields of profile
         //Need to think about fetching from db as oppossed to front end always sending names with sub dtos.
 
-        if(profileDto.getImage()!=null){
-
+        if(profileDto.getProfilePicture()!=null){
+            //imageService.uploadFile()
         }
         if(profileDto.getInstruments() != null) {
             existingProfile.setInstruments(profileDto.getInstruments()

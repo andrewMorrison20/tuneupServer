@@ -24,7 +24,7 @@ public class Profile {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
-    private Image image;
+    private Image profilePicture;
 
     @ManyToOne
     @JoinColumn(name = "app_user_id", nullable = false)
@@ -38,12 +38,12 @@ public class Profile {
     )
     private Set<Instrument> instruments;
 
-    public Image getImage() {
-        return image;
+    public Image getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setProfilePicture(Image image) {
+        this.profilePicture = image;
     }
 
     @ManyToMany
