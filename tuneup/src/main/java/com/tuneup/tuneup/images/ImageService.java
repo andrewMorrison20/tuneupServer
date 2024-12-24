@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 @Service
@@ -23,8 +24,14 @@ public class ImageService {
     private final ImageRepository imageRepository;
 
     public ImageService(ImageRepository imageRepository) throws IOException {
-        this.storage  = StorageOptions.newBuilder()
-                .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream("tuneup/src/main/resources/tuneup-cloud-key.json")))
+        // Load the file from the classpath
+        InputStream credentialsStream = getClass().getClassLoader().getResourceAsStream("tuneup-cloud-key.json");
+        if (credentialsStream == null) {
+            throw new FileNotFoundException("Service account key file not found in classpath: tuneup-cloud-key.json");
+        }
+
+        this.storage = StorageOptions.newBuilder()
+                .setCredentials(ServiceAccountCredentials.fromStream(credentialsStream))
                 .build()
                 .getService();
         this.imageRepository = imageRepository;

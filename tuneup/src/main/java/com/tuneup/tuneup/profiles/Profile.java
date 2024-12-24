@@ -38,6 +38,14 @@ public class Profile {
     )
     private Set<Instrument> instruments;
 
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
     @ManyToMany
     @JoinTable(
             name = "profile_price",
