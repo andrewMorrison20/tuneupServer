@@ -3,6 +3,7 @@ package com.tuneup.tuneup.junit.services;
 import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.Instruments.InstrumentDto;
 import com.tuneup.tuneup.genres.*;
+import com.tuneup.tuneup.profiles.Profile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,9 +12,11 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -71,7 +74,7 @@ public class GenreServiceTests {
     }
 
     @Test
-    void createInstrument_shouldValidateAndSaveInstrument() {
+    void createGenreSavesAndReturnsGenreDto() {
         GenreDto genreDto = new GenreDto();
         Genre mockGenre = new Genre();
 
@@ -87,12 +90,28 @@ public class GenreServiceTests {
 
         GenreDto result = genreService.createGenre(inputDto);
 
-        //verify(GenreValidator).validateInstrumentDto(inputDto);
         verify(genreMapper).toGenre(inputDto);
         verify(genreRepo).save(mockGenre);
         verify(genreMapper).toGenreDto(savedGenre);
 
         assertNotNull(result);
         assertEquals(expectedDto, result);
+    }
+
+    @Test
+    void getProfilesForGenreReturnsDtoSet() {
+
+        Profile profile1 = new Profile();
+        Profile profile2 = new Profile();
+        Genre genre = new Genre();
+
+        genre.setProfiles(Set.of(profile1, profile2));
+
+        when(genreRepo.findById(any())).thenReturn(Optional.of(genre));
+        Set<Profile> result = genreService.getProfilesForGenre(1L);
+
+        assert(result.size()==2);
+        assertTrue(result.contains(profile1));
+        assertTrue(result.contains(profile2));
     }
 }
