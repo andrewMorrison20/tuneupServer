@@ -85,6 +85,7 @@ public class GenreServiceTests {
 
         when(genreMapper.toGenre(inputDto)).thenReturn(mockGenre);
         when(genreRepo.save(mockGenre)).thenReturn(savedGenre);
+        when(genreRepo.existsById(any())).thenReturn(false);
         when(genreMapper.toGenreDto(savedGenre)).thenReturn(expectedDto);
 
 
