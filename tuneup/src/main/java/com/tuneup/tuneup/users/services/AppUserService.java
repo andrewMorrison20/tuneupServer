@@ -1,9 +1,7 @@
 package com.tuneup.tuneup.users.services;
 
-import com.tuneup.tuneup.address.Address;
 import com.tuneup.tuneup.address.AddressDto;
 import com.tuneup.tuneup.address.AddressService;
-import com.tuneup.tuneup.users.Operation;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
