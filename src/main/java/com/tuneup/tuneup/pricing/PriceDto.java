@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 public class PriceDto {
     private long id;
     private String period;
+    private boolean standardPricing;
 
     public long getId() {
         return id;
@@ -13,6 +14,14 @@ public class PriceDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isStandardPricing() {
+        return standardPricing;
+    }
+
+    public void setStandardPricing(boolean standardPricing) {
+        this.standardPricing = standardPricing;
     }
 
     private Double rate;

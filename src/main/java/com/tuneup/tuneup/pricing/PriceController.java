@@ -27,6 +27,12 @@ public class PriceController {
         return ResponseEntity.ok(priceDtos);
     }
 
+    @GetMapping("/standardPricing")
+    public ResponseEntity<Set<PriceDto>> getStandardPrices() {
+        Set<PriceDto> priceDtos = priceService.getStandardPrices();
+        return ResponseEntity.ok(priceDtos);
+    }
+
   @GetMapping("/{id}")
     public ResponseEntity<PriceDto> getPriceById(@PathVariable Long id) {
         PriceDto price = priceService.getById(id);

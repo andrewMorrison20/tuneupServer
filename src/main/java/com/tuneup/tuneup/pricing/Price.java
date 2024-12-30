@@ -18,6 +18,20 @@ public class Price {
 
     private String description;
 
+    public boolean isStandardPricing() {
+        return standardPricing;
+    }
+
+    public void setStandardPricing(boolean standardPricing) {
+        standardPricing = standardPricing;
+    }
+
+    public void setProfiles(Set<Profile> profiles) {
+        this.profiles = profiles;
+    }
+
+    private boolean standardPricing;
+
     @ManyToMany(mappedBy = "prices")
     private Set<Profile> profiles = new HashSet<>();
 

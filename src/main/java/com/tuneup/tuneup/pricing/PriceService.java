@@ -35,6 +35,13 @@ public class PriceService {
                 .map(priceMapper::toPriceDto)
                 .collect(Collectors.toSet());
     }
+
+    public Set<PriceDto> getStandardPrices() {
+        Set<Price> allPrices = priceRepository.findByStandardPricingTrue();
+        return allPrices.stream()
+                .map(priceMapper::toPriceDto)
+                .collect(Collectors.toSet());
+    }
     public Remapper getPriceById(Long id) {
         return null;
     }
