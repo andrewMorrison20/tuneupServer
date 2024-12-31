@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.profiles.repositories;
 
+import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
 import jakarta.persistence.criteria.Join;
@@ -20,11 +21,12 @@ public class ProfileSpecification {
                 predicates.add(builder.equal(root.get("profileType"), criteria.getProfileType()));
             }
 
-            if (criteria.getCountry() != null) {
-                predicates.add(builder.equal(root.get("country"), criteria.getCountry()));
+            if (criteria.getGenre() != null) {
+                Join<Profile, Genre> genreJoin = root.join("genres");
+                predicates.add(genreJoin.get("id").in(criteria.getGenre()));
             }
 
-            if (criteria.getInstruments() != null && !criteria.getInstruments().isEmpty()) {
+            if (criteria.getInstruments() != null) {
                 Join<Profile, Instrument> instrumentJoin = root.join("instruments");
                 predicates.add(instrumentJoin.get("id").in(criteria.getInstruments()));
             }

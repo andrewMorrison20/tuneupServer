@@ -1,12 +1,11 @@
 package com.tuneup.tuneup.profiles.dtos;
 
-import java.util.Set;
-
 public class ProfileSearchCriteria {
-    private String profileType; // Tutor type (e.g., Tutor, Student, etc.)
-    private String country;     // Country name
+    private String profileType;
+    private String country;
 
     public String getProfileType() {
+
         return profileType;
     }
 
@@ -14,7 +13,7 @@ public class ProfileSearchCriteria {
         this.profileType = profileType;
     }
 
-    public String getCountry() {
+    public String getCountry(){
         return country;
     }
 
@@ -22,12 +21,12 @@ public class ProfileSearchCriteria {
         this.country = country;
     }
 
-    public Set<Long> getInstruments() {
-        return instruments;
+    public Long getInstruments() {
+        return instrument;
     }
 
-    public void setInstruments(Set<Long> instruments) {
-        this.instruments = instruments;
+    public void setInstruments(Long instruments) {
+        this.instrument = instruments;
     }
 
     public String getKeyword() {
@@ -38,6 +37,16 @@ public class ProfileSearchCriteria {
         this.keyword = keyword;
     }
 
-    private Set<Long> instruments; // List of instrument IDs
+    private Long instrument;
+    private Long genre;
+
+    public Long getGenre() {
+        return genre;
+    }
+
+    public void setGenres(Long genre) {
+        this.genre = genre;
+    }
+
     private String keyword;
 }
