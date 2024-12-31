@@ -4,7 +4,9 @@ import com.tuneup.tuneup.Instruments.InstrumentMapper;
 import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.images.ImageService;
 import com.tuneup.tuneup.pricing.Price;
+import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.pricing.PriceMapper;
+import com.tuneup.tuneup.pricing.PriceValidator;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,8 +39,9 @@ public class ProfileService {
     private final RegionMapper regionMapper;
     private final InstrumentMapper instrumentMapper;
     private final ImageService imageService;
+    private final PriceValidator priceValidator;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator) {
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
@@ -47,6 +51,7 @@ public class ProfileService {
         this.regionMapper = regionMapper;
         this.instrumentMapper = instrumentMapper;
         this.imageService = imageService;
+        this.priceValidator = priceValidator;
     }
 
 
@@ -145,6 +150,15 @@ public class ProfileService {
     public Page<ProfileDto> searchProfiles(ProfileSearchCriteria criteria, Pageable page) {
         return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria),page)
                 .map(profileMapper::toProfileDto);
+    }
+
+    public Integer updatePricing(Set<PriceDto> priceDtoSet, Long profileId) {
+        //profileValidator.existsByUser(profileId);
+        Set<Price> profilePricing = priceValidator.validateOrCreatePricing(priceDtoSet);
+        Profile profile = profileValidator.fetchById(profileId);
+        profile.setPrices(profilePricing);
+        profileRepository.save(profile);
+        return profilePricing.size();
     }
 }
 

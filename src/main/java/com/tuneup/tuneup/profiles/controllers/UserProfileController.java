@@ -56,10 +56,11 @@ public class UserProfileController {
         return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
     }
 
-    /*@PutMapping("/update/pricing/{id}")
-    public ResponseEntity<ProfileDto> updatePricing(@RequestBody Set<PriceDto> priceDtoSet) {
-        updatedProfile
-    }*/
+    @PutMapping("/update/pricing/{profileId}")
+    public ResponseEntity<Integer> updatePricing(@RequestBody Set<PriceDto> priceDtoSet, @PathVariable Long profileId) {
+        Integer rowsEffected = profileService.updatePricing(priceDtoSet,profileId);
+        return ResponseEntity.ok(rowsEffected);
+    }
 
     @PostMapping("/search")
     public Page<ProfileDto> findBySpec(@RequestBody(required = false) ProfileSearchCriteria criteria, Pageable pageable) {

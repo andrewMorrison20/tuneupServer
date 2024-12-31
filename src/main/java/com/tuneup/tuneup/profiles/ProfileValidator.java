@@ -66,4 +66,10 @@ public class ProfileValidator {
         };
 
     }
+
+    public Profile fetchById(Long profileId) {
+        return profileRepository.findById(profileId)
+                .orElseThrow(() -> new ValidationException("Profile with id " + profileId + " does not exist"));
+    }
+
 }
