@@ -152,8 +152,8 @@ public class ProfileService {
                 .map(profileMapper::toProfileDto);
     }
 
+    @Transactional
     public Integer updatePricing(Set<PriceDto> priceDtoSet, Long profileId) {
-        //profileValidator.existsByUser(profileId);
         Set<Price> profilePricing = priceValidator.validateOrCreatePricing(priceDtoSet);
         Profile profile = profileValidator.fetchById(profileId);
         profile.setPrices(profilePricing);

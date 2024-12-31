@@ -11,6 +11,8 @@
 
         Set<Price> findByStandardPricingTrue();
 
+        Optional<Price> findByRateAndDescription(Double rate, String description);
+
         Set<Price> findByStandardPricingFalse();
 
         Optional<Price> findByPeriodAndRate(Period period, Double rate);
