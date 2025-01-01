@@ -2,6 +2,8 @@ package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.InstrumentMapper;
 import com.tuneup.tuneup.genres.GenreMapper;
+import com.tuneup.tuneup.images.Image;
+import com.tuneup.tuneup.images.ImageRepository;
 import com.tuneup.tuneup.images.ImageService;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceDto;
@@ -14,6 +16,7 @@ import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
 import com.tuneup.tuneup.regions.RegionDto;
 import com.tuneup.tuneup.regions.RegionMapper;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.springframework.data.domain.Page;
@@ -40,8 +43,9 @@ public class ProfileService {
     private final InstrumentMapper instrumentMapper;
     private final ImageService imageService;
     private final PriceValidator priceValidator;
+    private final ImageRepository imageRepository;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository) {
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
@@ -52,6 +56,7 @@ public class ProfileService {
         this.instrumentMapper = instrumentMapper;
         this.imageService = imageService;
         this.priceValidator = priceValidator;
+        this.imageRepository = imageRepository;
     }
 
 
@@ -103,7 +108,8 @@ public class ProfileService {
         //Need to think about fetching from db as oppossed to front end always sending names with sub dtos.
 
         if(profileDto.getProfilePicture()!=null){
-            //imageService.uploadFile()
+            Image profileImage = imageRepository.findById(profileDto.getProfilePicture().getId()).orElseThrow();
+            existingProfile.setProfilePicture(profileImage);
         }
         if(profileDto.getInstruments() != null) {
             existingProfile.setInstruments(profileDto.getInstruments()
@@ -132,6 +138,9 @@ public class ProfileService {
             existingProfile.setProfileType(profileDto.getProfileType());
         }
 
+        if(profileDto.getDisplayName()!=null){
+            existingProfile.setDisplayName(profileDto.getDisplayName());
+        }
         if(profileDto.getBio()!=null){
             existingProfile.setBio(profileDto.getBio());
         }

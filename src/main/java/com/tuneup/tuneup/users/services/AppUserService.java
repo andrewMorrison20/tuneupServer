@@ -3,6 +3,11 @@ package com.tuneup.tuneup.users.services;
 import com.tuneup.tuneup.address.Address;
 import com.tuneup.tuneup.address.AddressDto;
 import com.tuneup.tuneup.address.AddressService;
+import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.profiles.ProfileType;
+import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.users.Operation;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
@@ -29,14 +34,16 @@ public class AppUserService {
     private final PasswordEncoder passwordEncoder;
     private final AddressService addressService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final ProfileRepository profileRepository;
 
-    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator, PasswordEncoder passwordEncoder, AddressService addressService, PasswordResetTokenRepository passwordResetTokenRepository) {
+    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator, PasswordEncoder passwordEncoder, AddressService addressService, PasswordResetTokenRepository passwordResetTokenRepository, ProfileRepository profileRepository) {
         this.appUserRepository = appUserRepository;
         this.appUserMapper = appUserMapper;
         this.appUserValidator = appUserValidator;
         this.passwordEncoder = passwordEncoder;
         this.addressService = addressService;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.profileRepository = profileRepository;
     }
 
     @Transactional
@@ -44,7 +51,12 @@ public class AppUserService {
         appUserValidator.validateAppUserCreation(appUserDto);
         AppUser appUser = appUserMapper.toAppUser(appUserDto);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        appUserRepository.save(appUser);
+        appUser = appUserRepository.save(appUser);
+        Profile defaultProfile = new Profile();
+        defaultProfile.setAppUser(appUser);
+        defaultProfile.setDisplayName(appUser.getEmail());
+        defaultProfile.setProfileType(ProfileType.TUTOR);
+        profileRepository.save(defaultProfile);
         return appUserMapper.toAppUserDto(appUser);
     }
 
@@ -55,7 +67,7 @@ public class AppUserService {
                 .toList();
     }
 
-    public AppUser findById(Long appUserId) {
+    public AppUser  findById(Long appUserId) {
         return appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new RuntimeException("AppUser with ID " + appUserId + " not found"));
     }

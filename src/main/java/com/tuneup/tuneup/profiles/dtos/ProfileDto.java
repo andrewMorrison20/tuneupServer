@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.profiles.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuneup.tuneup.Instruments.InstrumentDto;
 import com.tuneup.tuneup.genres.GenreDto;
 import com.tuneup.tuneup.images.ImageDto;
@@ -20,8 +21,11 @@ public class ProfileDto {
     private ProfileType profileType;
     private Set<InstrumentDto> instruments;
     private long appUserId;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Set<PriceDto> prices;
     private Set<GenreDto> genres;
+
     private ImageDto profilePicture;
 
     public ImageDto getProfilePicture() {

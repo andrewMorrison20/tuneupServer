@@ -23,10 +23,7 @@ public class AppUserValidator {
     }
 
     public void checkUsername(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new ValidationException("Username cannot be null or empty");
-        }
-        if (appUserRepository.existsByUsername(username)) {
+        if (username!=null && appUserRepository.existsByUsername(username)) {
             throw new ValidationException("Username already exists");
         }
     }
