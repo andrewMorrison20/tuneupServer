@@ -9,7 +9,8 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // Primary name (e.g., "London")
+    @Column(unique = true, nullable = false)
+    private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_region_id")

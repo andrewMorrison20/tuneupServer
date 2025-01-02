@@ -31,6 +31,10 @@ public class RegionService {
         // Step 2: Fetch regions dynamically from the API
         List<Region> fetchedRegions = fetchRegionsFromApi(query);
 
+        List<Region> newRegions = fetchedRegions.stream()
+                .filter(region -> !regionRepository.existsByName(region.getName()))
+                .collect(Collectors.toList());
+
         // Step 3: Save fetched regions to the database
         regionRepository.saveAll(fetchedRegions);
 
