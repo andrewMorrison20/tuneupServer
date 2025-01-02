@@ -16,7 +16,7 @@ import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
 import com.tuneup.tuneup.regions.RegionDto;
 import com.tuneup.tuneup.regions.RegionMapper;
-import com.tuneup.tuneup.users.exceptions.ValidationException;
+import com.tuneup.tuneup.regions.RegionRepository;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.springframework.data.domain.Page;
@@ -24,8 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,8 +42,9 @@ public class ProfileService {
     private final ImageService imageService;
     private final PriceValidator priceValidator;
     private final ImageRepository imageRepository;
+    private final RegionRepository regionRepository;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository, RegionRepository regionRepository) {
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
@@ -57,6 +56,7 @@ public class ProfileService {
         this.imageService = imageService;
         this.priceValidator = priceValidator;
         this.imageRepository = imageRepository;
+        this.regionRepository = regionRepository;
     }
 
 
@@ -157,7 +157,7 @@ public class ProfileService {
     }
 
     public Page<ProfileDto> searchProfiles(ProfileSearchCriteria criteria, Pageable page) {
-        return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria),page)
+        return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria, regionRepository),page)
                 .map(profileMapper::toProfileDto);
     }
 

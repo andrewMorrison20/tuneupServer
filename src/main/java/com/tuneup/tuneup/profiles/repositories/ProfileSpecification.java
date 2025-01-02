@@ -3,6 +3,7 @@ package com.tuneup.tuneup.profiles.repositories;
 import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
+import com.tuneup.tuneup.regions.RegionRepository;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ProfileSpecification {
 
-    public static Specification<Profile> bySearchCriteria(ProfileSearchCriteria criteria) {
+    public static Specification<Profile> bySearchCriteria(ProfileSearchCriteria criteria, RegionRepository regionRepository) {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -30,7 +31,16 @@ public class ProfileSpecification {
                 Join<Profile, Instrument> instrumentJoin = root.join("instruments");
                 predicates.add(instrumentJoin.get("id").in(criteria.getInstruments()));
             }
+            if (criteria.getRegionId() != null) {
+                // Fetch region and its child regions
 
+               /* List<Long> regionIds = regionRepository.findRegionAndChildren(criteria.getRegionId())
+                        .stream()
+                        .map(Region::getId)
+                        .collect(Collectors.toList());
+
+                predicates.add(root.get("region").get("id").in(regionIds));*/
+            }
             if (criteria.getKeyword() != null) {
                 String keywordPattern = "%" + criteria.getKeyword().toLowerCase() + "%";
                 predicates.add(builder.or(

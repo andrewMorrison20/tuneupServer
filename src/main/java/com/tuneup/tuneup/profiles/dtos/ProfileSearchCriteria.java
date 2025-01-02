@@ -3,10 +3,19 @@ package com.tuneup.tuneup.profiles.dtos;
 public class ProfileSearchCriteria {
     private String profileType;
     private String country;
+    private Long regionId;
 
     public String getProfileType() {
 
         return profileType;
+    }
+
+    public Long getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Long regionId) {
+        this.regionId = regionId;
     }
 
     public void setProfileType(String profileType) {
