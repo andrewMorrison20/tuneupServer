@@ -21,6 +21,15 @@ public class ProfileDto {
     private ProfileType profileType;
     private Set<InstrumentDto> instruments;
     private long appUserId;
+    private Double averageRating;
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Set<PriceDto> prices;

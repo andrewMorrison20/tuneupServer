@@ -7,4 +7,5 @@ import java.util.Set;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
     Set<Review> findAllByProfileId(long profileId);
+
 }

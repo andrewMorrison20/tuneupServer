@@ -17,10 +17,20 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String displayName;
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
     private String bio;
     private Boolean onlineLessons;
     @Enumerated(EnumType.STRING)
     private ProfileType profileType;
+    private double averageRating;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
