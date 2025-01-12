@@ -1,12 +1,9 @@
 package com.tuneup.tuneup.Instruments;
 
 import com.tuneup.tuneup.profiles.Profile;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import jakarta.persistence.*;
+
 import java.util.Set;
 
 @Entity
@@ -22,7 +19,10 @@ public class Instrument {
     @ManyToMany(mappedBy = "instruments")
     private Set<Profile> profiles;
 
-    // Constructors, getters, and setters
+    @OneToMany(mappedBy = "instrument")
+    private Set<ProfileInstrumentQualification> userProfileInstrumentQualifications;
+
+
     public Instrument() {}
 
     public void setId(Long id) {

@@ -4,6 +4,7 @@ import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.images.Image;
 import com.tuneup.tuneup.pricing.Price;
+import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.regions.Region;
 import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;
@@ -75,6 +76,9 @@ public class Profile {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tuition_region_id")
     private Region tuitionRegion;
+
+    @OneToMany(mappedBy = "profile")
+    private Set<ProfileInstrumentQualification> profileInstrumentQualifications;
 
     public Set<Genre> getGenres() {
         return this.genres;
