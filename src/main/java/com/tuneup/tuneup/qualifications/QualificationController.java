@@ -23,12 +23,6 @@ public class QualificationController {
         return qualificationService.getAllQualifications();
     }
 
-    // Fetch qualifications by instrument name
-    @GetMapping("/by-instrument")
-    public List<Qualification> getQualificationsByInstrument(@RequestParam String instrumentName) {
-        return qualificationService.getQualificationsByInstrument(instrumentName);
-    }
-
     // Fetch a single qualification by ID
     @GetMapping("/{id}")
     public Optional<Qualification> getQualificationById(@PathVariable Long id) {
