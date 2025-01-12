@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import com.tuneup.tuneup.Instruments.Instrument;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ProfileSpecification {
@@ -22,6 +23,12 @@ public class ProfileSpecification {
                 predicates.add(builder.equal(root.get("profileType"), criteria.getProfileType()));
             }
 
+
+            if (criteria.getRating() != null) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("averageRating"), criteria.getRating()));
+            }
+
+
             if (criteria.getGenre() != null) {
                 Join<Profile, Genre> genreJoin = root.join("genres");
                 predicates.add(genreJoin.get("id").in(criteria.getGenre()));
@@ -32,14 +39,8 @@ public class ProfileSpecification {
                 predicates.add(instrumentJoin.get("id").in(criteria.getInstruments()));
             }
             if (criteria.getRegionId() != null) {
-                // Fetch region and its child regions
-
-               /* List<Long> regionIds = regionRepository.findRegionAndChildren(criteria.getRegionId())
-                        .stream()
-                        .map(Region::getId)
-                        .collect(Collectors.toList());
-
-                predicates.add(root.get("region").get("id").in(regionIds));*/
+                List<Long> regionIds = regionRepository.findRegionAndChildrenIds(criteria.getRegionId());
+                predicates.add(root.get("tuitionRegion").get("id").in(regionIds));
             }
             if (criteria.getKeyword() != null) {
                 String keywordPattern = "%" + criteria.getKeyword().toLowerCase() + "%";

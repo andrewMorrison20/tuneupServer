@@ -1,9 +1,30 @@
 package com.tuneup.tuneup.profiles.dtos;
 
+import java.util.List;
+import java.util.Set;
+
 public class ProfileSearchCriteria {
     private String profileType;
     private String country;
     private Long regionId;
+    private Long rating;
+    private List<Double> priceRange;
+
+    public List<Double> getPriceRange() {
+        return priceRange;
+    }
+
+    public void setPriceRange(List<Double> priceRange) {
+        this.priceRange = priceRange;
+    }
+
+    public Long getRating() {
+        return rating;
+    }
+
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
 
     public String getProfileType() {
 
@@ -30,11 +51,11 @@ public class ProfileSearchCriteria {
         this.country = country;
     }
 
-    public Long getInstruments() {
+    public Set<Long> getInstruments() {
         return instrument;
     }
 
-    public void setInstruments(Long instruments) {
+    public void setInstruments(Set<Long> instruments) {
         this.instrument = instruments;
     }
 
@@ -46,14 +67,14 @@ public class ProfileSearchCriteria {
         this.keyword = keyword;
     }
 
-    private Long instrument;
-    private Long genre;
+    private Set<Long> instrument;
+    private Set<Long> genre;
 
-    public Long getGenre() {
+    public Set<Long> getGenre() {
         return genre;
     }
 
-    public void setGenres(Long genre) {
+    public void setGenres(Set<Long> genre) {
         this.genre = genre;
     }
 
