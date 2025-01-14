@@ -9,9 +9,18 @@ public class ProfileSearchCriteria {
     private Long regionId;
     private Long rating;
     private List<Double> priceRange;
+    private Set<Long> qualifications;
 
     public List<Double> getPriceRange() {
         return priceRange;
+    }
+
+    public Set<Long> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(Set<Long> qualificationIds) {
+        this.qualifications = qualificationIds;
     }
 
     public void setPriceRange(List<Double> priceRange) {

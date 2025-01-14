@@ -4,6 +4,7 @@ import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
+import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.regions.RegionRepository;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
@@ -27,6 +28,11 @@ public class ProfileSpecification {
                 predicates.add(builder.equal(root.get("profileType"), criteria.getProfileType()));
             }
 
+            if (criteria.getQualifications() != null && !criteria.getQualifications().isEmpty()) {
+                // Join Profile with ProfileInstrumentQualification
+                Join<Profile, ProfileInstrumentQualification> qualificationJoin = root.join("profileInstrumentQualifications");
+                predicates.add(qualificationJoin.get("qualification").get("id").in(criteria.getQualifications()));
+            }
 
             if (criteria.getRating() != null && criteria.getRating() > 0) {
                 predicates.add(builder.greaterThanOrEqualTo(root.get("averageRating"), criteria.getRating()));
