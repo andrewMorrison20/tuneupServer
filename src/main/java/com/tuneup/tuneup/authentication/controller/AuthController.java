@@ -2,16 +2,15 @@ package com.tuneup.tuneup.authentication.controller;
 
 
 
-import com.nimbusds.jose.JOSEException;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.LoginRequestDto;
 import com.tuneup.tuneup.users.dtos.LoginResponseDto;
-import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserService;
 import com.tuneup.tuneup.utils.Jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,8 +54,14 @@ public class AuthController {
         AppUserDto userDetails = appUserService.getUserByEmail(loginRequest.getEmail());
 
         // Generate JWT token
-        String token = jwtUtil.generateToken(loginRequest.getEmail());
+        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getId());
         return new LoginResponseDto(token,userDetails);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "").trim();
+        jwtUtil.blacklistToken(token);
+        return ResponseEntity.ok("Logged out successfully.");
+    }
 }

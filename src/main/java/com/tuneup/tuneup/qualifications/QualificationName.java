@@ -1,5 +1,7 @@
 package com.tuneup.tuneup.qualifications;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum QualificationName {
     GRADE_1,
     GRADE_2,
@@ -12,6 +14,7 @@ public enum QualificationName {
     DIPLOMA,
     CERTIFICATE;
 
+    @JsonValue
     @Override
     public String toString() {
         return switch (this) {
