@@ -1,5 +1,8 @@
 package com.tuneup.tuneup.regions;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RegionDto {
 
     private Long id;

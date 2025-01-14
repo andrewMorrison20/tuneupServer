@@ -1,50 +1,87 @@
 package com.tuneup.tuneup.qualifications;
 
-import org.springframework.stereotype.Service;
+import com.tuneup.tuneup.common.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class QualificationService {
 
     private final QualificationRepository qualificationRepository;
+    private final QualificationMapper qualificationMapper;
+    private final QualificationValidator qualificationValidator;
 
     @Autowired
-    public QualificationService(QualificationRepository qualificationRepository) {
+    public QualificationService(QualificationRepository qualificationRepository, QualificationMapper qualificationMapper, QualificationValidator qualificationValidator) {
         this.qualificationRepository = qualificationRepository;
+        this.qualificationMapper = qualificationMapper;
+        this.qualificationValidator = qualificationValidator;
     }
 
-    // Fetch all qualifications
-    public List<Qualification> getAllQualifications() {
-        return qualificationRepository.findAll();
+
+    public Set<QualificationDto> getAllQualifications() {
+        return qualificationRepository.findAll().stream().
+        map(qualificationMapper::toQualificationDto)
+                .collect(Collectors.toSet());
     }
 
-    // Fetch a single qualification by ID
-    public Optional<Qualification> getQualificationById(Long id) {
-        return qualificationRepository.findById(id);
+
+    public QualificationDto getQualificationById(Long id) {
+        // Validate and fetch the qualification
+        Qualification qualification = qualificationValidator.validateAndFetchById(id);
+
+        // Convert to DTO and return
+        return qualificationMapper.toQualificationDto(qualification);
     }
 
-    // Add a new qualification
-    public Qualification addQualification(Qualification qualification) {
-        return qualificationRepository.save(qualification);
+    public QualificationDto addQualification(QualificationDto qualificationDto) {
+        qualificationValidator.validateQualification(OperationType.CREATE,qualificationDto);
+        Qualification qualification = qualificationMapper.toQualification(qualificationDto);
+        qualification =  qualificationRepository.save(qualification);
+        return qualificationMapper.toQualificationDto(qualification);
     }
 
-    // Update an existing qualification
-    public Qualification updateQualification(Long id, Qualification updatedQualification) {
-        return qualificationRepository.findById(id).map(qualification -> {
-            qualification.setName(updatedQualification.getName());
-            return qualificationRepository.save(qualification);
-        }).orElseThrow(() -> new RuntimeException("Qualification not found with id " + id));
+    @Transactional
+    public List<QualificationDto> batchCreateQualifications(List<QualificationDto> qualificationDtos) {
+        // Validate and map DTOs to entities
+        List<Qualification> qualifications = qualificationDtos.stream()
+                .map(dto -> {
+                    qualificationValidator.validateQualification(OperationType.CREATE, dto);
+                    return qualificationMapper.toQualification(dto);
+                })
+                .collect(Collectors.toList());
+
+        // Save all entities in batch
+        List<Qualification> savedQualifications = qualificationRepository.saveAll(qualifications);
+
+        // Map saved entities to DTOs and return
+        return savedQualifications.stream()
+                .map(qualificationMapper::toQualificationDto)
+                .collect(Collectors.toList());
+    }
+
+    public QualificationDto updateQualification(Long id, QualificationDto updatedQualificationDto) {
+        // Validate the input for update and fetch the existing qualification
+        Qualification existingQualification = qualificationValidator.validateQualification(OperationType.UPDATE, updatedQualificationDto);
+
+        // Update the entity and save
+        existingQualification.setName(updatedQualificationDto.getName());
+        Qualification updatedQualification = qualificationRepository.save(existingQualification);
+
+        // Convert to DTO and return
+        return qualificationMapper.toQualificationDto(updatedQualification);
     }
 
     // Delete a qualification
     public void deleteQualification(Long id) {
-        if (qualificationRepository.existsById(id)) {
-            qualificationRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Qualification not found with id " + id);
+        Qualification qualification = qualificationValidator.validateAndFetchById(id);
+        qualificationRepository.delete(qualification);
+        qualificationValidator.validateDeletion(id);
         }
     }
-}
+
