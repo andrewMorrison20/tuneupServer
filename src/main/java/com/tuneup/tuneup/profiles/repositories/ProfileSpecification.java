@@ -28,7 +28,7 @@ public class ProfileSpecification {
             }
 
 
-            if (criteria.getRating() != null) {
+            if (criteria.getRating() != null && criteria.getRating() > 0) {
                 predicates.add(builder.greaterThanOrEqualTo(root.get("averageRating"), criteria.getRating()));
             }
 
