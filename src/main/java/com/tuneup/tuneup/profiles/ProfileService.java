@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.InstrumentMapper;
+import com.tuneup.tuneup.Instruments.InstrumentService;
 import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.images.Image;
 import com.tuneup.tuneup.images.ImageRepository;
@@ -14,6 +15,10 @@ import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
 import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
+import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
+import com.tuneup.tuneup.qualifications.mappers.QualificationMapper;
+import com.tuneup.tuneup.qualifications.services.QualificationService;
 import com.tuneup.tuneup.regions.RegionDto;
 import com.tuneup.tuneup.regions.RegionMapper;
 import com.tuneup.tuneup.regions.RegionRepository;
@@ -43,8 +48,16 @@ public class ProfileService {
     private final PriceValidator priceValidator;
     private final ImageRepository imageRepository;
     private final RegionRepository regionRepository;
+    private final InstrumentService instrumentService;
+    private final QualificationMapper qualificationMapper;
+    private final QualificationService qualificationService;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator, AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper, InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository, RegionRepository regionRepository) {
+    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator,
+                          AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper,
+                          InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository,
+                          RegionRepository regionRepository, InstrumentService instrumentService, QualificationMapper qualificationMapper
+                          ,QualificationService qualificationService) {
+
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
         this.profileRepository = profileRepository;
@@ -57,6 +70,9 @@ public class ProfileService {
         this.priceValidator = priceValidator;
         this.imageRepository = imageRepository;
         this.regionRepository = regionRepository;
+        this.instrumentService = instrumentService;
+        this.qualificationMapper = qualificationMapper;
+        this.qualificationService = qualificationService;
     }
 
 
@@ -168,6 +184,27 @@ public class ProfileService {
         profile.setPrices(profilePricing);
         profileRepository.save(profile);
         return profilePricing.size();
+    }
+
+    @Transactional
+    public Integer updateProfileInstrumentQualifications(Long profileId, Set<ProfileInstrumentQualificationDto> qualificationsDto) {
+        Profile profile = profileValidator.fetchById(profileId);
+
+        Set<ProfileInstrumentQualification> qualifications = qualificationsDto.stream()
+                .map(dto -> createProfileInstrumentQualification(profile, dto))
+                .collect(Collectors.toSet());
+
+        profile.setProfileInstrumentQualifications(qualifications);
+        profileRepository.save(profile);
+        return profile.getProfileInstrumentQualifications().size();
+    }
+
+    private ProfileInstrumentQualification createProfileInstrumentQualification(Profile profile, ProfileInstrumentQualificationDto dto) {
+        ProfileInstrumentQualification qualification = new ProfileInstrumentQualification();
+        qualification.setProfile(profile);
+        qualification.setInstrument(instrumentService.getInstrumentByIdInternal(dto.getInstrumentId()));
+        qualification.setQualification(qualificationService.getQualificationByIdInternal(dto.getQualificationId()));
+        return qualification;
     }
 }
 

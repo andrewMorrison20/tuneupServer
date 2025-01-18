@@ -1,6 +1,10 @@
-package com.tuneup.tuneup.qualifications;
+package com.tuneup.tuneup.qualifications.services;
 
 import com.tuneup.tuneup.common.OperationType;
+import com.tuneup.tuneup.qualifications.*;
+import com.tuneup.tuneup.qualifications.dtos.QualificationDto;
+import com.tuneup.tuneup.qualifications.mappers.QualificationMapper;
+import com.tuneup.tuneup.qualifications.repositories.QualificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +34,11 @@ public class QualificationService {
                 .collect(Collectors.toSet());
     }
 
-
+    /**
+     * should be used for repsonses and at controller layer
+     * @param id
+     * @return qualificationDto derived from db entity
+     */
     public QualificationDto getQualificationById(Long id) {
         // Validate and fetch the qualification
         Qualification qualification = qualificationValidator.validateAndFetchById(id);
@@ -83,5 +91,14 @@ public class QualificationService {
         qualificationRepository.delete(qualification);
         qualificationValidator.validateDeletion(id);
         }
+
+    /**
+     * For internal use only, should not be used at controller layer or for api repsonses
+     * @param qualificationId
+     * @return qualification entity stored in the db with given ID
+     */
+    public Qualification getQualificationByIdInternal(Long qualificationId) {
+        return qualificationValidator.validateAndFetchById(qualificationId);
     }
+}
 

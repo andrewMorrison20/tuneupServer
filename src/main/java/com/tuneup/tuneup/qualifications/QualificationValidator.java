@@ -1,6 +1,8 @@
 package com.tuneup.tuneup.qualifications;
 
 import com.tuneup.tuneup.common.OperationType;
+import com.tuneup.tuneup.qualifications.dtos.QualificationDto;
+import com.tuneup.tuneup.qualifications.repositories.QualificationRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +77,7 @@ public class QualificationValidator {
         return false;
     }
 
-    protected Qualification validateAndFetchById(Long id) {
+    public Qualification validateAndFetchById(Long id) {
         if (id == null) {
             throw new ValidationException("Qualification ID cannot be null");
         }
@@ -84,7 +86,7 @@ public class QualificationValidator {
                 .orElseThrow(() -> new ValidationException("Qualification not found with id " + id));
     }
 
-    protected void validateDeletion(Long id){
+    public void validateDeletion(Long id){
         // Confirm deletion by checking existence
         if (qualificationRepository.existsById(id)) {
             throw new RuntimeException("Failed to delete qualification with id " + id);

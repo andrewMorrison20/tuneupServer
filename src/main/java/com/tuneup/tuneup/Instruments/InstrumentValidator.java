@@ -26,4 +26,10 @@ public class InstrumentValidator {
             throw new ValidationException("Instrument already exists");
         }
     }
+
+    protected Instrument fetchAndValidateById(Long id){
+            return instrumentRepository.findById(id)
+                    .orElseThrow(() -> new ValidationException("Instrument with the given ID not found"));
+        }
+
 }

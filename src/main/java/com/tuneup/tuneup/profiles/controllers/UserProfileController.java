@@ -6,6 +6,8 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
+import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -62,6 +64,12 @@ public class UserProfileController {
         return ResponseEntity.ok(rowsEffected);
     }
 
+    @PutMapping("/update/qualifications/{profileId}")
+    public ResponseEntity<Integer> updateQualifications(@RequestBody Set<ProfileInstrumentQualificationDto>
+                                                                    qualificationDtoSet, @PathVariable Long profileId){
+        Integer rowsEffected = profileService.updateProfileInstrumentQualifications(profileId,qualificationDtoSet);
+        return ResponseEntity.ok(rowsEffected);
+    }
     @PostMapping("/search")
     public Page<ProfileDto> findBySpec(@RequestBody(required = false) ProfileSearchCriteria criteria, Pageable pageable) {
         if (criteria == null) {

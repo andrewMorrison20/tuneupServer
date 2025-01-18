@@ -39,4 +39,23 @@ public class InstrumentService {
         Instrument createdInstrument = instrumentRepository.save(instrument);
         return instrumentMapper.toInstrumentDto(createdInstrument);
     }
+
+    /**
+     * Should be used for API repsonses and at the controller layer
+     * @param id
+     * @return instrumentDto relating to the stored entity
+     */
+    public InstrumentDto getInstrumentById(Long id){
+        Instrument instrument =  instrumentValidator.fetchAndValidateById(id);
+        return instrumentMapper.toInstrumentDto(instrument);
+    }
+
+    /**
+     * For intenal retrieval of instrument entites, should not be used in controllers or for API repsonses
+     * @param instrumentId
+     * @return instument entity from db
+     */
+    public Instrument getInstrumentByIdInternal(Long instrumentId) {
+        return instrumentValidator.fetchAndValidateById(instrumentId);
+    }
 }

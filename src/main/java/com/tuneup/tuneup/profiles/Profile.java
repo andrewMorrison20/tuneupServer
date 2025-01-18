@@ -14,6 +14,10 @@ import java.util.Set;
 @Entity
 public class Profile {
 
+    public Set<ProfileInstrumentQualification> getProfileInstrumentQualifications() {
+        return profileInstrumentQualifications;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -77,9 +81,19 @@ public class Profile {
     @JoinColumn(name = "tuition_region_id")
     private Region tuitionRegion;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProfileInstrumentQualification> profileInstrumentQualifications;
 
+    public void setProfileInstrumentQualifications(Set<ProfileInstrumentQualification> profileInstrumentQualifications) {
+        if (this.profileInstrumentQualifications != null) {
+            this.profileInstrumentQualifications.clear();  // Ensures orphan removal
+            if (profileInstrumentQualifications != null) {
+                this.profileInstrumentQualifications.addAll(profileInstrumentQualifications);
+            }
+        } else {
+            this.profileInstrumentQualifications = profileInstrumentQualifications;
+        }
+    }
     public Set<Genre> getGenres() {
         return this.genres;
     }
