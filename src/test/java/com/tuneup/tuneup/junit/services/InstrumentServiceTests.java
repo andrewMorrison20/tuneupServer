@@ -14,7 +14,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class InstrumentServiceTest {
+class InstrumentServiceTests {
 
     @Mock
     private InstrumentValidator instrumentValidator;

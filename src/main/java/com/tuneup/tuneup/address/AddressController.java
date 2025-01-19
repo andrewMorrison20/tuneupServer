@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * This api is for creating a users residential address, this is primarily for verification and billing details once integrated
+ * payments have been implemented. To add a users tuition region use the regions api
+ */
 @RestController
 @RequestMapping("/api/addresses")
 public class AddressController {
