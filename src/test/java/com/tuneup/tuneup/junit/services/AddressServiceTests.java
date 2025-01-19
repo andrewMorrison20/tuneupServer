@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AddressServiceTest {
+class AddressServiceTests {
 
     @Mock
     private AddressRepository addressRepository;
@@ -52,7 +52,7 @@ class AddressServiceTest {
     }
 
     @Test
-    void createAddress_ShouldReturnSavedAddressDto() {
+    void testsCreateAddressReturnsAddressDto() {
         when(addressMapper.toAddress(addressDto)).thenReturn(address);
         when(addressRepository.save(address)).thenReturn(address);
         when(addressMapper.toDto(address)).thenReturn(addressDto);
@@ -63,7 +63,7 @@ class AddressServiceTest {
     }
 
     @Test
-    void updateAddress_ShouldReturnUpdatedAddressDto() {
+    void testUpdateAddressReturnsAddressDto() {
         when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
         when(addressRepository.save(address)).thenReturn(address);
         when(addressMapper.toDto(address)).thenReturn(addressDto);
@@ -74,13 +74,13 @@ class AddressServiceTest {
     }
 
     @Test
-    void updateAddress_ShouldThrowExceptionIfAddressNotFound() {
+    void testUpdateAddressExpectsException() {
         when(addressRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> addressService.updateAddress(1L, addressDto));
     }
 
     @Test
-    void deleteAddress_ShouldDeleteIfExists() {
+    void testDeleteAddressSuccess() {
         when(addressRepository.existsById(1L)).thenReturn(true);
         doNothing().when(addressRepository).deleteById(1L);
 
@@ -89,13 +89,13 @@ class AddressServiceTest {
     }
 
     @Test
-    void deleteAddress_ShouldThrowExceptionIfAddressNotFound() {
+    void testDeleteAddressExpectsException() {
         when(addressRepository.existsById(1L)).thenReturn(false);
         assertThrows(RuntimeException.class, () -> addressService.deleteAddress(1L));
     }
 
     @Test
-    void getAddressById_ShouldReturnAddressDto() {
+    void testGetAddressByIdReturnsAddressDto() {
         when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
         when(addressMapper.toDto(address)).thenReturn(addressDto);
 
@@ -105,13 +105,13 @@ class AddressServiceTest {
     }
 
     @Test
-    void getAddressById_ShouldThrowExceptionIfNotFound() {
+    void testgetAddressByIdExpectsException() {
         when(addressRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> addressService.getAddressById(1L));
     }
 
     @Test
-    void getAllAddresses_ShouldReturnListOfAddressDtos() {
+    void testGetAllAddressesReturnsDtoSet() {
         List<Address> addresses = Arrays.asList(address);
         List<AddressDto> addressDtos = Arrays.asList(addressDto);
 
