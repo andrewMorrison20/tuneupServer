@@ -24,7 +24,7 @@ public class PriceService {
 
     @Transactional
     public PriceDto createPrice(PriceDto priceDto) {
-        //priceValidator.validatePriceDto(priceDto);
+        priceValidator.validatePriceDto(priceDto);
         Price persistedPrice = priceRepository.save(priceMapper.toPrice(priceDto));
         return priceMapper.toPriceDto(persistedPrice);
     }
@@ -42,20 +42,16 @@ public class PriceService {
                 .map(priceMapper::toPriceDto)
                 .collect(Collectors.toSet());
     }
-    public Remapper getPriceById(Long id) {
-        return null;
-    }
 
-    public Price savePrice(Price updatedPrice) {
-        return null;
-    }
 
     public boolean deletePrice(Long id) {
-        return false;
+        Price price = priceValidator.fetchAndValidateById(id);
+        priceRepository.delete(price);
+        return true;
     }
 
     public PriceDto getById(Long id) {
-       Price price  = priceRepository.findById(id).orElseThrow();
-       return priceMapper.toPriceDto(price);
+      return priceMapper.toPriceDto(priceValidator.fetchAndValidateById(id));
     }
+
 }

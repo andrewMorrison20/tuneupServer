@@ -16,4 +16,5 @@
         Set<Price> findByStandardPricingFalse();
 
         Optional<Price> findByPeriodAndRate(Period period, Double rate);
+
     }
