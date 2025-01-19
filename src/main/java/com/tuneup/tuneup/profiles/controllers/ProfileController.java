@@ -6,7 +6,6 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
-import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,16 +13,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/api/profiles")
-public class UserProfileController {
+public class ProfileController {
 
     private final ProfileService profileService;
 
-    public UserProfileController(final ProfileService profileService) {
+    public ProfileController(final ProfileService profileService) {
 
         this.profileService = profileService;
     }
