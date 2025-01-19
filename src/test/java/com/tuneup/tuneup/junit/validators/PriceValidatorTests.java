@@ -20,7 +20,7 @@ import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceDto;
 
 @ExtendWith(MockitoExtension.class)
-class PriceValidatorTest {
+class PriceValidatorTests {
 
     @Mock
     private PriceRepository priceRepository;
@@ -66,8 +66,6 @@ class PriceValidatorTest {
     @Test
     void testValidateOrCreatePricingStandard() {
         Set<PriceDto> priceDtos = Collections.singleton(standardPriceDto);
-        Set<Price> expectedPrices = Collections.singleton(price);
-
         when(priceRepository.findByPeriodAndRate(any(), anyDouble())).thenReturn(Optional.empty());
         when(priceRepository.save(any(Price.class))).thenReturn(price);
 
@@ -93,6 +91,7 @@ class PriceValidatorTest {
         Set<PriceDto> priceDtos = Set.of(customPriceDto,standardPriceDto);
 
         when(priceRepository.findByRateAndDescription(anyDouble(), any())).thenReturn(Optional.empty());
+        when(priceRepository.findByPeriodAndRate(any(), anyDouble())).thenReturn(Optional.empty());
         when(priceRepository.save(any(Price.class))).thenReturn(price);
 
         Set<Price> result = priceValidator.validateOrCreatePricing(priceDtos);
