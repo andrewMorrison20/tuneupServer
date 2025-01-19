@@ -39,20 +39,6 @@ public class PriceController {
         return ResponseEntity.ok(price);
     }
 
-    /*
-    @PutMapping("/{id}")
-    public ResponseEntity<PriceDto> updatePrice(@PathVariable Long id, @RequestBody PriceDto updatedPriceDto) {
-        Optional<Price> existingPrice = priceService.getPriceById(id);
-        if (existingPrice.isPresent()) {
-            Price updatedPrice = priceMapper.toPrice(updatedPriceDto);
-            updatedPrice.setId(id); // Ensure the ID remains unchanged
-            Price savedPrice = priceService.savePrice(updatedPrice);
-            return ResponseEntity.ok(priceMapper.toPriceDto(savedPrice));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePrice(@PathVariable Long id) {
