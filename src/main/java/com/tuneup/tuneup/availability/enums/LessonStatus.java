@@ -1,16 +1,16 @@
-package com.tuneup.tuneup.availability;
+package com.tuneup.tuneup.availability.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum LessonRequestStatus {
-    PENDING("pending"),
+public enum LessonStatus {
     CONFIRMED("confirmed"),
-    DECLINED("declined");
+    COMPLETED("completed"),
+    CANCELED("canceled");
 
     private final String value;
 
-    LessonRequestStatus(String value) {
+    LessonStatus(String value) {
         this.value = value;
     }
 
@@ -20,13 +20,12 @@ public enum LessonRequestStatus {
     }
 
     @JsonCreator
-    public static LessonRequestStatus fromValue(String value) {
-        for (LessonRequestStatus status : LessonRequestStatus.values()) {
+    public static LessonStatus fromValue(String value) {
+        for (LessonStatus status : LessonStatus.values()) {
             if (status.value.equalsIgnoreCase(value)) {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Invalid lesson request status: " + value);
+        throw new IllegalArgumentException("Invalid lesson status: " + value);
     }
 }
-

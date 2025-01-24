@@ -1,9 +1,11 @@
-package com.tuneup.tuneup.availability;
+package com.tuneup.tuneup.availability.controllers;
+import com.tuneup.tuneup.availability.Availability;
+import com.tuneup.tuneup.availability.dtos.AvailabilityDto;
+import com.tuneup.tuneup.availability.services.AvailabilityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -16,7 +18,7 @@ public class AvailabilityController {
         this.availabilityService = availabilityService;
     }
 
-    @GetMapping("/profile/{profileId}")
+    @GetMapping("/availability/{profileId}")
     public ResponseEntity<Set<Availability>> getAvailability(@PathVariable Long profileId) {
         Set<Availability> availabilityList = availabilityService.getAllAvailabilityByProfile(profileId);
 
@@ -25,5 +27,15 @@ public class AvailabilityController {
         }
         return ResponseEntity.ok(availabilityList);
     }
+
+    @PostMapping("/availability/{profileId}/batchCreate")
+    public ResponseEntity<String> setAvailability(
+            @PathVariable Long profileId,
+            @RequestBody Set<AvailabilityDto> availability) {
+
+        availabilityService.batchCreate(profileId, availability);
+        return ResponseEntity.ok("Availability updated successfully.");
+    }
+
 }
 

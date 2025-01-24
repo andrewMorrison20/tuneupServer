@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.availability;
 
+import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.profiles.Profile;
 import jakarta.persistence.*;
 
