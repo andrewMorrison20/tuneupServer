@@ -1,5 +1,7 @@
 package com.tuneup.tuneup.availability.dtos;
 
+import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
+
 import java.time.LocalDateTime;
 
 public class AvailabilityDto {
@@ -7,6 +9,7 @@ public class AvailabilityDto {
     private Long profileId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private AvailabilityStatus status;
 
     public Long getProfileId() {
         return profileId;

@@ -29,13 +29,15 @@ public class AvailabilityController {
     }
 
     @PostMapping("/availability/{profileId}/batchCreate")
-    public ResponseEntity<String> setAvailability(
+    public ResponseEntity<Set<AvailabilityDto>> setAvailability(
             @PathVariable Long profileId,
-            @RequestBody Set<AvailabilityDto> availability) {
+            @RequestBody Set<AvailabilityDto> availabilityDtos) {
 
-        availabilityService.batchCreate(profileId, availability);
-        return ResponseEntity.ok("Availability updated successfully.");
+        Set<AvailabilityDto> savedAvailability = availabilityService.batchCreate(profileId, availabilityDtos);
+
+        return ResponseEntity.ok(savedAvailability);
     }
+
 
 }
 

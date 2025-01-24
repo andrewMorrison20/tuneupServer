@@ -5,10 +5,12 @@ import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.mappers.AvailabilityMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.validators.AvailabilityValidator;
+import com.tuneup.tuneup.profiles.Profile;
 import org.springframework.stereotype.Service;
 import com.tuneup.tuneup.profiles.ProfileValidator;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,14 +41,21 @@ public class AvailabilityService {
     }
 
     @Transactional
-    public void batchCreate(Long profileId, Set<AvailabilityDto> availabilityDtos) {
-        // Validate first, then map to entity and collect
-        Set<Availability> availabilityEntities = availabilityDtos.stream()
-                .peek(availabilityValidator::validateAvailabilityDto)  // ✅ Validate in-place
-                .map(availabilityMapper::toAvailability)  // ✅ Convert to entity
-                .collect(Collectors.toSet());  // ✅ Collect the results
+    public Set<AvailabilityDto> batchCreate(Long profileId, Set<AvailabilityDto> availabilityDtos) {
 
-        availabilityRepository.saveAll(availabilityEntities);  // ✅ Save in batch
+        Profile profile = profileValidator.fetchById(profileId);
+
+        Set<Availability> availabilityEntities = availabilityDtos.stream()
+                .peek(availabilityValidator::validateAvailabilityDto)
+                .map(availabilityMapper::toAvailability)
+                .peek(availability -> availability.setProfile(profile))
+                .collect(Collectors.toSet());
+
+        List<Availability> savedAvailability = availabilityRepository.saveAll(availabilityEntities);
+
+        return savedAvailability.stream()
+                .map(availabilityMapper::toAvailabilityDto)
+                .collect(Collectors.toSet());
     }
 
 }
