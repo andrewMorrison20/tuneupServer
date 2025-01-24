@@ -17,11 +17,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/profiles")
-public class ProfileController {
+public class UserProfileController {
 
     private final ProfileService profileService;
 
-    public ProfileController(final ProfileService profileService) {
+    public UserProfileController(final ProfileService profileService) {
 
         this.profileService = profileService;
     }

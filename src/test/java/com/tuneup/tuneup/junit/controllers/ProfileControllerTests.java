@@ -2,7 +2,7 @@ package com.tuneup.tuneup.junit.controllers;
 
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileService;
-import com.tuneup.tuneup.profiles.controllers.ProfileController;
+import com.tuneup.tuneup.profiles.controllers.UserProfileController;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ class ProfileControllerTests {
     private ProfileService profileService;
 
     @InjectMocks
-    private ProfileController profileController;
+    private UserProfileController profileController;
 
     private ProfileDto profileDto;
 
