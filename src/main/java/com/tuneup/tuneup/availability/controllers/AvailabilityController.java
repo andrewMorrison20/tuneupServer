@@ -18,17 +18,14 @@ public class AvailabilityController {
         this.availabilityService = availabilityService;
     }
 
-    @GetMapping("/availability/{profileId}")
-    public ResponseEntity<Set<Availability>> getAvailability(@PathVariable Long profileId) {
-        Set<Availability> availabilityList = availabilityService.getAllAvailabilityByProfile(profileId);
+    @GetMapping("/{profileId}")
+    public ResponseEntity<Set<AvailabilityDto>> getAvailability(@PathVariable Long profileId) {
+        Set<AvailabilityDto> availabilityList = availabilityService.getAllAvailabilityByProfile(profileId);
 
-        if (availabilityList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(availabilityList);
-        }
         return ResponseEntity.ok(availabilityList);
     }
 
-    @PostMapping("/availability/{profileId}/batchCreate")
+    @PostMapping("/{profileId}/batchCreate")
     public ResponseEntity<Set<AvailabilityDto>> setAvailability(
             @PathVariable Long profileId,
             @RequestBody Set<AvailabilityDto> availabilityDtos) {

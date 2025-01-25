@@ -1,18 +1,22 @@
 package com.tuneup.tuneup.profiles.repositories;
 
+import com.tuneup.tuneup.availability.Availability;
+import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.profiles.Profile;
-import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
+import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.regions.RegionRepository;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import com.tuneup.tuneup.Instruments.Instrument;
+
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import static java.util.Collections.max;
 import static java.util.Collections.min;
@@ -20,7 +24,7 @@ import static java.util.Collections.min;
 
 public class ProfileSpecification {
 
-    public static Specification<Profile> bySearchCriteria(ProfileSearchCriteria criteria, RegionRepository regionRepository) {
+    public static Specification<Profile> bySearchCriteria(ProfileSearchCriteriaDto criteria, RegionRepository regionRepository, AvailabilityRepository availabilityRepository) {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -66,6 +70,19 @@ public class ProfileSpecification {
                         builder.like(builder.lower(root.get("displayName")), keywordPattern)
 
                 ));
+            }
+
+            if (criteria.getStartTime() != null && criteria.getEndTime() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                Set<Long> availableProfileIds = availabilityRepository.findAvailableProfileIds(
+                        criteria.getStartTime().withNano(0).format(formatter), criteria.getEndTime().withNano(0).format(formatter)
+                );
+
+                if (!availableProfileIds.isEmpty()) {
+                    predicates.add(root.get("id").in(availableProfileIds));
+                } else {
+                    return builder.disjunction();
+                }
             }
             return builder.and(predicates.toArray(new Predicate[0]));
         };

@@ -2,6 +2,7 @@ package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.InstrumentMapper;
 import com.tuneup.tuneup.Instruments.InstrumentService;
+import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.images.Image;
 import com.tuneup.tuneup.images.ImageRepository;
@@ -11,7 +12,7 @@ import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.pricing.PriceValidator;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
-import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
+import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
 import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
@@ -51,12 +52,13 @@ public class ProfileService {
     private final InstrumentService instrumentService;
     private final QualificationMapper qualificationMapper;
     private final QualificationService qualificationService;
+    private final AvailabilityRepository availabilityRepository;
 
     public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator,
                           AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper,
                           InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository,
                           RegionRepository regionRepository, InstrumentService instrumentService, QualificationMapper qualificationMapper
-                          ,QualificationService qualificationService) {
+                          , QualificationService qualificationService, AvailabilityRepository availabilityRepository) {
 
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
@@ -73,6 +75,7 @@ public class ProfileService {
         this.instrumentService = instrumentService;
         this.qualificationMapper = qualificationMapper;
         this.qualificationService = qualificationService;
+        this.availabilityRepository = availabilityRepository;
     }
 
 
@@ -172,8 +175,8 @@ public class ProfileService {
         return profileMapper.toProfileDto(profile);
     }
 
-    public Page<ProfileDto> searchProfiles(ProfileSearchCriteria criteria, Pageable page) {
-        return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria, regionRepository),page)
+    public Page<ProfileDto> searchProfiles(ProfileSearchCriteriaDto criteria, Pageable page) {
+        return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria, regionRepository, availabilityRepository),page)
                 .map(profileMapper::toProfileDto);
     }
 

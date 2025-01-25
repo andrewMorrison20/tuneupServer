@@ -35,9 +35,12 @@ public class AvailabilityService {
         return availabilityRepository.findByProfileIdAndStatus(profileId, AvailabilityStatus.AVAILABLE);
     }
 
-    public Set<Availability> getAllAvailabilityByProfile(Long profileId) {
+    public Set<AvailabilityDto> getAllAvailabilityByProfile(Long profileId) {
         profileValidator.validateProfileId(profileId);
-        return availabilityRepository.findByProfileId(profileId);
+        return availabilityRepository.findByProfileId(profileId)
+                .stream()
+                .map(availabilityMapper::toAvailabilityDto)
+                .collect(Collectors.toSet());
     }
 
     @Transactional
