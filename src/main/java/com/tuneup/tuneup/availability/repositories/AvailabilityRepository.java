@@ -6,6 +6,7 @@ import com.tuneup.tuneup.profiles.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
     @Query("SELECT DISTINCT a.profile.id FROM Availability a " +
             "WHERE a.startTime >= :start AND a.startTime < :end " +
             "AND a.status = 'AVAILABLE'")
-    Set<Long> findAvailableProfileIds(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    Set<Long> findAvailableProfileIds(@DateTimeFormat(iso= DateTimeFormat.ISO.DATE)@Param("start") LocalDateTime start, @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)@Param("end") LocalDateTime end);
 
     Set<Availability> findByProfileId(long profileId);
 

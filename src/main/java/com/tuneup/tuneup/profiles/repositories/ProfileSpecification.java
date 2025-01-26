@@ -12,8 +12,6 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import com.tuneup.tuneup.Instruments.Instrument;
-
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -73,9 +71,8 @@ public class ProfileSpecification {
             }
 
             if (criteria.getStartTime() != null && criteria.getEndTime() != null) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 Set<Long> availableProfileIds = availabilityRepository.findAvailableProfileIds(
-                        criteria.getStartTime().withNano(0).format(formatter), criteria.getEndTime().withNano(0).format(formatter)
+                        criteria.getStartTime(), criteria.getEndTime()
                 );
 
                 if (!availableProfileIds.isEmpty()) {
