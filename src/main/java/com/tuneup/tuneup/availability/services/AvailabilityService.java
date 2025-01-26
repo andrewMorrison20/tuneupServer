@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tuneup.tuneup.profiles.ProfileValidator;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,4 +62,13 @@ public class AvailabilityService {
                 .collect(Collectors.toSet());
     }
 
+    public Set<AvailabilityDto> getProfilePeriodAvailability(Long profileId, LocalDateTime start, LocalDateTime end) {
+
+        profileValidator.validateProfileId(profileId);
+        Set<Availability> availability = availabilityRepository.findProfilePeriodSlots(profileId,start,end);
+
+        return availability.stream()
+                .map(availabilityMapper :: toAvailabilityDto)
+                .collect(Collectors.toSet());
+    }
 }

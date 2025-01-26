@@ -23,6 +23,11 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
     @Query("SELECT a FROM Availability a WHERE a.startTime BETWEEN :start AND :end AND a.status = 'AVAILABLE'")
     Set<Availability> findAvailableSlots(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
+    @Query("SELECT a FROM Availability a " +
+            "WHERE a.profile.id = :profileId " +
+            "and a.startTime BETWEEN :start AND :end ")
+    Set<Availability> findProfilePeriodSlots(@Param("profileId")Long profileId,@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
     @Query("SELECT a.profile FROM Availability a WHERE a.startTime BETWEEN :start AND :end AND a.status = 'AVAILABLE'")
     Set<Profile> findProfileByAvailableSlots(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
@@ -32,5 +37,6 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
     Set<Long> findAvailableProfileIds(@DateTimeFormat(iso= DateTimeFormat.ISO.DATE)@Param("start") LocalDateTime start, @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)@Param("end") LocalDateTime end);
 
     Set<Availability> findByProfileId(long profileId);
+
 
 }

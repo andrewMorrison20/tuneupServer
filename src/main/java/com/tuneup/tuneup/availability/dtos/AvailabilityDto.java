@@ -11,6 +11,14 @@ public class AvailabilityDto {
     private LocalDateTime endTime;
     private AvailabilityStatus status;
 
+    public AvailabilityStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AvailabilityStatus status) {
+        this.status = status;
+    }
+
     public Long getProfileId() {
         return profileId;
     }
