@@ -20,20 +20,38 @@ public class LessonRequest {
     @JoinColumn(name = "tutor_id", nullable = false)
     private Profile tutor;
 
-    private LocalDateTime requestedTime;
+    @Transient
+    private LocalDateTime requestedStartTime;
+
+    @Transient
+    private LocalDateTime requestedEndTime;
 
     @Enumerated(EnumType.STRING)
     private LessonRequestStatus status;
 
-    public LessonRequest() {}
+    @OneToOne
+    @JoinColumn(name = "availability_id")
+    private Availability availability;
 
-    public LessonRequest(Long id, Profile student, Profile tutor, LocalDateTime requestedTime, LessonRequestStatus status) {
-        this.id = id;
-        this.student = student;
-        this.tutor = tutor;
-        this.requestedTime = requestedTime;
-        this.status = status;
+
+    @Transient
+    public LocalDateTime getRequestedStartTime() {
+        return availability != null ? availability.getStartTime() : null;
     }
+
+    @Transient
+    public LocalDateTime getRequestedEndTime() {
+        return availability != null ? availability.getEndTime() : null;
+    }
+    public Availability getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
+    }
+
+    public LessonRequest() {}
 
     public Long getId() {
         return id;
@@ -59,13 +77,6 @@ public class LessonRequest {
         this.tutor = tutor;
     }
 
-    public LocalDateTime getRequestedTime() {
-        return requestedTime;
-    }
-
-    public void setRequestedTime(LocalDateTime requestedTime) {
-        this.requestedTime = requestedTime;
-    }
 
     public LessonRequestStatus getStatus() {
         return status;
@@ -74,4 +85,5 @@ public class LessonRequest {
     public void setStatus(LessonRequestStatus status) {
         this.status = status;
     }
+
 }
