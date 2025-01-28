@@ -2,6 +2,7 @@ package com.tuneup.tuneup.authentication.controller;
 
 
 
+import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.LoginRequestDto;
 import com.tuneup.tuneup.users.dtos.LoginResponseDto;
@@ -9,6 +10,7 @@ import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserService;
 import com.tuneup.tuneup.utils.Jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +31,9 @@ public class AuthController {
 
     @Autowired
     AppUserService appUserService;
+
+    @Autowired
+    ProfileService profileService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -52,10 +57,10 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         AppUserDto userDetails = appUserService.getUserByEmail(loginRequest.getEmail());
-
+        Long profileId = profileService.getProfileDtoByUserId(userDetails.getId()).getId();
         // Generate JWT token
-        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getId());
-        return new LoginResponseDto(token,userDetails);
+        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getId(),profileId);
+        return new LoginResponseDto(token);
     }
 
     @PostMapping("/logout")

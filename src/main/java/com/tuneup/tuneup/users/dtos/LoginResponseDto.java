@@ -9,8 +9,7 @@ public class LoginResponseDto {
     private String token;
     private AppUserDto userDto;
 
-    public LoginResponseDto(String token, AppUserDto userDto) {
+    public LoginResponseDto(String token) {
         this.token = token;
-        this.userDto = userDto;
     }
 }
