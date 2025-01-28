@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public class AvailabilityDto {
 
+    private Long id;
     private Long profileId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -13,6 +14,14 @@ public class AvailabilityDto {
 
     public AvailabilityStatus getStatus() {
         return status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setStatus(AvailabilityStatus status) {
