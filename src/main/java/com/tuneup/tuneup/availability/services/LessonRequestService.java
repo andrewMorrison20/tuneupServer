@@ -9,7 +9,6 @@ import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class LessonRequestService {
     }
 
         @Transactional
-        public void processLessonRequest(LessonRequestDto requestDto) {
+        public LessonRequestDto processLessonRequest(LessonRequestDto requestDto) {
             Availability availability = availabilityRepository.findById(requestDto.getAvailabilityId())
                     .orElseThrow(() -> new ResourceNotFoundException("Availability not found"));
 
@@ -91,10 +90,13 @@ public class LessonRequestService {
             }
 
             LessonRequest lessonRequest = lessonRequestMapper.toLessonRequest(requestDto);
-            lessonRequest.setStudent(profileMapper.toProfile(profileService.getProfileDto(requestDto.getStudentId())));
-            lessonRequest.setTutor(profileMapper.toProfile(profileService.getProfileDto(requestDto.getTutorId())));
+            lessonRequest.setStudent(profileMapper.toProfile(profileService.getProfileDto(requestDto.getStudentProfileId())));
+            lessonRequest.setTutor(profileMapper.toProfile(profileService.getProfileDto(requestDto.getTutorProfileId())));
             lessonRequest.setAvailability(pendingAvailability);
-            lessonRequestRepository.save(lessonRequest);
+
+            lessonRequest = lessonRequestRepository.save(lessonRequest);
+
+            return lessonRequestMapper.toDto(lessonRequest);
         }
     }
 

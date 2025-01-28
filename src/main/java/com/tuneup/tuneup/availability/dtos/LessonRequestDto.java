@@ -1,7 +1,5 @@
 package com.tuneup.tuneup.availability.dtos;
 
-import com.tuneup.tuneup.availability.Availability;
-
 import java.time.LocalDateTime;
 
 public class LessonRequestDto {
@@ -13,12 +11,12 @@ public class LessonRequestDto {
         this.id = id;
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public Long getStudentProfileId() {
+        return studentProfileId;
     }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentProfileId(Long studentProfileId) {
+        this.studentProfileId = studentProfileId;
     }
 
     public LocalDateTime getRequestedStartTime() {
@@ -29,12 +27,12 @@ public class LessonRequestDto {
         this.requestedStartTime = requestedStartTime;
     }
 
-    public Long getTutorId() {
-        return tutorId;
+    public Long getTutorProfileId() {
+        return tutorProfileId;
     }
 
-    public void setTutorId(Long tutorId) {
-        this.tutorId = tutorId;
+    public void setTutorProfileId(Long tutorProfileId) {
+        this.tutorProfileId = tutorProfileId;
     }
 
     public Long getAvailabilityId() {
@@ -54,8 +52,8 @@ public class LessonRequestDto {
     }
 
     private Long id;
-    private Long studentId;
-    private Long tutorId;
+    private Long studentProfileId;
+    private Long tutorProfileId;
     private LocalDateTime requestedStartTime;
     private LocalDateTime requestedEndTime;
     private Long availabilityId;

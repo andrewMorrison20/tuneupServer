@@ -13,7 +13,7 @@ public interface LessonRequestMapper {
     LessonRequest toLessonRequest(LessonRequestDto lessonRequestDto);
 
 
-    @Mapping(source = "student.id", target = "studentId")
-    @Mapping(source = "tutor.id", target = "tutorId")
+    @Mapping(source = "student.id", target = "studentProfileId")
+    @Mapping(source = "tutor.id", target = "tutorProfileId")
     LessonRequestDto toDto(LessonRequest lessonRequest);
 }
