@@ -15,5 +15,6 @@ public interface LessonRequestMapper {
 
     @Mapping(source = "student.id", target = "studentProfileId")
     @Mapping(source = "tutor.id", target = "tutorProfileId")
+    @Mapping(source = "availability.id", target = "availabilityId")
     LessonRequestDto toDto(LessonRequest lessonRequest);
 }
