@@ -77,7 +77,7 @@ public class AvailabilityService {
     }
 
     /**
-     * 🔹 Validate if availability slot is still available
+     *  Validate if availability slot is still available
      */
     protected void validateAvailability(Availability availability) {
         if (!availability.getStatus().equals(AvailabilityStatus.AVAILABLE)) {
@@ -86,7 +86,7 @@ public class AvailabilityService {
     }
 
     /**
-     * 🔹 Handles availability adjustment logic
+     *  Handles availability adjustment logic
      */
     protected Availability handleAvailabilityAdjustment(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         if (availability.getStartTime().equals(requestStart) && availability.getEndTime().equals(requestEnd)) {
@@ -97,7 +97,7 @@ public class AvailabilityService {
     }
 
     /**
-     * 🔹 Create a pending availability slot and adjust the existing availability
+     *  Create a pending availability slot and adjust the existing availability
      */
     private Availability createPendingSlot(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         Availability pendingAvailability = new Availability();
@@ -113,7 +113,7 @@ public class AvailabilityService {
     }
 
     /**
-     * 🔹 Adjust the existing availability slot after creating a pending one
+     *  Adjust the existing availability slot after creating a pending one
      */
     private void adjustExistingAvailability(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         boolean isSplitRequired = availability.getStartTime().isBefore(requestStart) && availability.getEndTime().isAfter(requestEnd);
@@ -131,7 +131,7 @@ public class AvailabilityService {
     }
 
     /**
-     * 🔹 Creates a new availability slot
+     *  Creates a new availability slot
      */
     private void createNewAvailability(Availability original, LocalDateTime start, LocalDateTime end) {
         Availability newAvailability = new Availability();
