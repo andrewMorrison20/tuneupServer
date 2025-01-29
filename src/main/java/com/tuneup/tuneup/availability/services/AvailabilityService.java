@@ -75,4 +75,70 @@ public class AvailabilityService {
     public Availability getAvailabilityByIdInternal(Long id) {
         return availabilityValidator.fetchAndValidateById(id);
     }
+
+    /**
+     * 🔹 Validate if availability slot is still available
+     */
+    protected void validateAvailability(Availability availability) {
+        if (!availability.getStatus().equals(AvailabilityStatus.AVAILABLE)) {
+            throw new IllegalStateException("Slot is no longer available");
+        }
+    }
+
+    /**
+     * 🔹 Handles availability adjustment logic
+     */
+    protected Availability handleAvailabilityAdjustment(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
+        if (availability.getStartTime().equals(requestStart) && availability.getEndTime().equals(requestEnd)) {
+            availability.setStatus(AvailabilityStatus.PENDING);
+            return availabilityRepository.save(availability);
+        }
+        return createPendingSlot(availability, requestStart, requestEnd);
+    }
+
+    /**
+     * 🔹 Create a pending availability slot and adjust the existing availability
+     */
+    private Availability createPendingSlot(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
+        Availability pendingAvailability = new Availability();
+        pendingAvailability.setProfile(availability.getProfile());
+        pendingAvailability.setStartTime(requestStart);
+        pendingAvailability.setEndTime(requestEnd);
+        pendingAvailability.setStatus(AvailabilityStatus.PENDING);
+        pendingAvailability = availabilityRepository.save(pendingAvailability);
+
+        adjustExistingAvailability(availability, requestStart, requestEnd);
+
+        return pendingAvailability;
+    }
+
+    /**
+     * 🔹 Adjust the existing availability slot after creating a pending one
+     */
+    private void adjustExistingAvailability(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
+        boolean isSplitRequired = availability.getStartTime().isBefore(requestStart) && availability.getEndTime().isAfter(requestEnd);
+
+        if (isSplitRequired) {
+            createNewAvailability(availability, requestEnd, availability.getEndTime());
+            availability.setEndTime(requestStart);
+        } else if (availability.getStartTime().isBefore(requestStart)) {
+            availability.setEndTime(requestStart);
+        } else if (availability.getEndTime().isAfter(requestEnd)) {
+            availability.setStartTime(requestEnd);
+        }
+
+        availabilityRepository.save(availability);
+    }
+
+    /**
+     * 🔹 Creates a new availability slot
+     */
+    private void createNewAvailability(Availability original, LocalDateTime start, LocalDateTime end) {
+        Availability newAvailability = new Availability();
+        newAvailability.setProfile(original.getProfile());
+        newAvailability.setStartTime(start);
+        newAvailability.setEndTime(end);
+        newAvailability.setStatus(AvailabilityStatus.AVAILABLE);
+        availabilityRepository.save(newAvailability);
+    }
 }

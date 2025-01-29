@@ -1,8 +1,26 @@
 package com.tuneup.tuneup.availability.dtos;
 
+import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
+
 import java.time.LocalDateTime;
 
 public class LessonRequestDto {
+    private Long id;
+    private Long studentProfileId;
+    private Long tutorProfileId;
+    private LocalDateTime requestedStartTime;
+    private LocalDateTime requestedEndTime;
+    private Long availabilityId;
+    private LessonRequestStatus status;
+
+    public LessonRequestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LessonRequestStatus status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
@@ -51,10 +69,4 @@ public class LessonRequestDto {
         this.requestedEndTime = requestedEndTime;
     }
 
-    private Long id;
-    private Long studentProfileId;
-    private Long tutorProfileId;
-    private LocalDateTime requestedStartTime;
-    private LocalDateTime requestedEndTime;
-    private Long availabilityId;
 }
