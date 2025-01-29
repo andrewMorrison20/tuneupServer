@@ -23,71 +23,73 @@ public class LessonRequestService {
     private final LessonRequestMapper lessonRequestMapper;
     private final ProfileService profileService;
     private final ProfileMapper profileMapper;
+    private final AvailabilityService availabilityService;
 
     public LessonRequestService(AvailabilityRepository availabilityRepository,
                                 LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper) {
+                                ProfileMapper profileMapper, AvailabilityService availabilityService) {
         
             this.availabilityRepository = availabilityRepository;
             this.lessonRequestRepository = lessonRequestRepository;
             this.lessonRequestMapper = lessonRequestMapper;
             this.profileService = profileService;
             this.profileMapper = profileMapper;
+            this.availabilityService = availabilityService;
     }
 
-        @Transactional
-        public LessonRequestDto processLessonRequest(LessonRequestDto requestDto) {
-            Availability availability = availabilityRepository.findById(requestDto.getAvailabilityId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Availability not found"));
+    @Transactional
+    public LessonRequestDto processLessonRequest(LessonRequestDto requestDto) {
 
-            LocalDateTime requestStart = requestDto.getRequestedStartTime();
-            LocalDateTime requestEnd = requestDto.getRequestedEndTime();
+        Availability availability = availabilityService.getAvailabilityByIdInternal(requestDto.getId());
 
-            // Check if the slot is still available before modifying
-            if (!availability.getStatus().equals(AvailabilityStatus.AVAILABLE)) {
-                throw new IllegalStateException("Slot is no longer available");
-            }
+        LocalDateTime requestStart = requestDto.getRequestedStartTime();
+        LocalDateTime requestEnd = requestDto.getRequestedEndTime();
 
-            Availability pendingAvailability = new Availability();
+        // Check if the slot is still available before modifying
+        if (!availability.getStatus().equals(AvailabilityStatus.AVAILABLE)) {
+            throw new IllegalStateException("Slot is no longer available");
+        }
 
-            // Case 1: Full Slot Requested
-            if (availability.getStartTime().equals(requestStart) && availability.getEndTime().equals(requestEnd)) {
-                availability.setStatus(AvailabilityStatus.PENDING);
-                pendingAvailability = availabilityRepository.save(availability);
+        Availability pendingAvailability = new Availability();
 
-            } else {
+        // Case 1: Full Slot Requested
+        if (availability.getStartTime().equals(requestStart) && availability.getEndTime().equals(requestEnd)) {
+            availability.setStatus(AvailabilityStatus.PENDING);
+            pendingAvailability = availabilityRepository.save(availability);
+
+        } else {
             //Case 2 : Partial slot requested
 
-                pendingAvailability.setProfile(availability.getProfile());
-                pendingAvailability.setStartTime(requestStart);
-                pendingAvailability.setEndTime(requestEnd);
-                pendingAvailability.setStatus(AvailabilityStatus.PENDING);
+            pendingAvailability.setProfile(availability.getProfile());
+            pendingAvailability.setStartTime(requestStart);
+            pendingAvailability.setEndTime(requestEnd);
+            pendingAvailability.setStatus(AvailabilityStatus.PENDING);
 
-                pendingAvailability = availabilityRepository.save(pendingAvailability);
+            pendingAvailability = availabilityRepository.save(pendingAvailability);
 
-                if (availability.getStartTime().isBefore(requestStart) && availability.getEndTime().isAfter(requestEnd)) {
+            if (availability.getStartTime().isBefore(requestStart) && availability.getEndTime().isAfter(requestEnd)) {
 
-                    Availability newAvailability = new Availability();
+                Availability newAvailability = new Availability();
 
-                    newAvailability.setProfile(availability.getProfile());
-                    newAvailability.setStartTime(requestEnd);
-                    newAvailability.setEndTime(availability.getEndTime());
-                    newAvailability.setStatus(AvailabilityStatus.AVAILABLE);
+                newAvailability.setProfile(availability.getProfile());
+                newAvailability.setStartTime(requestEnd);
+                newAvailability.setEndTime(availability.getEndTime());
+                newAvailability.setStatus(AvailabilityStatus.AVAILABLE);
 
-                    availabilityRepository.save(newAvailability);
+                availabilityRepository.save(newAvailability);
 
-                    availability.setEndTime(requestStart);
-                    availabilityRepository.save(availability);
-                } else if (availability.getStartTime().isBefore(requestStart)) {
-                    availability.setEndTime(requestStart);
-                    availabilityRepository.save(availability);
-                } else if (availability.getEndTime().isAfter(requestEnd)) {
-                    availability.setStartTime(requestEnd);
-                    availabilityRepository.save(availability);
-                }
+                availability.setEndTime(requestStart);
+                availabilityRepository.save(availability);
+            } else if (availability.getStartTime().isBefore(requestStart)) {
+                availability.setEndTime(requestStart);
+                availabilityRepository.save(availability);
+            } else if (availability.getEndTime().isAfter(requestEnd)) {
+                availability.setStartTime(requestEnd);
+                availabilityRepository.save(availability);
             }
+        }
 
             LessonRequest lessonRequest = lessonRequestMapper.toLessonRequest(requestDto);
             lessonRequest.setStudent(profileMapper.toProfile(profileService.getProfileDto(requestDto.getStudentProfileId())));

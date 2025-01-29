@@ -71,4 +71,8 @@ public class AvailabilityService {
                 .map(availabilityMapper :: toAvailabilityDto)
                 .collect(Collectors.toSet());
     }
+
+    public Availability getAvailabilityByIdInternal(Long id) {
+        return availabilityValidator.fetchAndValidateById(id);
+    }
 }
