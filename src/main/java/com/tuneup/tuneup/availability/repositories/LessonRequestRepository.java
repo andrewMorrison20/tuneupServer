@@ -18,6 +18,7 @@ public interface LessonRequestRepository extends JpaRepository<LessonRequest, Lo
 
     Page<LessonRequest> findByStudentIdAndTutorId(Long studentId, Long tutorId, Pageable pageable);
 
-    @Query("SELECT DISTINCT lr.student FROM LessonRequest lr WHERE lr.tutor.id = :tutorId")
+    @Query("SELECT DISTINCT s FROM LessonRequest lr JOIN lr.student s WHERE lr.tutor.id = :tutorId ORDER BY s.displayName ASC")
     Page<Profile> findStudentsByTutorId(@Param("tutorId") Long tutorId, Pageable pageable);
+
 }

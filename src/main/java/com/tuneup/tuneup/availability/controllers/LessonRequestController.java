@@ -8,8 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RestController
 @RequestMapping("/api/lessonRequest")
 public class LessonRequestController {
@@ -54,7 +52,7 @@ public class LessonRequestController {
         return ResponseEntity.ok(lessonRequests);
     }
 
-    @GetMapping("/tutor/{tutorId}/students")
+    @GetMapping("/students/{tutorId}")
     public ResponseEntity<Page<ProfileDto>> getStudentsByTutor(
             @PathVariable Long tutorId, Pageable pageable) {
 
