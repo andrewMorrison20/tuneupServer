@@ -82,7 +82,7 @@ public class LessonRequestService {
             throw new ValidationException("Invalid combination of profile ids provided");
         }
 
-        return lessonRequestRepository.findByStudentIdAndTutorId(studentId, tutorId,pageable)
+        return lessonRequestRepository.findRequestsByTutorIdAndStudentId(studentId,tutorId,pageable)
                 .map(lessonRequestMapper::toDto);
     }
 
