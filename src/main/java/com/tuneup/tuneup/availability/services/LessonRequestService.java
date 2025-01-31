@@ -8,7 +8,10 @@ import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,16 +76,50 @@ public class LessonRequestService {
      * Returns the set of pending lesson requests for a given student and tutor
      * @return set of dto requests - lessonDtos
      */
-    public Set<LessonRequestDto> getTutorRequestsByStudent(Long studentId, Long tutorId){
+    public Page<LessonRequestDto> getTutorRequestsByStudent(Long studentId, Long tutorId,Pageable pageable){
 
         if (!profileService.existById(studentId) || !profileService.existById(tutorId)){
             throw new ValidationException("Invalid combination of profile ids provided");
         }
 
-        return lessonRequestRepository.findByStudentIdAndTutorId(studentId, tutorId).stream()
-                .map(lessonRequestMapper::toDto)
-                .collect(Collectors.toSet());
+        return lessonRequestRepository.findByStudentIdAndTutorId(studentId, tutorId,pageable)
+                .map(lessonRequestMapper::toDto);
+    }
 
+    /**
+     * gets the set of existing lesson requests a particular tutor (from all students).
+     * @param tutorId
+     * @param pageable
+     * @return Page lessonRequestDto
+     */
+    public Page<LessonRequestDto> getRequestsByTutor(Long tutorId, Pageable pageable) {
+        profileService.existById(tutorId);
+        return lessonRequestRepository.findByTutorId(tutorId, pageable)
+                .map(lessonRequestMapper::toDto);
+    }
 
-    };
+    /**
+     * gets the set of existing lesson requests a particular student.
+     * @param studentId
+     * @param pageable
+     * @return Page lessonRequestDto
+     */
+    public Page<LessonRequestDto> getRequestsByStudent(Long studentId, Pageable pageable) {
+        profileService.existById(studentId);
+        return lessonRequestRepository.findByStudentId(studentId, pageable)
+                .map(lessonRequestMapper::toDto);
+    }
+
+    /**
+     * gets the set of distinct profiles that have sent lesson requests to a given tutor
+     * @param tutorId
+     * @param pageable
+     * @return Page o profile dtos
+     */
+    public Page<ProfileDto> getStudentsByTutor(Long tutorId, Pageable pageable) {
+        profileService.existById(tutorId);
+
+        return lessonRequestRepository.findStudentsByTutorId(tutorId, pageable)
+                .map(profileMapper::toProfileDto);
+    }
 }

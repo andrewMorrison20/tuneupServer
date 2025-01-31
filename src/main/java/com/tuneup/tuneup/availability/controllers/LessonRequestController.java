@@ -1,12 +1,13 @@
 package com.tuneup.tuneup.availability.controllers;
 
-import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
 import com.tuneup.tuneup.availability.services.LessonRequestService;
+import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -24,10 +25,39 @@ public class LessonRequestController {
         LessonRequestDto lessonRequestDto = lessonRequestService.processLessonRequest(requestDto);
         return ResponseEntity.status(201).body(lessonRequestDto);
     }
-    
+
+    @GetMapping("/tutor/{tutorId}")
+    public ResponseEntity<Page<LessonRequestDto>> getLessonRequestsByTutor(
+            @PathVariable Long tutorId,
+            Pageable pageable) {
+
+        Page<LessonRequestDto> lessonRequests = lessonRequestService.getRequestsByTutor(tutorId, pageable);
+        return ResponseEntity.ok(lessonRequests);
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<Page<LessonRequestDto>> getLessonRequestsByStudent(
+            @PathVariable Long studentId,
+            Pageable pageable) {
+
+        Page<LessonRequestDto> lessonRequests = lessonRequestService.getRequestsByStudent(studentId, pageable);
+        return ResponseEntity.ok(lessonRequests);
+    }
+
     @GetMapping
-    public ResponseEntity<Set<LessonRequestDto>> getLessonRequestsByStudentAndTutor(@RequestParam Long studentId,@RequestParam Long tutorId) {
-        Set<LessonRequestDto> lessonRequests = lessonRequestService.getTutorRequestsByStudent(studentId,tutorId);
-        return ResponseEntity.ok().body(lessonRequests);
+    public ResponseEntity<Page<LessonRequestDto>> getLessonRequestsByStudentAndTutor(
+            @RequestParam Long studentId,
+            @RequestParam Long tutorId,
+            Pageable pageable) {
+
+        Page<LessonRequestDto> lessonRequests = lessonRequestService.getTutorRequestsByStudent(studentId, tutorId, pageable);
+        return ResponseEntity.ok(lessonRequests);
+    }
+
+    @GetMapping("/tutor/{tutorId}/students")
+    public ResponseEntity<Page<ProfileDto>> getStudentsByTutor(
+            @PathVariable Long tutorId, Pageable pageable) {
+
+        return ResponseEntity.ok(lessonRequestService.getStudentsByTutor(tutorId, pageable));
     }
 }
