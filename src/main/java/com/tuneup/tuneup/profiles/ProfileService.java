@@ -209,6 +209,10 @@ public class ProfileService {
         qualification.setQualification(qualificationService.getQualificationByIdInternal(dto.getQualificationId()));
         return qualification;
     }
+
+    public Boolean existById(long profileId){
+        return profileValidator.existsById(profileId);
+    }
 }
 
 

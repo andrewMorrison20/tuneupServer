@@ -8,10 +8,13 @@ import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class LessonRequestService {
@@ -52,7 +55,8 @@ public class LessonRequestService {
 
 
     /**
-     * Creates and saves the lesson request
+     * Creates and saves a new lesson request
+     * @
      */
     public LessonRequestDto createLessonRequest(LessonRequestDto requestDto, Availability pendingAvailability) {
         LessonRequest lessonRequest = lessonRequestMapper.toLessonRequest(requestDto);
@@ -64,4 +68,21 @@ public class LessonRequestService {
 
         return lessonRequestMapper.toDto(lessonRequest);
     }
+
+    /**
+     * Returns the set of pending lesson requests for a given student and tutor
+     * @return set of dto requests - lessonDtos
+     */
+    public Set<LessonRequestDto> getTutorRequestsByStudent(Long studentId, Long tutorId){
+
+        if (!profileService.existById(studentId) || !profileService.existById(tutorId)){
+            throw new ValidationException("Invalid combination of profile ids provided");
+        }
+
+        return lessonRequestRepository.findByStudentIdAndTutorId(studentId, tutorId).stream()
+                .map(lessonRequestMapper::toDto)
+                .collect(Collectors.toSet());
+
+
+    };
 }

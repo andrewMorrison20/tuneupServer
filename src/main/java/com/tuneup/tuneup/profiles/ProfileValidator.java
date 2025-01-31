@@ -77,4 +77,8 @@ public class ProfileValidator {
             throw new ValidationException("Profile with ID " + profileId + " does not exist");
         }
     }
+
+    public Boolean existsById(long profileId) {
+       return profileRepository.existsById(profileId);
+    }
 }
