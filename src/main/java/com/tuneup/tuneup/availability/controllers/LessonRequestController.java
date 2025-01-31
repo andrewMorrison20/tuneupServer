@@ -1,12 +1,15 @@
 package com.tuneup.tuneup.availability.controllers;
 
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
+import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
 import com.tuneup.tuneup.availability.services.LessonRequestService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/lessonRequest")
@@ -57,5 +60,11 @@ public class LessonRequestController {
             @PathVariable Long tutorId, Pageable pageable) {
 
         return ResponseEntity.ok(lessonRequestService.getStudentsByTutor(tutorId, pageable));
+    }
+
+    @PatchMapping("/status/{lessonRequestId}")
+    public ResponseEntity<Integer> updateRequestStatus(@PathVariable Long lessonRequestId,@RequestBody Map<String, String> statusMap){
+        lessonRequestService.updateLessonRequestStatus(lessonRequestId,statusMap.get("status"));
+        return ResponseEntity.ok().build();
     }
 }

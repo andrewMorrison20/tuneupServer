@@ -141,4 +141,11 @@ public class AvailabilityService {
         newAvailability.setStatus(AvailabilityStatus.AVAILABLE);
         availabilityRepository.save(newAvailability);
     }
+
+    public AvailabilityDto updateAvailabilityStatus(Availability availability, AvailabilityStatus availabilityStatus) {
+
+        availability.setStatus(availabilityStatus);
+        availability = availabilityRepository.save(availability);
+        return availabilityMapper.toAvailabilityDto(availability);
+    }
 }

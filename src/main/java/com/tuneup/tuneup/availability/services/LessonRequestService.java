@@ -3,9 +3,12 @@ package com.tuneup.tuneup.availability.services;
 import com.tuneup.tuneup.availability.Availability;
 import com.tuneup.tuneup.availability.LessonRequest;
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
+import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
+import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
 import com.tuneup.tuneup.availability.mappers.LessonRequestMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
+import com.tuneup.tuneup.availability.validators.LessonRequestValidator;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
@@ -16,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class LessonRequestService {
@@ -27,17 +28,19 @@ public class LessonRequestService {
     private final ProfileService profileService;
     private final ProfileMapper profileMapper;
     private final AvailabilityService availabilityService;
+    private final LessonRequestValidator lessonRequestValidator;
 
     public LessonRequestService(AvailabilityRepository availabilityRepository,
                                 LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper, AvailabilityService availabilityService) {
+                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator) {
         this.lessonRequestRepository = lessonRequestRepository;
         this.lessonRequestMapper = lessonRequestMapper;
         this.profileService = profileService;
         this.profileMapper = profileMapper;
         this.availabilityService = availabilityService;
+        this.lessonRequestValidator = lessonRequestValidator;
     }
 
     @Transactional
@@ -121,5 +124,32 @@ public class LessonRequestService {
 
         return lessonRequestRepository.findStudentsByTutorId(tutorId, pageable)
                 .map(profileMapper::toProfileDto);
+    }
+
+    @Transactional
+    public void updateLessonRequestStatus(Long lessonRequestId, String lessonReqStatus) {
+
+        LessonRequest request = getLessonRequestByIdInternal(lessonRequestId);
+        LessonRequestStatus status = LessonRequestStatus.valueOf(lessonReqStatus);
+
+        if(status.equals(LessonRequestStatus.CONFIRMED)) {
+
+            Availability availability = request.getAvailability();
+            availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.BOOKED);
+
+        } else if (status.equals(LessonRequestStatus.DECLINED)){
+            Availability availability = request.getAvailability();
+            availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.AVAILABLE);
+        }
+
+        lessonRequestRepository.delete(request);
+    }
+
+    /**
+     * Fetch and validate an lessonRequest by id
+     * note, should not be used in the controller layer as returns entity and not dto
+     */
+    public LessonRequest getLessonRequestByIdInternal(Long requestId){
+        return lessonRequestValidator.fetchAndValidateById(requestId);
     }
 }
