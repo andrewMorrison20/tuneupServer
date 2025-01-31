@@ -15,6 +15,14 @@ public class Tuition {
     @JoinColumn(name = "student_id", nullable = false)
     private Profile student;
 
+    public void setStudent(Profile student) {
+        this.student = student;
+    }
+
+    public void setTutor(Profile tutor) {
+        this.tutor = tutor;
+    }
+
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
     private Profile tutor;
@@ -22,7 +30,6 @@ public class Tuition {
     @Column(nullable = false)
     private LocalDate startDate;
 
-    @Column(nullable = false)
     private LocalDate endDate;
 
     @Column(nullable = false)
