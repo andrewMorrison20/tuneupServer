@@ -1,9 +1,7 @@
 package com.tuneup.tuneup.availability;
 
-import com.tuneup.tuneup.availability.enums.LessonStatus;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class Lesson {
@@ -12,32 +10,20 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Profile student;
+    public Availability getAvailability() {
+        return availability;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "tutor_id", nullable = false)
-    private Profile tutor;
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
+    }
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    public Tuition getTuition() {
+        return tuition;
+    }
 
-    @Enumerated(EnumType.STRING)
-    private LessonStatus status; // CONFIRMED, COMPLETED, CANCELED
-
-    private String cancellationReason;
-
-    public Lesson() {}
-
-    public Lesson(Long id, Profile student, Profile tutor, LocalDateTime startTime, LocalDateTime endTime, LessonStatus status, String cancellationReason) {
-        this.id = id;
-        this.student = student;
-        this.tutor = tutor;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
-        this.cancellationReason = cancellationReason;
+    public void setTuition(Tuition tuition) {
+        this.tuition = tuition;
     }
 
     public Long getId() {
@@ -48,51 +34,12 @@ public class Lesson {
         this.id = id;
     }
 
-    public Profile getStudent() {
-        return student;
-    }
+    @ManyToOne
+    @JoinColumn(name = "tuition_id", nullable = false)
+    private Tuition tuition;
 
-    public void setStudent(Profile student) {
-        this.student = student;
-    }
+    @OneToOne
+    @JoinColumn(name = "availability_id", nullable = false)
+    private Availability availability;
 
-    public Profile getTutor() {
-        return tutor;
-    }
-
-    public void setTutor(Profile tutor) {
-        this.tutor = tutor;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public LessonStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(LessonStatus status) {
-        this.status = status;
-    }
-
-    public String getCancellationReason() {
-        return cancellationReason;
-    }
-
-    public void setCancellationReason(String cancellationReason) {
-        this.cancellationReason = cancellationReason;
-    }
 }
