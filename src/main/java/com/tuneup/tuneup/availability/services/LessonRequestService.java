@@ -12,12 +12,15 @@ import com.tuneup.tuneup.availability.validators.LessonRequestValidator;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -29,18 +32,20 @@ public class LessonRequestService {
     private final ProfileMapper profileMapper;
     private final AvailabilityService availabilityService;
     private final LessonRequestValidator lessonRequestValidator;
+    private final TuitionService tuitionService;
 
     public LessonRequestService(AvailabilityRepository availabilityRepository,
                                 LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator) {
+                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService) {
         this.lessonRequestRepository = lessonRequestRepository;
         this.lessonRequestMapper = lessonRequestMapper;
         this.profileService = profileService;
         this.profileMapper = profileMapper;
         this.availabilityService = availabilityService;
         this.lessonRequestValidator = lessonRequestValidator;
+        this.tuitionService = tuitionService;
     }
 
     @Transactional
@@ -134,8 +139,20 @@ public class LessonRequestService {
 
         if(status.equals(LessonRequestStatus.CONFIRMED)) {
 
+            //update corresponding time slot to booked
             Availability availability = request.getAvailability();
             availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.BOOKED);
+
+            //check if there is an existing tuition between student and tutor - if not, create it
+            if(!tuitionService.existsByProfileIds(request.getTutor().getId(),request.getStudent().getId())) {
+
+                TuitionDto tuitionDto = new TuitionDto();
+                tuitionDto.setActiveTuition(true);
+                tuitionDto.setStartDate(LocalDate.now());
+                tuitionDto.setStudentProfileId(request.getStudent().getId());
+                tuitionDto.setTutorProfileId(request.getTutor().getId());
+                tuitionService.createTuition(tuitionDto);
+            }
 
         } else if (status.equals(LessonRequestStatus.DECLINED)){
             Availability availability = request.getAvailability();

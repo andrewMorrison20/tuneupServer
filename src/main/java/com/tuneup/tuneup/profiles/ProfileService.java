@@ -213,6 +213,15 @@ public class ProfileService {
     public Boolean existById(long profileId){
         return profileValidator.existsById(profileId);
     }
+
+    /**
+     *For internal use only. For fetching profileDtos for use ion controller layer and repsonses use getProfileDto
+     * @return profile
+     */
+    public Profile fetchProfileEntityInternal(Long id){
+       return profileValidator.fetchById(id);
+    }
+
 }
 
 
