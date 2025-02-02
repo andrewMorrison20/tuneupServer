@@ -2,7 +2,12 @@ package com.tuneup.tuneup.tuitions;
 
 import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TuitionService {
@@ -11,13 +16,15 @@ public class TuitionService {
     private final ProfileService profileService;
     private final TuitionMapper tuitionMapper;
     private final  TuitionValidator tuitionValidator;
+    private final TuitionMapperImpl tuitionMapperImpl;
 
 
-    public TuitionService(TuitionRepository tuitionRepository, ProfileService profileService, TuitionMapper tuitionMapper, TuitionValidator tuitionValidator) {
+    public TuitionService(TuitionRepository tuitionRepository, ProfileService profileService, TuitionMapper tuitionMapper, TuitionValidator tuitionValidator, TuitionMapperImpl tuitionMapperImpl) {
         this.tuitionRepository = tuitionRepository;
         this.profileService = profileService;
         this.tuitionMapper = tuitionMapper;
         this.tuitionValidator = tuitionValidator;
+        this.tuitionMapperImpl = tuitionMapperImpl;
     }
 
     public TuitionDto createTuition(TuitionDto tuitionDto){
@@ -41,5 +48,26 @@ public class TuitionService {
 
     public boolean existsByProfileIds(Long tutorId, Long studentId){
         return tuitionValidator.existsByTutorStudentId(tutorId,studentId);
+    }
+
+    //TO-DO implement
+    public TuitionDto updateTuition(Long id, TuitionDto tuitionDto) {
+        return null;
+    }
+
+    public TuitionDto getTuitionById(Long id) {
+       return tuitionMapper.toDto(tuitionValidator.fetchAndValidateById(id));
+    }
+
+    public void deleteTuition(Long id) {
+    }
+
+    public Page<TuitionDto> getRequestsByTutor(Long tutorId, Pageable pageable) {
+
+        profileService.existById(tutorId);
+
+        Page<Tuition> allTuitions = tuitionRepository.findAllByTutorId(tutorId, pageable);
+
+        return allTuitions.map(tuitionMapper::toDto);
     }
 }

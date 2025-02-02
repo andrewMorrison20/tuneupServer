@@ -21,4 +21,10 @@ public class TuitionValidator {
     public boolean existsByTutorStudentId(Long tutorId, Long studentId) {
         return tuitionRepository.existsByTutorIdAndStudentId(tutorId,studentId);
     }
+
+    public Tuition fetchAndValidateById(Long tuitionId) {
+        return tuitionRepository.findById(tuitionId)
+                .orElseThrow(() -> new ValidationException("No existing tuition for id: " + tuitionId));
+    }
+
 }
