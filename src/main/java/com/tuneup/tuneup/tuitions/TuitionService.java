@@ -10,13 +10,14 @@ public class TuitionService {
     private final TuitionRepository tuitionRepository;
     private final ProfileService profileService;
     private final TuitionMapper tuitionMapper;
-    private TuitionValidator tuitionValidator;
+    private final  TuitionValidator tuitionValidator;
 
 
-    public TuitionService(TuitionRepository tuitionRepository, ProfileService profileService, TuitionMapper tuitionMapper) {
+    public TuitionService(TuitionRepository tuitionRepository, ProfileService profileService, TuitionMapper tuitionMapper, TuitionValidator tuitionValidator) {
         this.tuitionRepository = tuitionRepository;
         this.profileService = profileService;
         this.tuitionMapper = tuitionMapper;
+        this.tuitionValidator = tuitionValidator;
     }
 
     public TuitionDto createTuition(TuitionDto tuitionDto){

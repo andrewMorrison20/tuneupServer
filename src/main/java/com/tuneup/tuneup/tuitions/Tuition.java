@@ -30,6 +30,7 @@ public class Tuition {
     @Column(nullable = false)
     private LocalDate startDate;
 
+    @Column(nullable = true)
     private LocalDate endDate;
 
     @Column(nullable = false)
