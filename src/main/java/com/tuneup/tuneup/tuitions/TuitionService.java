@@ -1,7 +1,10 @@
 package com.tuneup.tuneup.tuitions;
 
 import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.profiles.ProfileType;
+import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,15 +19,15 @@ public class TuitionService {
     private final ProfileService profileService;
     private final TuitionMapper tuitionMapper;
     private final  TuitionValidator tuitionValidator;
-    private final TuitionMapperImpl tuitionMapperImpl;
+    private final ProfileMapper  profileMapper;
 
 
-    public TuitionService(TuitionRepository tuitionRepository, ProfileService profileService, TuitionMapper tuitionMapper, TuitionValidator tuitionValidator, TuitionMapperImpl tuitionMapperImpl) {
+    public TuitionService(TuitionRepository tuitionRepository, ProfileService profileService, TuitionMapper tuitionMapper, TuitionValidator tuitionValidator, TuitionMapperImpl tuitionMapperImpl, ProfileMapper profileMapper) {
         this.tuitionRepository = tuitionRepository;
         this.profileService = profileService;
         this.tuitionMapper = tuitionMapper;
         this.tuitionValidator = tuitionValidator;
-        this.tuitionMapperImpl = tuitionMapperImpl;
+        this.profileMapper = profileMapper;
     }
 
     public TuitionDto createTuition(TuitionDto tuitionDto){
@@ -62,12 +65,25 @@ public class TuitionService {
     public void deleteTuition(Long id) {
     }
 
-    public Page<TuitionDto> getRequestsByTutor(Long tutorId, Pageable pageable) {
+    public Page<ProfileDto> getRequestsByProfile(Long profileId, Pageable pageable) {
+        Profile profile = profileService.fetchProfileEntityInternal(profileId);
 
+        if (profile.getProfileType().equals(ProfileType.TUTOR)) {
+            return getStudentsByTutor(profileId, pageable);
+        } else {
+            return getTutorsByStudent(profileId, pageable);
+        }
+    }
+
+    public Page<ProfileDto> getStudentsByTutor(Long tutorId, Pageable pageable) {
         profileService.existById(tutorId);
+        return tuitionRepository.findStudentsByTutorId(tutorId, pageable)
+                .map(profileMapper::toProfileDto);
+    }
 
-        Page<Tuition> allTuitions = tuitionRepository.findAllByTutorId(tutorId, pageable);
-
-        return allTuitions.map(tuitionMapper::toDto);
+    public Page<ProfileDto> getTutorsByStudent(Long studentId, Pageable pageable) {
+        profileService.existById(studentId);
+        return tuitionRepository.findTutorsByStudentId(studentId, pageable)
+                .map(profileMapper::toProfileDto);
     }
 }
