@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.availability.repositories;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.tuneup.tuneup.availability.LessonRequest;
 import com.tuneup.tuneup.profiles.Profile;
 import org.springframework.data.domain.Page;
@@ -27,4 +28,6 @@ public interface LessonRequestRepository extends JpaRepository<LessonRequest, Lo
             " ORDER BY a.startTime ASC")
     Page<LessonRequest> findRequestsByTutorIdAndStudentId(@Param("studentId")Long studentId, @Param("tutorId") Long tutorId, Pageable pageable);
 
+    @Query("SELECT DISTINCT s FROM LessonRequest lr JOIN lr.tutor s WHERE lr.student.id = :studentId ORDER BY s.displayName ASC")
+    Page<Profile> findTutorsByStudentId(@Param("studentId") Long tutorId, Pageable pageable);
 }

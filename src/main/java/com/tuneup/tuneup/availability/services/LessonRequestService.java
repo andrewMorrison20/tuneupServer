@@ -147,7 +147,7 @@ public class LessonRequestService {
      * @return Page o profile dtos
      */
     private Page<ProfileDto> getTutorsByStudent(Long studentId, Pageable pageable) {
-        return lessonRequestRepository.findStudentsByTutorId(studentId, pageable)
+        return lessonRequestRepository.findTutorsByStudentId(studentId, pageable)
                 .map(profileMapper::toProfileDto);
     }
 
