@@ -9,8 +9,10 @@ import com.tuneup.tuneup.availability.mappers.LessonRequestMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.availability.validators.LessonRequestValidator;
+import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.tuitions.TuitionDto;
 import com.tuneup.tuneup.tuitions.TuitionService;
@@ -118,16 +120,34 @@ public class LessonRequestService {
                 .map(lessonRequestMapper::toDto);
     }
 
+    public Page<ProfileDto> getAllRequestProfilesByProfileId(Long profileId,Pageable pageable){
+        Profile profile = profileService.fetchProfileEntityInternal(profileId);
+        if(profile.getProfileType().equals(ProfileType.TUTOR)){
+            return getStudentsByTutor(profileId,pageable);
+        } else if(profile.getProfileType().equals(ProfileType.STUDENT)){
+            return getTutorsByStudent(profileId,pageable);
+        }
+        return Page.empty();
+    }
     /**
      * gets the set of distinct profiles that have sent lesson requests to a given tutor
      * @param tutorId
      * @param pageable
      * @return Page o profile dtos
      */
-    public Page<ProfileDto> getStudentsByTutor(Long tutorId, Pageable pageable) {
-        profileService.existById(tutorId);
-
+    private Page<ProfileDto> getStudentsByTutor(Long tutorId, Pageable pageable) {
         return lessonRequestRepository.findStudentsByTutorId(tutorId, pageable)
+                .map(profileMapper::toProfileDto);
+    }
+
+    /**
+     * gets the set of distinct profiles that a student has sent requests to
+     * @param studentId
+     * @param pageable
+     * @return Page o profile dtos
+     */
+    private Page<ProfileDto> getTutorsByStudent(Long studentId, Pageable pageable) {
+        return lessonRequestRepository.findStudentsByTutorId(studentId, pageable)
                 .map(profileMapper::toProfileDto);
     }
 

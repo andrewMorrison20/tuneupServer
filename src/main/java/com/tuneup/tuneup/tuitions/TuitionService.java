@@ -65,25 +65,32 @@ public class TuitionService {
     public void deleteTuition(Long id) {
     }
 
-    public Page<ProfileDto> getRequestsByProfile(Long profileId, Pageable pageable) {
+    public Page<ProfileDto> getRequestsByProfile(Long profileId, Pageable pageable, boolean active) {
         Profile profile = profileService.fetchProfileEntityInternal(profileId);
 
         if (profile.getProfileType().equals(ProfileType.TUTOR)) {
-            return getStudentsByTutor(profileId, pageable);
+            return getStudentsByTutor(profileId, pageable,active);
         } else {
-            return getTutorsByStudent(profileId, pageable);
+            return getTutorsByStudent(profileId, pageable,active);
         }
     }
 
-    public Page<ProfileDto> getStudentsByTutor(Long tutorId, Pageable pageable) {
+    public Page<ProfileDto> getStudentsByTutor(Long tutorId, Pageable pageable, boolean active) {
         profileService.existById(tutorId);
-        return tuitionRepository.findStudentsByTutorId(tutorId, pageable)
+        return tuitionRepository.findStudentsByTutorId(tutorId, active ,pageable)
                 .map(profileMapper::toProfileDto);
     }
 
-    public Page<ProfileDto> getTutorsByStudent(Long studentId, Pageable pageable) {
+    public Page<ProfileDto> getTutorsByStudent(Long studentId, Pageable pageable, boolean active) {
         profileService.existById(studentId);
-        return tuitionRepository.findTutorsByStudentId(studentId, pageable)
+        return tuitionRepository.findTutorsByStudentId(studentId,active, pageable)
                 .map(profileMapper::toProfileDto);
+    }
+
+    public TuitionDto getTuitionByStudentAndTutor(Long studentProfileId, Long tutorProfileId) {
+        profileService.existById(studentProfileId);
+        profileService.existById(tutorProfileId);
+        return tuitionMapper.toDto(tuitionValidator.fetchAndValidateTuitionByIds(studentProfileId,tutorProfileId));
+
     }
 }

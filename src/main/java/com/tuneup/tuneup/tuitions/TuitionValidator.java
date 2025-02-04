@@ -27,4 +27,9 @@ public class TuitionValidator {
                 .orElseThrow(() -> new ValidationException("No existing tuition for id: " + tuitionId));
     }
 
+    public Tuition fetchAndValidateTuitionByIds(Long studentProfileId, Long tutorProfileId) {
+        return tuitionRepository.findByStudentIdAndTutorId(studentProfileId, tutorProfileId)
+                .orElseThrow(() -> new ValidationException("No tuition exists for the given student and tutor"));
+    }
+
 }

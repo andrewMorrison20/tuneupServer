@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -20,10 +21,11 @@ public interface TuitionRepository extends JpaRepository<Tuition,Long> {
 
     Page<Tuition> findAllByStudentId(Long profileId, Pageable pageable);
 
-    @Query("SELECT t.student FROM Tuition t WHERE t.tutor.id = :tutorId")
-    Page<Profile> findStudentsByTutorId(@Param("tutorId") Long tutorId, Pageable pageable);
+    @Query("SELECT t.student FROM Tuition t WHERE t.tutor.id = :tutorId AND t.activeTuition =:active")
+    Page<Profile> findStudentsByTutorId(@Param("tutorId") Long tutorId, @Param("active") boolean active, Pageable pageable);
 
-    @Query("SELECT t.tutor FROM Tuition t WHERE t.student.id = :studentId")
-    Page<Profile> findTutorsByStudentId(@Param("studentId") Long studentId, Pageable pageable);
+    @Query("SELECT t.tutor FROM Tuition t WHERE t.student.id = :studentId AND t.activeTuition =:active")
+    Page<Profile> findTutorsByStudentId(@Param("studentId") Long studentId, @Param("active") boolean active, Pageable pageable);
 
+    Optional<Tuition> findByStudentIdAndTutorId(Long studentProfileId, Long tutorProfileId);
 }

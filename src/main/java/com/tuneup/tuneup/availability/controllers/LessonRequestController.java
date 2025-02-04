@@ -59,7 +59,7 @@ public class LessonRequestController {
     public ResponseEntity<Page<ProfileDto>> getStudentsByTutor(
             @PathVariable Long tutorId, Pageable pageable) {
 
-        return ResponseEntity.ok(lessonRequestService.getStudentsByTutor(tutorId, pageable));
+        return ResponseEntity.ok(lessonRequestService.getAllRequestProfilesByProfileId(tutorId, pageable));
     }
 
     @PatchMapping("/status/{lessonRequestId}")

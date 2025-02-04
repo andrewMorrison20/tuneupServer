@@ -1,12 +1,11 @@
 package com.tuneup.tuneup.tuitions;
 
-import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/tuitions")
@@ -24,13 +23,22 @@ public class TuitionController {
         return ResponseEntity.ok(tuitionDto);
     }
 
-    @GetMapping("/activeTuitions/{profileId}")
+    @GetMapping("/tuitionsByProfile/{profileId}")
     public ResponseEntity<Page<ProfileDto>> getTuitionsByProfile(
             @PathVariable Long profileId,
+            @RequestParam boolean active,
             Pageable pageable) {
 
-        Page<ProfileDto> tuitionProfileDtos = tuitionService.getRequestsByProfile(profileId, pageable);
+        Page<ProfileDto> tuitionProfileDtos = tuitionService.getRequestsByProfile(profileId, pageable,active);
         return ResponseEntity.ok(tuitionProfileDtos);
+    }
+
+    @GetMapping("/byStudentAndTutor")
+    public ResponseEntity<TuitionDto> getTuitionByStudentAndTutor(
+            @RequestParam Long studentProfileId,
+            @RequestParam Long tutorProfileId) {
+        TuitionDto tuitionDto = tuitionService.getTuitionByStudentAndTutor(studentProfileId, tutorProfileId);
+        return ResponseEntity.ok(tuitionDto);
     }
 
     @PostMapping
