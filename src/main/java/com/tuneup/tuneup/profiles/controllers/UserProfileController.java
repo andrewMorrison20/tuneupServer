@@ -78,7 +78,7 @@ public class UserProfileController {
         return profileService.searchProfiles(criteria, pageable);
     }
 
-    @GetMapping("/InstrumentQualifications/{profileId}")
+    @GetMapping("/instrumentQualifications/{profileId}")
     public ResponseEntity<Set<ProfileInstrumentQualificationDto>> getProfileInstrumentQualfiications(@PathVariable Long profileId){
         Set<ProfileInstrumentQualificationDto> instrumentQualificationDtos = profileService.getProfileQualificationsById(profileId);
         return ResponseEntity.ok().body(instrumentQualificationDtos);

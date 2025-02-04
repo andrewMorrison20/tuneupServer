@@ -61,7 +61,7 @@ public class ProfileService {
                           AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper,
                           InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository,
                           RegionRepository regionRepository, InstrumentService instrumentService, QualificationMapper qualificationMapper
-                          , QualificationService qualificationService, AvailabilityRepository availabilityRepository, @Qualifier("profileInstrumentQualificationMapper") ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper) {
+                          , QualificationService qualificationService, AvailabilityRepository availabilityRepository,ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper) {
 
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
