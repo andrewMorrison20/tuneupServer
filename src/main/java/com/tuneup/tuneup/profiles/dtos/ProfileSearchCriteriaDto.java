@@ -1,5 +1,7 @@
 package com.tuneup.tuneup.profiles.dtos;
 
+import com.tuneup.tuneup.profiles.enums.LessonType;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +15,15 @@ public class ProfileSearchCriteriaDto {
     private Set<Long> qualifications;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private LessonType lessonType;
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
 
     public LocalDateTime getStartTime() {
         return startTime;

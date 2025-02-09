@@ -70,6 +70,10 @@ public class ProfileSpecification {
                 ));
             }
 
+            if(criteria.getLessonType()!=null){
+                predicates.add(builder.equal(root.get("lessonType"),criteria.getLessonType()));
+            }
+
             if (criteria.getStartTime() != null && criteria.getEndTime() != null) {
                 Set<Long> availableProfileIds = availabilityRepository.findAvailableProfileIds(
                         criteria.getStartTime(), criteria.getEndTime()
