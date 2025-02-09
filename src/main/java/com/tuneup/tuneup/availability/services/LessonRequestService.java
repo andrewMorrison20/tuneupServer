@@ -2,6 +2,7 @@ package com.tuneup.tuneup.availability.services;
 
 import com.tuneup.tuneup.availability.Availability;
 import com.tuneup.tuneup.availability.LessonRequest;
+import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
@@ -14,6 +15,7 @@ import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.tuitions.Tuition;
 import com.tuneup.tuneup.tuitions.TuitionDto;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
@@ -36,12 +38,13 @@ public class LessonRequestService {
     private final AvailabilityService availabilityService;
     private final LessonRequestValidator lessonRequestValidator;
     private final TuitionService tuitionService;
+    private final LessonService lessonService;
 
     public LessonRequestService(AvailabilityRepository availabilityRepository,
                                 LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService) {
+                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, LessonService lessonService) {
         this.lessonRequestRepository = lessonRequestRepository;
         this.lessonRequestMapper = lessonRequestMapper;
         this.profileService = profileService;
@@ -49,6 +52,7 @@ public class LessonRequestService {
         this.availabilityService = availabilityService;
         this.lessonRequestValidator = lessonRequestValidator;
         this.tuitionService = tuitionService;
+        this.lessonService = lessonService;
     }
 
     @Transactional
@@ -162,6 +166,15 @@ public class LessonRequestService {
         switch (status) {
             case CONFIRMED:
                 handleConfirmedRequest(request, availability);
+
+                TuitionDto tuitionDto = tuitionService.getTuitionByStudentAndTutor(request.getStudent().getId(),request.getTutor().getId());
+
+                LessonDto lessonDto = new LessonDto();
+                lessonDto.setTuitionId(tuitionDto.getId());
+                lessonDto.setAvailabilityId(availability.getId());
+
+                lessonService.createLesson(lessonDto);
+
                 break;
             case DECLINED:
                 handleDeclinedRequest(availability);
@@ -173,7 +186,7 @@ public class LessonRequestService {
             declineConflictingRequests(availability);
         }
 
-        // Now delete the current request
+
         lessonRequestRepository.delete(request);
     }
 

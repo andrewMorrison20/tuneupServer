@@ -3,11 +3,10 @@ import com.tuneup.tuneup.availability.Availability;
 import com.tuneup.tuneup.availability.dtos.AvailabilityDto;
 import com.tuneup.tuneup.availability.services.AvailabilityService;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -46,7 +45,6 @@ public class AvailabilityController {
 
         return ResponseEntity.ok(savedAvailability);
     }
-
 
 }
 

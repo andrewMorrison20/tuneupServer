@@ -4,6 +4,7 @@ import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "lesson", uniqueConstraints = @UniqueConstraint(columnNames = "availability_id"))
 public class Lesson {
 
     @Id
@@ -39,7 +40,7 @@ public class Lesson {
     private Tuition tuition;
 
     @OneToOne
-    @JoinColumn(name = "availability_id", nullable = false)
+    @JoinColumn(name = "availability_id", nullable = false,unique = true)
     private Availability availability;
 
 }
