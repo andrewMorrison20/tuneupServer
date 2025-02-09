@@ -161,6 +161,10 @@ public class ProfileService {
             existingProfile.setProfileType(profileDto.getProfileType());
         }
 
+        if(profileDto.getLessonType() != null){
+            existingProfile.setLessonType(profileDto.getLessonType());
+        }
+
         if(profileDto.getDisplayName()!=null){
             existingProfile.setDisplayName(profileDto.getDisplayName());
         }

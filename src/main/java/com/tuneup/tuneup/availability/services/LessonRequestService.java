@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Service
 public class LessonRequestService {
@@ -55,6 +56,7 @@ public class LessonRequestService {
 
         Availability availability = availabilityService.getAvailabilityByIdInternal(requestDto.getAvailabilityId());
 
+        lessonRequestValidator.validateDuplicateRequest(requestDto.getStudentProfileId(),availability.getId());
         availabilityService.validateAvailability(availability);
 
         LocalDateTime requestStart = requestDto.getRequestedStartTime();
@@ -152,35 +154,54 @@ public class LessonRequestService {
     }
 
     @Transactional
-    public void updateLessonRequestStatus(Long lessonRequestId, String lessonReqStatus) {
-
+    public void updateLessonRequestStatus(Long lessonRequestId, String lessonReqStatus, Boolean autoDeclineConflicts) {
         LessonRequest request = getLessonRequestByIdInternal(lessonRequestId);
+        Availability availability = request.getAvailability();
         LessonRequestStatus status = LessonRequestStatus.valueOf(lessonReqStatus);
 
-        if(status.equals(LessonRequestStatus.CONFIRMED)) {
-
-            //update corresponding time slot to booked
-            Availability availability = request.getAvailability();
-            availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.BOOKED);
-
-            //check if there is an existing tuition between student and tutor - if not, create it
-            if(!tuitionService.existsByProfileIds(request.getTutor().getId(),request.getStudent().getId())) {
-
-                TuitionDto tuitionDto = new TuitionDto();
-                tuitionDto.setActiveTuition(true);
-                tuitionDto.setStartDate(LocalDate.now());
-                tuitionDto.setStudentProfileId(request.getStudent().getId());
-                tuitionDto.setTutorProfileId(request.getTutor().getId());
-                tuitionService.createTuition(tuitionDto);
-            }
-
-        } else if (status.equals(LessonRequestStatus.DECLINED)){
-            Availability availability = request.getAvailability();
-            availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.AVAILABLE);
+        switch (status) {
+            case CONFIRMED:
+                handleConfirmedRequest(request, availability);
+                break;
+            case DECLINED:
+                handleDeclinedRequest(availability);
+                break;
         }
 
+        // Process conflicting requests before deleting the current request
+        if (Boolean.TRUE.equals(autoDeclineConflicts)) {
+            declineConflictingRequests(availability);
+        }
+
+        // Now delete the current request
         lessonRequestRepository.delete(request);
     }
+
+    private void handleConfirmedRequest(LessonRequest request, Availability availability) {
+        availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.BOOKED);
+
+        // Check and create tuition if it doesn't exist
+        if (!tuitionService.existsByProfileIds(request.getTutor().getId(), request.getStudent().getId())) {
+            TuitionDto tuitionDto = new TuitionDto();
+            tuitionDto.setActiveTuition(true);
+            tuitionDto.setStartDate(LocalDate.now());
+            tuitionDto.setStudentProfileId(request.getStudent().getId());
+            tuitionDto.setTutorProfileId(request.getTutor().getId());
+            tuitionService.createTuition(tuitionDto);
+        }
+    }
+
+    private void handleDeclinedRequest(Availability availability) {
+        availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.AVAILABLE);
+    }
+
+    private void declineConflictingRequests(Availability availability) {
+        Set<LessonRequest> conflictingRequests = lessonRequestRepository.findAllByAvailabilityId(availability.getId());
+        if (!conflictingRequests.isEmpty()) {
+            lessonRequestRepository.deleteAll(conflictingRequests);
+        }
+    }
+
 
     /**
      * Fetch and validate an lessonRequest by id

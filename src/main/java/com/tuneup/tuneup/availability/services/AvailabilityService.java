@@ -80,7 +80,7 @@ public class AvailabilityService {
      *  Validate if availability slot is still available
      */
     protected void validateAvailability(Availability availability) {
-        if (!availability.getStatus().equals(AvailabilityStatus.AVAILABLE)) {
+        if (availability.getStatus().equals(AvailabilityStatus.BOOKED)) {
             throw new IllegalStateException("Slot is no longer available");
         }
     }

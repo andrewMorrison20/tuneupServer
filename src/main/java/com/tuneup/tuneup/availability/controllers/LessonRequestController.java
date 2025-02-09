@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.availability.controllers;
 
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
+import com.tuneup.tuneup.availability.dtos.UpdateLessonRequestStatusDto;
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
 import com.tuneup.tuneup.availability.services.LessonRequestService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
@@ -63,8 +64,13 @@ public class LessonRequestController {
     }
 
     @PatchMapping("/status/{lessonRequestId}")
-    public ResponseEntity<Integer> updateRequestStatus(@PathVariable Long lessonRequestId,@RequestBody Map<String, String> statusMap){
-        lessonRequestService.updateLessonRequestStatus(lessonRequestId,statusMap.get("status"));
+    public ResponseEntity<Void> updateRequestStatus(
+            @PathVariable Long lessonRequestId,
+            @RequestBody UpdateLessonRequestStatusDto requestDto) {
+
+        lessonRequestService.updateLessonRequestStatus(
+                lessonRequestId, requestDto.getStatus(), requestDto.getAutoDeclineConflicts());
+
         return ResponseEntity.ok().build();
     }
 }

@@ -6,6 +6,7 @@ import com.tuneup.tuneup.genres.GenreDto;
 import com.tuneup.tuneup.images.ImageDto;
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileType;
+import com.tuneup.tuneup.profiles.enums.LessonType;
 import com.tuneup.tuneup.regions.RegionDto;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +18,19 @@ public class ProfileDto {
     private long id;
     private String displayName;
     private String bio;
-    private boolean onlineLessons;
     private ProfileType profileType;
     private Set<InstrumentDto> instruments;
     private long appUserId;
     private Double averageRating;
+    private LessonType lessonType;
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
 
     public Double getAverageRating() {
         return averageRating;
@@ -92,14 +101,6 @@ public class ProfileDto {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-    public boolean isOnlineLessons() {
-        return onlineLessons;
-    }
-
-    public void setOnlineLessons(boolean onlineLessons) {
-        this.onlineLessons = onlineLessons;
     }
 
     public ProfileType getProfileType() {

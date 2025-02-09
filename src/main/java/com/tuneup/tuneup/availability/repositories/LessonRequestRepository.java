@@ -30,4 +30,8 @@ public interface LessonRequestRepository extends JpaRepository<LessonRequest, Lo
 
     @Query("SELECT DISTINCT s FROM LessonRequest lr JOIN lr.tutor s WHERE lr.student.id = :studentId ORDER BY s.displayName ASC")
     Page<Profile> findTutorsByStudentId(@Param("studentId") Long tutorId, Pageable pageable);
+
+    Set<LessonRequest> findAllByAvailabilityId(Long id);
+
+    boolean existsByStudentIdAndAvailabilityId(Long studentId, Long availabilityId);
 }

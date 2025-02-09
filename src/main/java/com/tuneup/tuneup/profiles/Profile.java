@@ -4,6 +4,7 @@ import com.tuneup.tuneup.Instruments.Instrument;
 import com.tuneup.tuneup.genres.Genre;
 import com.tuneup.tuneup.images.Image;
 import com.tuneup.tuneup.pricing.Price;
+import com.tuneup.tuneup.profiles.enums.LessonType;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.regions.Region;
 import com.tuneup.tuneup.users.model.AppUser;
@@ -32,10 +33,21 @@ public class Profile {
     }
 
     private String bio;
-    private Boolean onlineLessons;
     @Enumerated(EnumType.STRING)
     private ProfileType profileType;
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
+
     private double averageRating;
+
+    @Enumerated(EnumType.STRING)
+    private LessonType lessonType;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
@@ -118,10 +130,6 @@ public class Profile {
         this.id = id;
     }
 
-    public Boolean getOnlineLessons() {
-        return onlineLessons;
-    }
-
     public Set<Instrument> getInstruments() {
         return instruments;
     }
@@ -137,10 +145,7 @@ public class Profile {
     public void setBio(String bio) {
         this.bio = bio;
     }
-    public void setOnlineLessons(Boolean onlineLessons) {
 
-        this.onlineLessons = onlineLessons;
-    }
 
     public ProfileType getProfileType() {
 

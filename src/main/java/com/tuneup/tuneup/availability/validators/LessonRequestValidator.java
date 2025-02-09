@@ -14,6 +14,14 @@ public class LessonRequestValidator {
         this.lessonRequestRepository = lessonRequestRepository;
     }
 
+    public void validateDuplicateRequest(Long studentId, Long availabilityId) {
+        if (lessonRequestRepository.existsByStudentIdAndAvailabilityId(studentId, availabilityId)) {
+            throw new ValidationException("Request already exists for Student and availability: " + availabilityId);
+        }
+    }
+
+
+
 
     public LessonRequest fetchAndValidateById(Long id) {
         return lessonRequestRepository.findById(id).orElseThrow(
