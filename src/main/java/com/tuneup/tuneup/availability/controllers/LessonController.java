@@ -5,11 +5,10 @@ import com.tuneup.tuneup.availability.services.LessonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/lessons")
+@RequestMapping("/api/lessons")
 public class LessonController {
 
     private final LessonService lessonService;

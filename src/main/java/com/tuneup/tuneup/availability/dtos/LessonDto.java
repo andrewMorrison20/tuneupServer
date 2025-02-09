@@ -1,12 +1,27 @@
 package com.tuneup.tuneup.availability.dtos;
 
+import com.tuneup.tuneup.availability.enums.LessonStatus;
+
 public class LessonDto {
     private Long id;
     private Long tuitionId;
-    private Long availabilityId;
+    private AvailabilityDto availabilityDto;
+    private LessonStatus lessonStatus;
+
+    public LessonStatus getLessonStatus() {
+        return lessonStatus;
+    }
+
+    public void setLessonStatus(LessonStatus lessonStatus) {
+        this.lessonStatus = lessonStatus;
+    }
 
     public Long getId() {
         return id;
+    }
+
+    public AvailabilityDto getAvailabilityDto() {
+        return availabilityDto;
     }
 
     public void setId(Long id) {
@@ -21,11 +36,11 @@ public class LessonDto {
         this.tuitionId = tuitionId;
     }
 
-    public Long getAvailabilityId() {
-        return availabilityId;
+    public AvailabilityDto getAvailabilityId() {
+        return availabilityDto;
     }
 
-    public void setAvailabilityId(Long availabilityId) {
-        this.availabilityId = availabilityId;
+    public void setAvailabilityDto(AvailabilityDto availabilityDto) {
+        this.availabilityDto = availabilityDto;
     }
 }

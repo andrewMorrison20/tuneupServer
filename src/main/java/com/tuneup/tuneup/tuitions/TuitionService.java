@@ -62,6 +62,10 @@ public class TuitionService {
        return tuitionMapper.toDto(tuitionValidator.fetchAndValidateById(id));
     }
 
+    public Tuition getTuitionEntityByIdInternal(Long id) {
+        return tuitionValidator.fetchAndValidateById(id);
+    }
+
     public void deleteTuition(Long id) {
     }
 

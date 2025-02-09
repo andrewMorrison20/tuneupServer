@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.availability;
 
+import com.tuneup.tuneup.availability.enums.LessonStatus;
 import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
 
@@ -42,5 +43,16 @@ public class Lesson {
     @OneToOne
     @JoinColumn(name = "availability_id", nullable = false,unique = true)
     private Availability availability;
+
+    public LessonStatus getLessonStatus() {
+        return lessonStatus;
+    }
+
+    public void setLessonStatus(LessonStatus lessonStatus) {
+        this.lessonStatus = lessonStatus;
+    }
+
+    @Enumerated(EnumType.STRING)
+    private LessonStatus lessonStatus;
 
 }

@@ -6,6 +6,7 @@ import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
+import com.tuneup.tuneup.availability.mappers.AvailabilityMapper;
 import com.tuneup.tuneup.availability.mappers.LessonRequestMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
@@ -15,7 +16,6 @@ import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
-import com.tuneup.tuneup.tuitions.Tuition;
 import com.tuneup.tuneup.tuitions.TuitionDto;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
@@ -38,13 +38,14 @@ public class LessonRequestService {
     private final AvailabilityService availabilityService;
     private final LessonRequestValidator lessonRequestValidator;
     private final TuitionService tuitionService;
+    private final AvailabilityMapper availabilityMapper;
     private final LessonService lessonService;
 
     public LessonRequestService(AvailabilityRepository availabilityRepository,
                                 LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, LessonService lessonService) {
+                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, AvailabilityMapper availabilityMapper, LessonService lessonService) {
         this.lessonRequestRepository = lessonRequestRepository;
         this.lessonRequestMapper = lessonRequestMapper;
         this.profileService = profileService;
@@ -52,6 +53,7 @@ public class LessonRequestService {
         this.availabilityService = availabilityService;
         this.lessonRequestValidator = lessonRequestValidator;
         this.tuitionService = tuitionService;
+        this.availabilityMapper = availabilityMapper;
         this.lessonService = lessonService;
     }
 
@@ -171,7 +173,7 @@ public class LessonRequestService {
 
                 LessonDto lessonDto = new LessonDto();
                 lessonDto.setTuitionId(tuitionDto.getId());
-                lessonDto.setAvailabilityId(availability.getId());
+                lessonDto.setAvailabilityDto(availabilityMapper.toAvailabilityDto(availability));
 
                 lessonService.createLesson(lessonDto);
 
