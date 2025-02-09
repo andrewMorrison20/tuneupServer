@@ -36,9 +36,6 @@ public class LessonDto {
         this.tuitionId = tuitionId;
     }
 
-    public AvailabilityDto getAvailabilityId() {
-        return availabilityDto;
-    }
 
     public void setAvailabilityDto(AvailabilityDto availabilityDto) {
         this.availabilityDto = availabilityDto;

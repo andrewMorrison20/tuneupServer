@@ -11,6 +11,7 @@ import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.tuitions.TuitionValidator;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,9 +45,9 @@ public class LessonService {
         lessonRepository.save(lesson);
     }
 
-    public Set<LessonDto> getLessonsByTuitionId(Long tuitionId) {
+    public Set<LessonDto> getLessonsByTuitionId(Long tuitionId, LocalDateTime start, LocalDateTime end) {
         tuitionRepository.existsById(tuitionId);
-        return lessonRepository.findAllByTuitionId(tuitionId)
+        return lessonRepository.findLessonsByPeriod(tuitionId,start,end)
                 .stream()
                 .map(lessonMapper::toDto)
                 .collect(Collectors.toSet());

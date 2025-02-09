@@ -2,10 +2,20 @@ package com.tuneup.tuneup.availability.repositories;
 
 import com.tuneup.tuneup.availability.Lesson;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     Set<Lesson> findAllByTuitionId(Long tuitionId);
+
+    @Query("SELECT l FROM Lesson l " +
+            "WHERE l.availability.startTime BETWEEN :start AND :end " +
+            "AND l.tuition.id = :tuitionId")
+        Set<Lesson> findLessonsByPeriod(@Param("tuitionId") Long tuitionId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
+
+
