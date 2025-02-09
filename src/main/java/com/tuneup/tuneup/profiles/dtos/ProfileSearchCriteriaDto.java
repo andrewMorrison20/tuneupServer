@@ -15,13 +15,13 @@ public class ProfileSearchCriteriaDto {
     private Set<Long> qualifications;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private LessonType lessonType;
+    private Set<LessonType> lessonType;
 
-    public LessonType getLessonType() {
+    public Set<LessonType> getLessonType() {
         return lessonType;
     }
 
-    public void setLessonType(LessonType lessonType) {
+    public void setLessonType(Set<LessonType> lessonType) {
         this.lessonType = lessonType;
     }
 

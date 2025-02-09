@@ -30,6 +30,10 @@ public class ProfileSpecification {
                 predicates.add(builder.equal(root.get("profileType"), criteria.getProfileType()));
             }
 
+            if (criteria.getLessonType() != null && !criteria.getLessonType().isEmpty()) {
+                predicates.add(root.get("lessonType").in(criteria.getLessonType()));
+            }
+
             if (criteria.getQualifications() != null && !criteria.getQualifications().isEmpty()) {
                 // Join Profile with ProfileInstrumentQualification
                 Join<Profile, ProfileInstrumentQualification> qualificationJoin = root.join("profileInstrumentQualifications");
@@ -70,9 +74,6 @@ public class ProfileSpecification {
                 ));
             }
 
-            if(criteria.getLessonType()!=null){
-                predicates.add(builder.equal(root.get("lessonType"),criteria.getLessonType()));
-            }
 
             if (criteria.getStartTime() != null && criteria.getEndTime() != null) {
                 Set<Long> availableProfileIds = availabilityRepository.findAvailableProfileIds(
