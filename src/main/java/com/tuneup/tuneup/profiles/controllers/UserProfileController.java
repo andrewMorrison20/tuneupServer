@@ -5,8 +5,10 @@ import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 
-import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
+import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
+import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -69,10 +71,16 @@ public class UserProfileController {
         return ResponseEntity.ok(rowsEffected);
     }
     @PostMapping("/search")
-    public Page<ProfileDto> findBySpec(@RequestBody(required = false) ProfileSearchCriteria criteria, Pageable pageable) {
+    public Page<ProfileDto> findBySpec(@RequestBody(required = false) ProfileSearchCriteriaDto criteria, Pageable pageable) {
         if (criteria == null) {
-            criteria = new ProfileSearchCriteria();
+            criteria = new ProfileSearchCriteriaDto();
         }
         return profileService.searchProfiles(criteria, pageable);
+    }
+
+    @GetMapping("/instrumentQualifications/{profileId}")
+    public ResponseEntity<Set<ProfileInstrumentQualificationDto>> getProfileInstrumentQualfiications(@PathVariable Long profileId){
+        Set<ProfileInstrumentQualificationDto> instrumentQualificationDtos = profileService.getProfileQualificationsById(profileId);
+        return ResponseEntity.ok().body(instrumentQualificationDtos);
     }
 }

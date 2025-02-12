@@ -28,7 +28,7 @@ public class JwtUtil {
     }
 
     // Generate a JWT token
-    public String generateToken(String username, long id) throws JOSEException {
+    public String generateToken(String username, long id,long profileId) throws JOSEException {
         JWSSigner signer = new MACSigner(secret);
 
         // Build claims for the token
@@ -36,6 +36,7 @@ public class JwtUtil {
                 .subject("User Details")
                 .claim("username", username)
                 .claim("userId", id)
+                .claim("profileId",profileId)
                 .issuer("TUNEUP")
                 .issueTime(new Date())
                 .expirationTime(new Date(System.currentTimeMillis() + 3600 * 1000)) // Set expiry to 1 hour

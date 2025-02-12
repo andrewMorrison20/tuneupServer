@@ -50,7 +50,7 @@ class AuthControllerTests {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
         when(appUserService.getUserByEmail("user@example.com")).thenReturn(userDto);
-        when(jwtUtil.generateToken("user@example.com", 1L)).thenReturn("mock-jwt-token");
+        when(jwtUtil.generateToken("user@example.com", 1L,1L)).thenReturn("mock-jwt-token");
 
         LoginResponseDto response = authController.login(loginRequest);
 

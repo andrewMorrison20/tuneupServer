@@ -2,6 +2,7 @@ package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.InstrumentMapper;
 import com.tuneup.tuneup.Instruments.InstrumentService;
+import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.images.Image;
 import com.tuneup.tuneup.images.ImageRepository;
@@ -11,12 +12,13 @@ import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.pricing.PriceValidator;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
-import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteria;
+import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
 import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
+import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMapper;
 import com.tuneup.tuneup.qualifications.mappers.QualificationMapper;
 import com.tuneup.tuneup.qualifications.services.QualificationService;
 import com.tuneup.tuneup.regions.RegionDto;
@@ -24,6 +26,7 @@ import com.tuneup.tuneup.regions.RegionMapper;
 import com.tuneup.tuneup.regions.RegionRepository;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,12 +54,14 @@ public class ProfileService {
     private final InstrumentService instrumentService;
     private final QualificationMapper qualificationMapper;
     private final QualificationService qualificationService;
+    private final AvailabilityRepository availabilityRepository;
+    private final ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper;
 
     public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator,
                           AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper,
                           InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository,
                           RegionRepository regionRepository, InstrumentService instrumentService, QualificationMapper qualificationMapper
-                          ,QualificationService qualificationService) {
+                          , QualificationService qualificationService, AvailabilityRepository availabilityRepository,ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper) {
 
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
@@ -73,6 +78,8 @@ public class ProfileService {
         this.instrumentService = instrumentService;
         this.qualificationMapper = qualificationMapper;
         this.qualificationService = qualificationService;
+        this.availabilityRepository = availabilityRepository;
+        this.profileInstrumentQualificationMapper = profileInstrumentQualificationMapper;
     }
 
 
@@ -154,6 +161,10 @@ public class ProfileService {
             existingProfile.setProfileType(profileDto.getProfileType());
         }
 
+        if(profileDto.getLessonType() != null){
+            existingProfile.setLessonType(profileDto.getLessonType());
+        }
+
         if(profileDto.getDisplayName()!=null){
             existingProfile.setDisplayName(profileDto.getDisplayName());
         }
@@ -172,8 +183,8 @@ public class ProfileService {
         return profileMapper.toProfileDto(profile);
     }
 
-    public Page<ProfileDto> searchProfiles(ProfileSearchCriteria criteria, Pageable page) {
-        return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria, regionRepository),page)
+    public Page<ProfileDto> searchProfiles(ProfileSearchCriteriaDto criteria, Pageable page) {
+        return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria, regionRepository, availabilityRepository),page)
                 .map(profileMapper::toProfileDto);
     }
 
@@ -205,6 +216,26 @@ public class ProfileService {
         qualification.setInstrument(instrumentService.getInstrumentByIdInternal(dto.getInstrumentId()));
         qualification.setQualification(qualificationService.getQualificationByIdInternal(dto.getQualificationId()));
         return qualification;
+    }
+
+    public Boolean existById(long profileId){
+        return profileValidator.existsById(profileId);
+    }
+
+    /**
+     *For internal use only. For fetching profileDtos for use ion controller layer and repsonses use getProfileDto
+     * @return profile
+     */
+    public Profile fetchProfileEntityInternal(Long id){
+       return profileValidator.fetchById(id);
+    }
+
+    public Set<ProfileInstrumentQualificationDto> getProfileQualificationsById(Long profileId){
+        Profile profile = fetchProfileEntityInternal(profileId);
+        return profile.getProfileInstrumentQualifications()
+                .stream()
+                .map(profileInstrumentQualificationMapper::toDto)
+                .collect(Collectors.toSet());
     }
 }
 
