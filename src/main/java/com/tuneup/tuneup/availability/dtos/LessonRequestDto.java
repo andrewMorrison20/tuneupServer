@@ -1,6 +1,9 @@
 package com.tuneup.tuneup.availability.dtos;
 
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
+import com.tuneup.tuneup.profiles.enums.LessonType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +15,17 @@ public class LessonRequestDto {
     private LocalDateTime requestedEndTime;
     private Long availabilityId;
     private LessonRequestStatus status;
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
+
+    @Enumerated(EnumType.STRING)
+    private LessonType lessonType;
 
     public LessonRequestStatus getStatus() {
         return status;

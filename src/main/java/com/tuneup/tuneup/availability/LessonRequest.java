@@ -2,6 +2,7 @@ package com.tuneup.tuneup.availability;
 
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
 import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.enums.LessonType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -33,6 +34,16 @@ public class LessonRequest {
     @JoinColumn(name = "availability_id")
     private Availability availability;
 
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
+
+    @Enumerated(EnumType.STRING)
+    private LessonType lessonType;
 
     @Transient
     public LocalDateTime getRequestedStartTime() {

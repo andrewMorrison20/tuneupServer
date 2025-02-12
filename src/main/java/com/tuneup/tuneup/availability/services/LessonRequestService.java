@@ -80,6 +80,8 @@ public class LessonRequestService {
      * @
      */
     public LessonRequestDto createLessonRequest(LessonRequestDto requestDto, Availability pendingAvailability) {
+
+        //TO-DO validate lesson request - lesson type
         LessonRequest lessonRequest = lessonRequestMapper.toLessonRequest(requestDto);
         lessonRequest.setStudent(profileMapper.toProfile(profileService.getProfileDto(requestDto.getStudentProfileId())));
         lessonRequest.setTutor(profileMapper.toProfile(profileService.getProfileDto(requestDto.getTutorProfileId())));
@@ -174,6 +176,7 @@ public class LessonRequestService {
                 LessonDto lessonDto = new LessonDto();
                 lessonDto.setTuitionId(tuitionDto.getId());
                 lessonDto.setAvailabilityDto(availabilityMapper.toAvailabilityDto(availability));
+                lessonDto.setLessonType(request.getLessonType());
 
                 lessonService.createLesson(lessonDto);
 

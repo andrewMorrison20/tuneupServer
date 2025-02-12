@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.availability;
 
 import com.tuneup.tuneup.availability.enums.LessonStatus;
+import com.tuneup.tuneup.profiles.enums.LessonType;
 import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
 
@@ -55,4 +56,14 @@ public class Lesson {
     @Enumerated(EnumType.STRING)
     private LessonStatus lessonStatus;
 
+    @Enumerated(EnumType.STRING)
+    private LessonType lessonType;
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
 }

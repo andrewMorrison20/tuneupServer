@@ -1,12 +1,28 @@
 package com.tuneup.tuneup.availability.dtos;
 
 import com.tuneup.tuneup.availability.enums.LessonStatus;
+import com.tuneup.tuneup.profiles.enums.LessonType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 public class LessonDto {
+
     private Long id;
     private Long tuitionId;
     private AvailabilityDto availabilityDto;
     private LessonStatus lessonStatus;
+
+    @Enumerated(EnumType.STRING)
+    private LessonType lessonType;
+
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
 
     public LessonStatus getLessonStatus() {
         return lessonStatus;
