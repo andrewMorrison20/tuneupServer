@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This api is for creating a users residential address, this is primarily for verification and billing details once integrated
@@ -79,5 +81,19 @@ public class AddressController {
     public ResponseEntity<List<AddressDto>> getAllAddresses() {
         List<AddressDto> addresses = addressService.getAllAddresses();
         return ResponseEntity.ok(addresses);
+    }
+
+    /**
+     * Fetch address suggestions (autocomplete using Google Places api) based on house number and postcode.
+     *
+     * @param postcode    The postcode input by the user.
+     * @return A set of AddressDto suggestions.
+     */
+    @GetMapping("/lookup")
+    public ResponseEntity<List<AddressDto>> getAddressSuggestions(
+            @RequestParam String postcode,
+            @RequestParam String houseNumber) {
+        List<AddressDto> suggestions = addressService.getAddressSuggestions(postcode, houseNumber);
+        return ResponseEntity.ok(suggestions);
     }
 }
