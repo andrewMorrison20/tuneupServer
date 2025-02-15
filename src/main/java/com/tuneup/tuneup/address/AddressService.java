@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,14 +18,14 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
 
-    @Value("${google.places.api.key}") // Load API key from application.properties
+    @Value("${google.places.api.key}")
     private String googleApiKey;
-    private final RestTemplate restTemplate;
 
-    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper, RestTemplate restTemplate) {
+
+    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper) {
         this.addressRepository = addressRepository;
         this.addressMapper = addressMapper;
-        this.restTemplate = restTemplate;
+
     }
 
     /**
@@ -102,62 +104,72 @@ public class AddressService {
     }
 
 
-    public List<AddressDto> getAddressSuggestions(String postcode, String houseNumber) {
-        String query = houseNumber + " " + postcode;
-        String url = "https://maps.googleapis.com/maps/api/place/autocomplete/json" +
-                "?input=" + query +
-                "&types=address" +
+    /**
+     * Fetch address suggestions based on postcode and street name.
+     */
+    public List<AddressDto> getAddressSuggestions(String postcode, String streetName) {
+        RestTemplate restTemplate = new RestTemplate();
+        String query = streetName + " " + postcode;
+        String url = "https://maps.googleapis.com/maps/api/geocode/json" +
+                "?address=" + URLEncoder.encode(query, StandardCharsets.UTF_8) +
                 "&components=country:GB" +
                 "&key=" + googleApiKey;
 
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-        List<Map<String, Object>> predictions = (List<Map<String, Object>>) response.get("predictions");
+        List<Map<String, Object>> results = (List<Map<String, Object>>) response.get("results");
 
-        return predictions.stream().map(this::convertToAddressDto).collect(Collectors.toList());
+        if (results == null || results.isEmpty()) {
+            throw new RuntimeException("No addresses found for " + query);
+        }
+
+        return results.stream()
+                .map(this::convertToAddressDto)
+                .collect(Collectors.toList());
     }
 
-
-    private AddressDto convertToAddressDto(Map<String, Object> place) {
+    private AddressDto convertToAddressDto(Map<String, Object> result) {
         AddressDto dto = new AddressDto();
-        dto.setAddressLine1((String) place.get("description")); // Full formatted address
-        dto.setPostcode(extractPostcode((String) place.get("description")));
-        dto.setCity(extractCity((String) place.get("description")));
+
+        dto.setAddressLine1((String) result.get("formatted_address"));
+        dto.setPostcode(extractPostcode((String) result.get("formatted_address")));
+        dto.setCity(extractCityFromComponents((List<Map<String, Object>>) result.get("address_components")));
         dto.setCountry("United Kingdom");
 
-        // Retrieve Lat/Lng for precise location
-        Optional<Map<String, Object>> placeDetails = fetchPlaceDetails((String) place.get("place_id"));
-        placeDetails.ifPresent(details -> {
-            dto.setLatitude((Double) details.get("lat"));
-            dto.setLongitude((Double) details.get("lng"));
-        });
+        // Extract latitude and longitude directly
+        Map<String, Object> geometry = (Map<String, Object>) result.get("geometry");
+        if (geometry != null) {
+            Map<String, Object> location = (Map<String, Object>) geometry.get("location");
+            if (location != null) {
+                dto.setLatitude((Double) location.get("lat"));
+                dto.setLongitude((Double) location.get("lng"));
+            }
+        }
 
         return dto;
     }
 
-    private Optional<Map<String, Object>> fetchPlaceDetails(String placeId) {
-        String url = "https://maps.googleapis.com/maps/api/place/details/json" +
-                "?place_id=" + placeId +
-                "&fields=geometry/location" +
-                "&key=" + googleApiKey;
+    /**
+     * Extracts the city from address components.
+     * Uses "postal_town" if available; otherwise, extracts from formatted address.
+     */
+    private String extractCityFromComponents(List<Map<String, Object>> addressComponents) {
+        if (addressComponents == null) return "";
 
-        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-        Map<String, Object> result = (Map<String, Object>) response.get("result");
-
-        if (result != null) {
-            Map<String, Object> location = (Map<String, Object>) ((Map<String, Object>) result.get("geometry")).get("location");
-            return Optional.of(location);
+        for (Map<String, Object> component : addressComponents) {
+            List<String> types = (List<String>) component.get("types");
+            if (types.contains("postal_town")) {
+                return (String) component.get("long_name");
+            }
         }
-        return Optional.empty();
+
+        return "";
     }
+
 
     private String extractPostcode(String address) {
-        return address.replaceAll(".*(\\b[A-Z]{1,2}\\d[A-Z\\d]?\\s*\\d[A-Z]{2}\\b).*", "$1"); // UK Postcode format
+        return address.replaceAll(".*(\\b[A-Z]{1,2}\\d[A-Z\\d]?\\s*\\d[A-Z]{2}\\b).*", "$1");
     }
 
-    private String extractCity(String address) {
-        String[] parts = address.split(",");
-        return parts.length > 1 ? parts[parts.length - 2].trim() : "";
-    }
 }
 
 

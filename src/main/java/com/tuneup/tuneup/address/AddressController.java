@@ -92,8 +92,10 @@ public class AddressController {
     @GetMapping("/lookup")
     public ResponseEntity<List<AddressDto>> getAddressSuggestions(
             @RequestParam String postcode,
-            @RequestParam String houseNumber) {
-        List<AddressDto> suggestions = addressService.getAddressSuggestions(postcode, houseNumber);
+            @RequestParam String streetName) {
+        List<AddressDto> suggestions = addressService.getAddressSuggestions(postcode, streetName );
         return ResponseEntity.ok(suggestions);
     }
+
+
 }
