@@ -97,5 +97,15 @@ public class AddressController {
         return ResponseEntity.ok(suggestions);
     }
 
-
+    /**
+     * Get an address for a lesson by tuitionID.
+     *
+     * @param id tuition ID from the path variable.
+     * @return ResponseEntity containing the AddressDto.
+     */
+    @GetMapping("/lesson/{id}/location")
+    public ResponseEntity<AddressDto> getLessonAddressById(@PathVariable Long id) {
+        AddressDto addressDto = addressService.getAddressByTuitionId(id);
+        return ResponseEntity.ok(addressDto);
+    }
 }

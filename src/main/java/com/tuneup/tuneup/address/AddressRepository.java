@@ -1,8 +1,19 @@
 package com.tuneup.tuneup.address;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
+
+    @Query("SELECT a FROM Address a " +
+            "JOIN AppUser u ON u.address.id = a.id " +
+            "JOIN Profile p ON p.appUser.id = u.id " +
+            "WHERE p.id = :profileId")
+    Optional<Address> findByProfileId(@Param("profileId") Long profileId);
+
 }

@@ -1,5 +1,7 @@
 package com.tuneup.tuneup.address;
 
+import com.tuneup.tuneup.tuitions.TuitionRepository;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +11,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,15 +18,16 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final TuitionRepository tuitionRepository;
 
     @Value("${google.places.api.key}")
     private String googleApiKey;
 
 
-    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper) {
+    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper, TuitionRepository tuitionRepository) {
         this.addressRepository = addressRepository;
         this.addressMapper = addressMapper;
-
+        this.tuitionRepository = tuitionRepository;
     }
 
     /**
@@ -175,6 +177,25 @@ public class AddressService {
         return address.replaceAll(".*(\\b[A-Z]{1,2}\\d[A-Z\\d]?\\s*\\d[A-Z]{2}\\b).*", "$1");
     }
 
+
+    @Transactional(readOnly = true)
+    public AddressDto getAddressByTuitionId(Long tuitionId) {
+        //hitting tuition repository directly to avoid circular dependency of tuitionService ->appUserService -> addressService
+        //Better than lazy injection.
+
+        Long profileId = tuitionRepository.findById(tuitionId)
+                .orElseThrow(()-> new ValidationException("Invalid TuitionId : "+tuitionId))
+                .getTutor()
+                .getId();
+
+
+        //Error handling in service layer instead of validation layer since tuition Repo hit directly (tuitionValidation does not belong in address validator).
+
+        Address lessonAddress = addressRepository.findByProfileId(profileId)
+                .orElseThrow(() -> new ValidationException("No address found for tuition ID: " + tuitionId));
+
+        return addressMapper.toDto(lessonAddress);
+    }
 }
 
 
