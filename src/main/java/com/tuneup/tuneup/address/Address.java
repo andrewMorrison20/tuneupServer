@@ -15,8 +15,27 @@ public class Address {
     private String addressLine1;
     private String addressLine2;
     private String city;
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
     private String country;
     private String postcode;
+    private Double longitude;
+    private Double latitude;
 
     public Long getId() {
         return id;

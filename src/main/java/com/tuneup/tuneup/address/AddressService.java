@@ -130,12 +130,17 @@ public class AddressService {
     private AddressDto convertToAddressDto(Map<String, Object> result) {
         AddressDto dto = new AddressDto();
 
-        dto.setAddressLine1((String) result.get("formatted_address"));
-        dto.setPostcode(extractPostcode((String) result.get("formatted_address")));
-        dto.setCity(extractCityFromComponents((List<Map<String, Object>>) result.get("address_components")));
-        dto.setCountry("United Kingdom");
+        String formattedAddress = (String) result.get("formatted_address");
+        if (formattedAddress != null) {
+            String[] parts = formattedAddress.split(","); // Split by comma
 
-        // Extract latitude and longitude directly
+            dto.setAddressLine1(parts.length > 0 ? parts[0].trim() : "");  // First part is usually street name
+            dto.setCity(extractCityFromComponents((List<Map<String, Object>>) result.get("address_components")));
+            dto.setPostcode(extractPostcode(formattedAddress));
+            dto.setCountry("United Kingdom"); // Fixed country
+        }
+
+        // Extract latitude and longitude
         Map<String, Object> geometry = (Map<String, Object>) result.get("geometry");
         if (geometry != null) {
             Map<String, Object> location = (Map<String, Object>) geometry.get("location");
