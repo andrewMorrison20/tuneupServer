@@ -5,6 +5,7 @@ import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -98,8 +99,7 @@ public class TuitionService {
         TuitionDto tuitionDto = new TuitionDto();
 
         if(requesterProfile.getProfileType().equals(profile.getProfileType())){
-            // throw new ValidationException("Tuitions only exist between differing profile types. Cannot have tuition for two : " + profile.getProfileType());
-            tuitionDto =  tuitionMapper.toDto(tuitionValidator.fetchAndValidateTuitionByIds(requesterProfileId,profileId));
+            throw new ValidationException("Tuitions only exist between differing profile types. Cannot have tuition for two : " + profile.getProfileType());
         }
 
         if(requesterProfile.getProfileType().equals(ProfileType.STUDENT) && profile.getProfileType().equals(ProfileType.TUTOR)){
