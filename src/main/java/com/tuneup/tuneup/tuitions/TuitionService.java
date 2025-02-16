@@ -91,10 +91,25 @@ public class TuitionService {
                 .map(profileMapper::toProfileDto);
     }
 
-    public TuitionDto getTuitionByStudentAndTutor(Long studentProfileId, Long tutorProfileId) {
-        profileService.existById(studentProfileId);
-        profileService.existById(tutorProfileId);
-        return tuitionMapper.toDto(tuitionValidator.fetchAndValidateTuitionByIds(studentProfileId,tutorProfileId));
+    public TuitionDto getTuitionByProfileIds(Long profileId, Long requesterProfileId) {
+        Profile profile = profileService.fetchProfileEntityInternal(profileId);
+        Profile requesterProfile = profileService.fetchProfileEntityInternal(requesterProfileId);
+
+        TuitionDto tuitionDto = new TuitionDto();
+
+        if(requesterProfile.getProfileType().equals(profile.getProfileType())){
+            // throw new ValidationException("Tuitions only exist between differing profile types. Cannot have tuition for two : " + profile.getProfileType());
+            tuitionDto =  tuitionMapper.toDto(tuitionValidator.fetchAndValidateTuitionByIds(requesterProfileId,profileId));
+        }
+
+        if(requesterProfile.getProfileType().equals(ProfileType.STUDENT) && profile.getProfileType().equals(ProfileType.TUTOR)){
+            tuitionDto =  tuitionMapper.toDto(tuitionValidator.fetchAndValidateTuitionByIds(requesterProfileId,profileId));
+        }
+
+        if(requesterProfile.getProfileType().equals(ProfileType.TUTOR) && profile.getProfileType().equals(ProfileType.STUDENT)){
+            tuitionDto=  tuitionMapper.toDto(tuitionValidator.fetchAndValidateTuitionByIds(profileId,requesterProfileId));
+        }
+        return tuitionDto;
 
     }
 }

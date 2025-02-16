@@ -171,7 +171,7 @@ public class LessonRequestService {
             case CONFIRMED:
                 handleConfirmedRequest(request, availability);
 
-                TuitionDto tuitionDto = tuitionService.getTuitionByStudentAndTutor(request.getStudent().getId(),request.getTutor().getId());
+                TuitionDto tuitionDto = tuitionService.getTuitionByProfileIds(request.getStudent().getId(),request.getTutor().getId());
 
                 LessonDto lessonDto = new LessonDto();
                 lessonDto.setTuitionId(tuitionDto.getId());
