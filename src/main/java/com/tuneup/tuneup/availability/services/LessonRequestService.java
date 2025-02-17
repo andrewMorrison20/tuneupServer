@@ -96,14 +96,25 @@ public class LessonRequestService {
      * Returns the set of pending lesson requests for a given student and tutor
      * @return set of dto requests - lessonDtos
      */
-    public Page<LessonRequestDto> getTutorRequestsByStudent(Long studentId, Long tutorId,Pageable pageable){
+    public Page<LessonRequestDto> getTutorRequestsByStudent(Long requesterId, Long profileId,Pageable pageable){
 
-        if (!profileService.existById(studentId) || !profileService.existById(tutorId)){
-            throw new ValidationException("Invalid combination of profile ids provided");
+        Profile requesterProfile = profileService.fetchProfileEntityInternal(requesterId);
+        Profile profile = profileService.fetchProfileEntityInternal(profileId);
+
+        Page<LessonRequestDto> requests = null;
+
+        if(requesterProfile.getProfileType().equals(ProfileType.STUDENT) && profile.getProfileType().equals(ProfileType.TUTOR)){
+            requests = lessonRequestRepository.findRequestsByTutorIdAndStudentId(requesterId,profileId,pageable)
+                    .map(lessonRequestMapper::toDto);
         }
 
-        return lessonRequestRepository.findRequestsByTutorIdAndStudentId(studentId,tutorId,pageable)
-                .map(lessonRequestMapper::toDto);
+        if(requesterProfile.getProfileType().equals(ProfileType.TUTOR) && profile.getProfileType().equals(ProfileType.STUDENT)){
+            requests = lessonRequestRepository.findRequestsByTutorIdAndStudentId(profileId,requesterId,pageable)
+                    .map(lessonRequestMapper::toDto);
+        }
+
+
+        return requests;
     }
 
     /**

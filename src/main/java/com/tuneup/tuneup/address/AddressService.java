@@ -9,8 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +37,6 @@ public class AddressService {
      */
     @Transactional
     public AddressDto createAddress(AddressDto addressDto) {
-        System.out.println("Entering method");
         Address address = addressMapper.toAddress(addressDto);
         Address savedAddress = addressRepository.save(address);
         return addressMapper.toDto(savedAddress);
@@ -62,6 +60,8 @@ public class AddressService {
         address.setCity(addressDto.getCity());
         address.setCountry(addressDto.getCountry());
         address.setPostcode(addressDto.getPostcode());
+        address.setLongitude(addressDto.getLongitude());
+        address.setLatitude(addressDto.getLatitude());
 
         Address updatedAddress = addressRepository.save(address);
         return addressMapper.toDto(updatedAddress);
@@ -196,6 +196,38 @@ public class AddressService {
 
         return addressMapper.toDto(lessonAddress);
     }
+
+
+    public Optional<Address> getMatchingDuplicateAddress(AddressDto addressDto){
+
+        Set<Address> addresses = addressRepository.findAllByPostcode(addressDto.getPostcode());
+        return  addresses.stream()
+                .filter(address -> address.getAddressLine1().equalsIgnoreCase(addressDto.getAddressLine1()))
+                .findFirst();
+    }
+
+    public AddressDto createOrUpdateAddress(AddressDto addressDto) {
+
+        Optional<Address> existingAddress = getMatchingDuplicateAddress(addressDto);
+
+        // Check if existingAddress is present
+        if (existingAddress.isEmpty()) {
+            return createAddress(addressDto);  // Create a new address
+        }
+
+        Address existing = existingAddress.get();
+
+        //Not very readable with generic object but the most concise way to do this check
+        if ((addressDto.getLatitude() != null && !Objects.equals(addressDto.getLatitude(), existing.getLatitude())) ||
+                (addressDto.getLongitude() != null && !Objects.equals(addressDto.getLongitude(), existing.getLongitude()))) {
+            return updateAddress(existing.getId(), addressDto);
+        }
+
+
+
+        return addressMapper.toDto(existing);
+    }
+
 }
 
 

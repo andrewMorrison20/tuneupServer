@@ -106,7 +106,7 @@ public class AppUserService {
         }
 
         if(appUserDto.getAddress()!=null){
-           AddressDto userAddress = addressService.createAddress(appUserDto.getAddress());
+           AddressDto userAddress = addressService.createOrUpdateAddress(appUserDto.getAddress());
            existingUserDto.setAddress(userAddress);
         }
         AppUser appUser = appUserMapper.toAppUser(existingUserDto);
