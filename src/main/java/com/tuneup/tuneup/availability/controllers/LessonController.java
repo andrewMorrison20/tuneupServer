@@ -20,7 +20,7 @@ public class LessonController {
     }
 
     /**
-     * 🔹 Retrieve all lessons for a given tuition ID.
+     *  Retrieve all lessons for a given tuition ID.
      */
     @GetMapping("/{tuitionId}")
     public ResponseEntity<Set<LessonDto>> getLessonsByTuition(@PathVariable Long tuitionId,
@@ -31,11 +31,22 @@ public class LessonController {
     }
 
     /**
-     * 🔹 Cancel a lesson by ID.
+     *  Cancel a lesson by ID.
      */
     @DeleteMapping("/{lessonId}/cancel")
     public ResponseEntity<Void> cancelLesson(@PathVariable Long lessonId) {
         lessonService.cancelLesson(lessonId);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     *  Retrieve all lessons for a given profile ID.
+     */
+    @GetMapping("/profileLessons/{profileId}")
+    public ResponseEntity<Set<LessonDto>> getLessonsByProfile(@PathVariable Long profileId,
+                                                              @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                                                              @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        Set<LessonDto> lessons = lessonService.getLessonsByProfileId(profileId,start,end);
+        return ResponseEntity.ok(lessons);
     }
 }

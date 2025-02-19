@@ -16,6 +16,22 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
             "WHERE l.availability.startTime BETWEEN :start AND :end " +
             "AND l.tuition.id = :tuitionId")
         Set<Lesson> findLessonsByPeriod(@Param("tuitionId") Long tuitionId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+
+    @Query("SELECT l FROM Lesson l " +
+            "WHERE l.availability.startTime BETWEEN :start AND :end " +
+            "AND l.tuition.tutor.id = :tutorId")
+    Set<Lesson> findAllLessonsByTutorId(@Param("tutorId") Long tutorId,
+                                        @Param("start") LocalDateTime start,
+                                        @Param("end") LocalDateTime end);
+
+    @Query("SELECT l FROM Lesson l " +
+            "WHERE l.availability.startTime BETWEEN :start AND :end " +
+            "AND l.tuition.tutor.id = :tutorId")
+    Set<Lesson> findAllLessonsByStudentId(@Param("tutorId") Long tutorId,
+                                        @Param("start") LocalDateTime start,
+                                        @Param("end") LocalDateTime end);
 }
+
 
 
