@@ -62,6 +62,19 @@ public class AvailabilityService {
                 .collect(Collectors.toSet());
     }
 
+    @Transactional
+    public AvailabilityDto createAvailability(Long profileId, AvailabilityDto availabilityDto) {
+
+        Profile profile = profileValidator.fetchById(profileId);
+        availabilityValidator.validateAvailabilityDto(availabilityDto);
+        availabilityDto.setStatus(AvailabilityStatus.AVAILABLE);
+        Availability availability = availabilityMapper.toAvailability(availabilityDto);
+        availability.setProfile(profile);
+        availability = availabilityRepository.save(availability);
+
+        return availabilityMapper.toAvailabilityDto(availability);
+    }
+
     public Set<AvailabilityDto> getProfilePeriodAvailability(Long profileId, LocalDateTime start, LocalDateTime end) {
 
         profileValidator.validateProfileId(profileId);

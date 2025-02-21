@@ -39,4 +39,5 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
     Set<Availability> findByProfileId(long profileId);
 
 
+    Boolean existsByProfileIdAndStartTimeAndEndTime(Long profileId, LocalDateTime startTime, LocalDateTime endTime);
 }

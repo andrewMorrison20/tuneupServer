@@ -16,6 +16,11 @@ public class AvailabilityValidator {
     }
 
     public void validateAvailabilityDto(AvailabilityDto availabilityDto) {
+        if(availabilityRepository.existsByProfileIdAndStartTimeAndEndTime(availabilityDto.getProfileId(),
+                availabilityDto.getStartTime(),
+                availabilityDto.getEndTime())){
+            throw new ValidationException("Availability slot already exists for this profile at this time!");
+        }
 
     }
 
