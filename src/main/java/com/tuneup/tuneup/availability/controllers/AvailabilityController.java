@@ -55,5 +55,25 @@ public class AvailabilityController {
 
         return ResponseEntity.ok(savedAvailability);
     }
+
+    @PatchMapping("/update/{profileId}")
+    public ResponseEntity<AvailabilityDto> updateAvailability(
+            @PathVariable Long profileId,
+            @RequestBody AvailabilityDto availabilityDto) {
+
+        AvailabilityDto savedAvailability = availabilityService.updateAvailability(profileId, availabilityDto);
+
+        return ResponseEntity.ok(savedAvailability);
+    }
+
+    @DeleteMapping("/delete/{profileId}")
+    public ResponseEntity<Void> deleteAvailability(
+            @PathVariable Long profileId,
+            @RequestParam Long availabilityId) {
+
+        availabilityService.deleteAvailability(profileId, availabilityId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
 

@@ -6,6 +6,7 @@ import com.tuneup.tuneup.availability.mappers.AvailabilityMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.validators.AvailabilityValidator;
 import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 import com.tuneup.tuneup.profiles.ProfileValidator;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,6 +102,7 @@ public class AvailabilityService {
     /**
      *  Handles availability adjustment logic
      */
+    @Transactional
     protected Availability handleAvailabilityAdjustment(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         if (availability.getStartTime().equals(requestStart) && availability.getEndTime().equals(requestEnd)) {
             availability.setStatus(AvailabilityStatus.PENDING);
@@ -161,4 +163,50 @@ public class AvailabilityService {
         availability = availabilityRepository.save(availability);
         return availabilityMapper.toAvailabilityDto(availability);
     }
+
+    /**
+     * Update an eixsitng availability slot for a given profile
+     * @param profileId the profile that the availability relates to
+     * @param availabilityDto the  availability to update
+     * @return the updated availability
+     */
+    public AvailabilityDto updateAvailability(Long profileId, AvailabilityDto availabilityDto) {
+        //Validatae the profile calling the update is registered to the slot
+        Availability availability = availabilityRepository
+                .findById(availabilityDto.getId())
+                .orElseThrow(() -> new ValidationException(
+                        "No availability found for id : " + availabilityDto.getId()
+                ));
+        if(!profileId.equals(availabilityDto.getProfileId())){
+            throw new ValidationException("This availability slot cannot be edited by a profile that did not create it. incorrect id : " + profileId);
+        }
+        availability.setStatus(availabilityDto.getStatus());
+        availability.setStartTime(availabilityDto.getStartTime());
+        availability.setEndTime(availabilityDto.getEndTime());
+
+        availabilityRepository.save(availability);
+
+        return availabilityDto;
+    }
+
+    /**
+     * Delete an availability slot for a given profile id
+     * @param profileId the id of the profile attempting delete
+     * @param availabilityId the id of the slot to delete
+     */
+    public void deleteAvailability(Long profileId, Long availabilityId){
+
+        Availability availability = availabilityRepository
+                .findById(availabilityId)
+                .orElseThrow(() -> new ValidationException(
+                        "No availability found for id : " + availabilityId
+                ));
+
+        if(!profileId.equals(availability.getProfile().getId())){
+            throw new ValidationException("Profile attempting delete does not have permission. Incorrect Id : "+ profileId);
+        }
+        availabilityRepository.delete(availability);
+    }
+
 }
+
