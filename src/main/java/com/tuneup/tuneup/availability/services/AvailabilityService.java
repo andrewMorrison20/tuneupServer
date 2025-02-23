@@ -177,16 +177,22 @@ public class AvailabilityService {
                 .orElseThrow(() -> new ValidationException(
                         "No availability found for id : " + availabilityDto.getId()
                 ));
-        if(!profileId.equals(availabilityDto.getProfileId())){
+
+        if(!profileId.equals(availability.getProfile().getId())){
             throw new ValidationException("This availability slot cannot be edited by a profile that did not create it. incorrect id : " + profileId);
         }
-        availability.setStatus(availabilityDto.getStatus());
+
+        if(availabilityDto.getStatus()!=null){
+
+            availability.setStatus(availabilityDto.getStatus());
+        }
+
         availability.setStartTime(availabilityDto.getStartTime());
         availability.setEndTime(availabilityDto.getEndTime());
 
-        availabilityRepository.save(availability);
+        availability = availabilityRepository.save(availability);
 
-        return availabilityDto;
+        return availabilityMapper.toAvailabilityDto(availability);
     }
 
     /**
