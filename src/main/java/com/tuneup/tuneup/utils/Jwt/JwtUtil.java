@@ -5,6 +5,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.tuneup.tuneup.profiles.ProfileType;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -28,7 +29,7 @@ public class JwtUtil {
     }
 
     // Generate a JWT token
-    public String generateToken(String username, long id,long profileId) throws JOSEException {
+    public String generateToken(String username, long id, long profileId, ProfileType profileType) throws JOSEException {
         JWSSigner signer = new MACSigner(secret);
 
         // Build claims for the token
@@ -37,6 +38,7 @@ public class JwtUtil {
                 .claim("username", username)
                 .claim("userId", id)
                 .claim("profileId",profileId)
+                .claim("profileType",profileType)
                 .issuer("TUNEUP")
                 .issueTime(new Date())
                 .expirationTime(new Date(System.currentTimeMillis() + 3600 * 1000)) // Set expiry to 1 hour

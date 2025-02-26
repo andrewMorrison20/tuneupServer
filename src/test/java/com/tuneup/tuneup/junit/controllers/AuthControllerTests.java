@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.junit.controllers;
 
 import com.tuneup.tuneup.authentication.controller.AuthController;
+import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.LoginRequestDto;
 import com.tuneup.tuneup.users.dtos.LoginResponseDto;
@@ -50,7 +51,7 @@ class AuthControllerTests {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
         when(appUserService.getUserByEmail("user@example.com")).thenReturn(userDto);
-        when(jwtUtil.generateToken("user@example.com", 1L,1L)).thenReturn("mock-jwt-token");
+        when(jwtUtil.generateToken("user@example.com", 1L,1L, ProfileType.STUDENT)).thenReturn("mock-jwt-token");
 
         LoginResponseDto response = authController.login(loginRequest);
 

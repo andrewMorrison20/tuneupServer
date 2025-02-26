@@ -3,6 +3,8 @@ package com.tuneup.tuneup.authentication.controller;
 
 
 import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.profiles.ProfileType;
+import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.LoginRequestDto;
 import com.tuneup.tuneup.users.dtos.LoginResponseDto;
@@ -57,9 +59,11 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         AppUserDto userDetails = appUserService.getUserByEmail(loginRequest.getEmail());
-        Long profileId = profileService.getProfileDtoByUserId(userDetails.getId()).getId();
+        ProfileDto profile = profileService.getProfileDtoByUserId(userDetails.getId());
+        Long profileId = profile.getId();
+        ProfileType profileType = profile.getProfileType();
         // Generate JWT token
-        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getId(),profileId);
+        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getId(),profileId,profileType);
         return new LoginResponseDto(token);
     }
 
