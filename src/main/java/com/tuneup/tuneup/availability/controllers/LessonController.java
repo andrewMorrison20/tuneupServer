@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.availability.controllers;
 
 import com.tuneup.tuneup.availability.dtos.LessonDto;
+import com.tuneup.tuneup.availability.dtos.LessonSummaryDto;
 import com.tuneup.tuneup.availability.services.LessonService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +49,15 @@ public class LessonController {
                                                               @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         Set<LessonDto> lessons = lessonService.getLessonsByProfileId(profileId,start,end);
         return ResponseEntity.ok(lessons);
+    }
+
+
+    /**
+     *  Retrieve all lessons for a given profile ID.
+     */
+    @GetMapping("/byAvailability/{availabilityId}")
+    public ResponseEntity<LessonSummaryDto> getLessonsByProfile(@PathVariable Long availabilityId){
+        LessonSummaryDto summaryDto = lessonService.getLessonSummaryByAvailabilityId(availabilityId);
+        return ResponseEntity.ok(summaryDto);
     }
 }

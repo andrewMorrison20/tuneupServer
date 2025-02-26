@@ -3,6 +3,7 @@ package com.tuneup.tuneup.availability.services;
 
 import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.availability.dtos.LessonDto;
+import com.tuneup.tuneup.availability.dtos.LessonSummaryDto;
 import com.tuneup.tuneup.availability.enums.LessonStatus;
 import com.tuneup.tuneup.availability.mappers.LessonMapper;
 import com.tuneup.tuneup.availability.repositories.LessonRepository;
@@ -97,5 +98,8 @@ public class LessonService {
     }
 
 
+    public LessonSummaryDto getLessonSummaryByAvailabilityId(Long availabilityId) {
 
+        return lessonRepository.findLessonSummaryByAvailabilityId(availabilityId);
+    }
 }
