@@ -1,15 +1,13 @@
 package com.tuneup.tuneup.users.controller;
 
+import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.PasswordResetRequestDto;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
 import com.tuneup.tuneup.users.model.AppUser;
-import com.tuneup.tuneup.users.model.PasswordResetToken;
-import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserService;
 import com.tuneup.tuneup.users.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,8 +59,9 @@ public class AppUserController {
     }
 
     @PostMapping("/createNew")
-    public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserDto appUserDto){
-      AppUserDto createdUser = appUserService.createUser(appUserDto);
+    public ResponseEntity<AppUserDto> createUser(@RequestBody AppUserDto appUserDto,
+                                                 @RequestParam("profileType") ProfileType profileType){
+      AppUserDto createdUser = appUserService.createUser(appUserDto,profileType);
       return ResponseEntity.ok().body(createdUser);
     }
 

@@ -47,15 +47,15 @@ public class AppUserService {
     }
 
     @Transactional
-    public AppUserDto createUser(AppUserDto appUserDto) {
+    public AppUserDto createUser(AppUserDto appUserDto,ProfileType profileType) {
         appUserValidator.validateAppUserCreation(appUserDto);
         AppUser appUser = appUserMapper.toAppUser(appUserDto);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser = appUserRepository.save(appUser);
         Profile defaultProfile = new Profile();
         defaultProfile.setAppUser(appUser);
-        defaultProfile.setDisplayName(appUser.getEmail());
-        defaultProfile.setProfileType(ProfileType.TUTOR);
+        defaultProfile.setDisplayName(appUser.getName());
+        defaultProfile.setProfileType(profileType);
         profileRepository.save(defaultProfile);
         return appUserMapper.toAppUserDto(appUser);
     }
