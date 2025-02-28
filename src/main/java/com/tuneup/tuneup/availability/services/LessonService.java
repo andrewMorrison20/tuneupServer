@@ -1,9 +1,11 @@
 package com.tuneup.tuneup.availability.services;
 
 
+import com.tuneup.tuneup.availability.Availability;
 import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonSummaryDto;
+import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.enums.LessonStatus;
 import com.tuneup.tuneup.availability.mappers.LessonMapper;
 import com.tuneup.tuneup.availability.repositories.LessonRepository;
@@ -13,11 +15,12 @@ import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.TuitionRepository;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.tuitions.TuitionValidator;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,18 +29,23 @@ public class LessonService {
 
     private final LessonMapper lessonMapper;
     private final LessonRepository lessonRepository;
-    private final TuitionValidator tuitionValidator;
     private final TuitionRepository tuitionRepository;
     private final TuitionService tuitionService;
     private final ProfileService profileService;
+    private final AvailabilityService availabilityService;
 
-    public LessonService(LessonMapper lessonMapper, LessonRepository lessonRepository, TuitionValidator tuitionValidator, TuitionRepository tuitionRepository, TuitionService tuitionService, ProfileService profileService) {
+    public LessonService(LessonMapper lessonMapper,
+                         LessonRepository lessonRepository,
+                         TuitionValidator tuitionValidator,
+                         TuitionRepository tuitionRepository,
+                         TuitionService tuitionService,
+                         ProfileService profileService, AvailabilityService availabilityService) {
         this.lessonMapper = lessonMapper;
         this.lessonRepository = lessonRepository;
-        this.tuitionValidator = tuitionValidator;
         this.tuitionRepository = tuitionRepository;
         this.tuitionService = tuitionService;
         this.profileService = profileService;
+        this.availabilityService = availabilityService;
     }
 
     /**
@@ -71,11 +79,21 @@ public class LessonService {
      * delete a lesson
      * @param lessonId the id of the lesson to delete
      */
-    public void cancelLesson(Long lessonId) {
-       if(lessonRepository.existsById(lessonId)){
-           lessonRepository.deleteById(lessonId);
-       }
+    @Transactional
+    public void cancelLesson(Long lessonId, Boolean resetAvailability) {
+        Lesson lesson = findLessonById(lessonId);
+        Availability availability = lesson.getAvailability();
+
+        if (resetAvailability) {
+            availability.setStatus(AvailabilityStatus.AVAILABLE);
+            availabilityService.save(availability);
+        } else {
+            availabilityService.deleteAvailability(availability);
+        }
+
+        lessonRepository.deleteById(lessonId);
     }
+
 
 
     /**
@@ -98,8 +116,23 @@ public class LessonService {
     }
 
 
+    /**
+     * Get the lesson summamary by the associated availaiblity slot
+     * @param availabilityId id of the availability corresponding to the lesson
+     * @return lessonSummarydto
+     */
     public LessonSummaryDto getLessonSummaryByAvailabilityId(Long availabilityId) {
 
         return lessonRepository.findLessonSummaryByAvailabilityId(availabilityId);
+    }
+
+    /**
+     * Fetch a lesson from the db by its id
+     * @param lessonId id of the lesson to retrieve
+     * @return the lesson corresponding to the id or throw validation exception
+     */
+    public Lesson findLessonById(Long lessonId) {
+        return lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ValidationException("Lesson not found with id " + lessonId));
     }
 }

@@ -31,6 +31,11 @@ public class TuitionService {
         this.profileMapper = profileMapper;
     }
 
+    /**
+     * Create a tuition between two profiles
+     * @param tuitionDto summary of the tuition to create
+     * @return dto of the saved tuition
+     */
     public TuitionDto createTuition(TuitionDto tuitionDto){
 
         //Fetch and validate profile ids
@@ -50,6 +55,12 @@ public class TuitionService {
         return tuitionMapper.toDto(tuition);
     }
 
+    /**
+     * checks a tuiution exists between two profiles
+     * @param tutorId tutor
+     * @param studentId student
+     * @return boolean if exists
+     */
     public boolean existsByProfileIds(Long tutorId, Long studentId){
         return tuitionValidator.existsByTutorStudentId(tutorId,studentId);
     }
@@ -59,10 +70,20 @@ public class TuitionService {
         return null;
     }
 
+    /**
+     * Fetch a tuition from db by its id
+     * @param id id of the tuition to fetch
+     * @return tuition entity from db
+     */
     public TuitionDto getTuitionById(Long id) {
        return tuitionMapper.toDto(tuitionValidator.fetchAndValidateById(id));
     }
 
+    /**
+     * Returns entity instead of dto, only for internal use, should not be used in repsonses at controller layer
+     * @param id id of tuition to fetch
+     * @return tuition retrieved from db
+     */
     public Tuition getTuitionEntityByIdInternal(Long id) {
         return tuitionValidator.fetchAndValidateById(id);
     }
@@ -80,17 +101,38 @@ public class TuitionService {
         }
     }
 
+    /**
+     * Get all Students linked to a given tutor via a tuition
+     * @param tutorId profile id of the tutor to fetch for
+     * @param pageable page to return
+     * @param active only active tuitions
+     * @return page of student profiledtos currently in active tuition with tutor
+     */
     public Page<ProfileDto> getStudentsByTutor(Long tutorId, Pageable pageable, boolean active) {
         profileService.existById(tutorId);
         return tuitionRepository.findStudentsByTutorId(tutorId, active ,pageable)
                 .map(profileMapper::toProfileDto);
     }
 
+    /**
+     * Get all tutors linkeed to a given student via a tuition
+     * @param studentId profile id of the student
+     * @param pageable page to return
+     * @param active only active tuitions
+     * @return page of tutor profiledtos currently in active tuition with student
+     */
     public Page<ProfileDto> getTutorsByStudent(Long studentId, Pageable pageable, boolean active) {
         profileService.existById(studentId);
         return tuitionRepository.findTutorsByStudentId(studentId,active, pageable)
                 .map(profileMapper::toProfileDto);
     }
+
+    /**
+     * Fetch a tuition linked to two given profiles
+     * @param profileId the id of the profile to fetch tuition for
+     * @param requesterProfileId the id of the profile requesting the data
+     * @return a tuition dto
+     */
 
     public TuitionDto getTuitionByProfileIds(Long profileId, Long requesterProfileId) {
         Profile profile = profileService.fetchProfileEntityInternal(profileId);
@@ -111,5 +153,25 @@ public class TuitionService {
         }
         return tuitionDto;
 
+    }
+
+    /**
+     * Deactivate a tuition
+     * @param id the id of the tuition to deactivate
+     */
+    public void deactivateTuition(Long id) {
+        Tuition tuition = findById(id);
+        tuition.setActiveTuition(false);
+        tuitionRepository.save(tuition);
+    }
+
+    /**
+     * Fetch a given tuition from the db by id
+     * @param tuitionId id of the tuition to fetch
+     * @return tuition entity from db
+     */
+    public Tuition findById(Long tuitionId) {
+        return tuitionRepository.findById(tuitionId)
+                .orElseThrow(() -> new ValidationException("No tuition found for id: " + tuitionId));
     }
 }

@@ -1,5 +1,4 @@
 package com.tuneup.tuneup.availability.controllers;
-import com.tuneup.tuneup.availability.Availability;
 import com.tuneup.tuneup.availability.dtos.AvailabilityDto;
 import com.tuneup.tuneup.availability.services.AvailabilityService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -71,7 +70,7 @@ public class AvailabilityController {
             @PathVariable Long profileId,
             @RequestParam Long availabilityId) {
 
-        availabilityService.deleteAvailability(profileId, availabilityId);
+        availabilityService.deleteAvailabilityById(profileId, availabilityId);
         return ResponseEntity.noContent().build();
     }
 

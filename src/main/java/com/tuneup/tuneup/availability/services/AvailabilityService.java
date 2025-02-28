@@ -200,7 +200,7 @@ public class AvailabilityService {
      * @param profileId the id of the profile attempting delete
      * @param availabilityId the id of the slot to delete
      */
-    public void deleteAvailability(Long profileId, Long availabilityId){
+    public void deleteAvailabilityById(Long profileId, Long availabilityId){
 
         Availability availability = availabilityRepository
                 .findById(availabilityId)
@@ -214,5 +214,21 @@ public class AvailabilityService {
         availabilityRepository.delete(availability);
     }
 
+    /**
+     * delete an availability
+     * @param availability to delete
+     */
+    public void deleteAvailability(Availability availability) {
+        availabilityRepository.delete(availability);
+    }
+
+    /**
+     * save an availability
+     * @param availability to save
+     * @return
+     */
+    public Availability save(Availability availability) {
+        return availabilityRepository.save(availability);
+    }
 }
 

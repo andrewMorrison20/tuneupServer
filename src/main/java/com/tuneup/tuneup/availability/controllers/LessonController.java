@@ -32,13 +32,17 @@ public class LessonController {
     }
 
     /**
-     *  Cancel a lesson by ID.
+     * Cancel a lesson by ID and optionally reset availability.
      */
-    @DeleteMapping("/{lessonId}/cancel")
-    public ResponseEntity<Void> cancelLesson(@PathVariable Long lessonId) {
-        lessonService.cancelLesson(lessonId);
+    @DeleteMapping("/cancel/{lessonId}")
+    public ResponseEntity<Void> cancelLesson(
+            @PathVariable Long lessonId,
+            @RequestParam(value = "resetAvailability", defaultValue = "false") boolean resetAvailability) {
+
+        lessonService.cancelLesson(lessonId, resetAvailability);
         return ResponseEntity.noContent().build();
     }
+
 
     /**
      *  Retrieve all lessons for a given profile ID.

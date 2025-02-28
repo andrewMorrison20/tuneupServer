@@ -54,6 +54,12 @@ public class TuitionController {
         return ResponseEntity.ok(updatedTuition);
     }
 
+@PatchMapping("/{id}/deactivate")
+            public ResponseEntity<Void> deactivateTuition(@PathVariable Long id) {
+        tuitionService.deactivateTuition(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTuition(@PathVariable Long id) {
         tuitionService.deleteTuition(id);
