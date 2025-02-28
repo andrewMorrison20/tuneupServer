@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -40,4 +41,14 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
 
 
     Boolean existsByProfileIdAndStartTimeAndEndTime(Long profileId, LocalDateTime startTime, LocalDateTime endTime);
+
+    @Query("SELECT a FROM Availability a WHERE a.profile.id = :profileId " +
+            "AND ( " +
+            "     (:startTime BETWEEN a.startTime AND a.endTime) OR " +  // New start is within an existing slot
+            "     (:endTime BETWEEN a.startTime AND a.endTime) OR " +  // New end is within an existing slot
+            "     (a.startTime BETWEEN :startTime AND :endTime) OR " + // Existing slot starts within new range
+            "     (a.endTime BETWEEN :startTime AND :endTime) " +      // Existing slot ends within new range
+            ")")
+    List<Availability> findOverlappingAvailabilities(Long profileId, LocalDateTime startTime, LocalDateTime endTime);
+
 }
