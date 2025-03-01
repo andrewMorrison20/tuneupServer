@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.reviews.services;
 
 import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.reviews.dtos.ReviewDto;
 import com.tuneup.tuneup.reviews.mappers.ReviewMapper;
@@ -22,12 +23,14 @@ public class ReviewService {
     private final ReviewMapper reviewMapper;
     private final ReviewValidator reviewValidator;
     private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
 
-    public ReviewService(ReviewRepository reviewRepository, ReviewMapper reviewMapper, ReviewValidator reviewValidator, ProfileRepository profileRepository) {
+    public ReviewService(ReviewRepository reviewRepository, ReviewMapper reviewMapper, ReviewValidator reviewValidator, ProfileRepository profileRepository, ProfileService profileService) {
         this.reviewRepository = reviewRepository;
         this.reviewMapper = reviewMapper;
         this.reviewValidator = reviewValidator;
         this.profileRepository = profileRepository;
+        this.profileService = profileService;
     }
 
     public Set<ReviewDto> getAll(long profileId) {
@@ -42,22 +45,24 @@ public class ReviewService {
     public ReviewDto createReview(ReviewDto reviewDto) {
         reviewValidator.validateReviewDto(reviewDto);
         Review review = reviewMapper.toReview(reviewDto);
+        Profile profile = profileService.fetchProfileEntityInternal(reviewDto.getProfileId());
+        Profile reviewProfile = profileService.fetchProfileEntityInternal(reviewDto.getReviewerProfileId());
+        review.setProfile(profile);
+        review.setReviewerProfile(reviewProfile);
         Review savedReview = reviewRepository.save(review);
 
-        updateProfileAverageRating(savedReview.getProfileId());
+        updateProfileAverageRating(savedReview.getProfile());
         return reviewMapper.toReviewDto(savedReview);
     }
 
-    private void updateProfileAverageRating(Long profileId) {
-
+    private void updateProfileAverageRating(Profile profile) {
+        long profileId = profile.getId();
         Set<Review> reviews = reviewRepository.findAllByProfileId(profileId);
         double averageRating = reviews.stream()
                 .mapToDouble(Review::getRating)
                 .average()
                 .orElse(0.0);
 
-        Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(() -> new EntityNotFoundException("Profile not found with id: " + profileId));
         profile.setAverageRating(averageRating);
 
         profileRepository.save(profile);

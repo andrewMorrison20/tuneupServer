@@ -4,12 +4,38 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ReviewDto {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     private long id;
     private String comment;
+    private String title;
     private long rating;
-    private long reviewerUserID;
+    private long reviewerProfileId;
     private String reviewerName;
+
+    public long getReviewerProfileId() {
+        return reviewerProfileId;
+    }
+
+    public void setReviewerProfileId(long reviewerProfileId) {
+        this.reviewerProfileId = reviewerProfileId;
+    }
+
+    public Long getTuitionId() {
+        return tuitionId;
+    }
+
+    public void setTuitionId(Long tuitionId) {
+        this.tuitionId = tuitionId;
+    }
+
+    private Long tuitionId;
     private long profileId;
 
     public long getId() {
@@ -34,14 +60,6 @@ public class ReviewDto {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public long getReviewerUserID() {
-        return reviewerUserID;
-    }
-
-    public void setReviewerUserID(long reviewerUserID) {
-        this.reviewerUserID = reviewerUserID;
     }
 
     public String getReviewerName() {

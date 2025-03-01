@@ -2,6 +2,7 @@ package com.tuneup.tuneup.reviews.validators;
 
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.reviews.dtos.ReviewDto;
+import com.tuneup.tuneup.reviews.model.Review;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ public class ReviewValidator {
 
     public void  validateReviewDto(ReviewDto reviewDto){
         validateReviewProfile(reviewDto.getProfileId());
-        validateReview(reviewDto.getReviewerUserID());
+        validateReview(reviewDto.getReviewerProfileId());
 
     }
 
@@ -32,7 +33,7 @@ public class ReviewValidator {
     }
 
     private void validateReview(Long reviewerId) {
-        if(appUserRepository.existsById(reviewerId)){
+        if(profileRepository.existsById(reviewerId)){
             return;
         } else {
             throw new ValidationException(reviewerId + " is not a registered user");
