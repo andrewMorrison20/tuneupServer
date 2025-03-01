@@ -46,7 +46,7 @@ public class AvailabilityService {
     }
 
     @Transactional
-    public Set<AvailabilityDto> batchCreate(Long profileId, Set<AvailabilityDto> availabilityDtos) {
+    public Set<AvailabilityDto> batchCreate(Long profileId, List<AvailabilityDto> availabilityDtos) {
 
         Profile profile = profileValidator.fetchById(profileId);
 
@@ -54,6 +54,7 @@ public class AvailabilityService {
                 .peek(availabilityValidator::validateAvailabilityDto)
                 .map(availabilityMapper::toAvailability)
                 .peek(availability -> availability.setProfile(profile))
+                .peek(availability -> availability.setStatus(AvailabilityStatus.AVAILABLE))
                 .collect(Collectors.toSet());
 
         List<Availability> savedAvailability = availabilityRepository.saveAll(availabilityEntities);

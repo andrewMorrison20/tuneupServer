@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -38,7 +39,7 @@ public class AvailabilityController {
     @PostMapping("/{profileId}/batchCreate")
     public ResponseEntity<Set<AvailabilityDto>> createBatchAvailability(
             @PathVariable Long profileId,
-            @RequestBody Set<AvailabilityDto> availabilityDtos) {
+            @RequestBody List<AvailabilityDto> availabilityDtos) {
 
         Set<AvailabilityDto> savedAvailability = availabilityService.batchCreate(profileId, availabilityDtos);
 

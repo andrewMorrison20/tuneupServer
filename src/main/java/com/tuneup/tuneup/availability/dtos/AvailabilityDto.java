@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.availability.dtos;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 
 import java.time.LocalDateTime;
@@ -8,7 +9,11 @@ public class AvailabilityDto {
 
     private Long id;
     private Long profileId;
+
+    @JsonAlias({"start","startTime"})
     private LocalDateTime startTime;
+
+    @JsonAlias({"end","endTime"})
     private LocalDateTime endTime;
     private AvailabilityStatus status;
 

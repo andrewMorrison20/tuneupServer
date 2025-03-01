@@ -44,10 +44,10 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
 
     @Query("SELECT a FROM Availability a WHERE a.profile.id = :profileId " +
             "AND ( " +
-            "     (:startTime BETWEEN a.startTime AND a.endTime) OR " +  // New start is within an existing slot
-            "     (:endTime BETWEEN a.startTime AND a.endTime) OR " +  // New end is within an existing slot
-            "     (a.startTime BETWEEN :startTime AND :endTime) OR " + // Existing slot starts within new range
-            "     (a.endTime BETWEEN :startTime AND :endTime) " +      // Existing slot ends within new range
+            "     (:startTime BETWEEN a.startTime AND a.endTime) OR " +
+            "     (:endTime BETWEEN a.startTime AND a.endTime) OR " +
+            "     (a.startTime BETWEEN :startTime AND :endTime) OR " +
+            "     (a.endTime BETWEEN :startTime AND :endTime) " +
             ")")
     List<Availability> findOverlappingAvailabilities(Long profileId, LocalDateTime startTime, LocalDateTime endTime);
 
