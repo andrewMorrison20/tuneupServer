@@ -135,4 +135,17 @@ public class LessonService {
         return lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new ValidationException("Lesson not found with id " + lessonId));
     }
+
+    /**
+     * Get all lessons for a given tuition
+     * @param studentId the tuition for which to fetch lessons
+     * @return set of lesson dtos`
+     */
+    public Set<LessonDto> getCompletedLessonsByTuitionId(Long studentId, Long tutorId) {
+        Long tuitionId = tuitionService.getByProfileIds(studentId,tutorId).getId();
+        Set<Lesson> allLessons = lessonRepository.findAllByTuitionId((tuitionId));
+        return allLessons.stream()
+                .map(lessonMapper::toDto)
+                .collect(Collectors.toSet());
+    }
 }

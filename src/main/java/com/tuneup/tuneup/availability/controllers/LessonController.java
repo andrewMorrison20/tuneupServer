@@ -57,11 +57,24 @@ public class LessonController {
 
 
     /**
-     *  Retrieve all lessons for a given profile ID.
+     *  Retrieve lesson summary for a given Availability ID.
      */
     @GetMapping("/byAvailability/{availabilityId}")
-    public ResponseEntity<LessonSummaryDto> getLessonsByProfile(@PathVariable Long availabilityId){
+    public ResponseEntity<LessonSummaryDto> getLessonsByAvailability(@PathVariable Long availabilityId){
         LessonSummaryDto summaryDto = lessonService.getLessonSummaryByAvailabilityId(availabilityId);
         return ResponseEntity.ok(summaryDto);
     }
+
+    /**
+     * Retrieve all outstanding lessons for a given tuition ID.
+     */
+    @GetMapping("/completed/{studentId}/{tutorId}")
+    public ResponseEntity<Set<LessonDto>> getCompletedLessonsByTuition(
+            @PathVariable Long studentId,
+            @PathVariable Long tutorId) {
+        Set<LessonDto> lessons = lessonService.getCompletedLessonsByTuitionId(studentId, tutorId);
+        return ResponseEntity.ok(lessons);
+    }
+
+
 }

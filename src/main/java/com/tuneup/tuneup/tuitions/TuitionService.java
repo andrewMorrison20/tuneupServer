@@ -65,6 +65,16 @@ public class TuitionService {
         return tuitionValidator.existsByTutorStudentId(tutorId,studentId);
     }
 
+    /**
+     * gets a  tuiution exists between two profiles
+     * @param tutorId tutor
+     * @param studentId student
+     * @return tuition if exists
+     */
+    public Tuition getByProfileIds(Long tutorId, Long studentId){
+        return tuitionRepository.findByStudentIdAndTutorId(studentId,tutorId).orElseThrow(
+                ()-> new ValidationException("No existing tuition"));
+    }
     //TO-DO implement
     public TuitionDto updateTuition(Long id, TuitionDto tuitionDto) {
         return null;

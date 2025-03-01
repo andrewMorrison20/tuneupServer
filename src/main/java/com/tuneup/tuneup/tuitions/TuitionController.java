@@ -37,7 +37,6 @@ public class TuitionController {
     public ResponseEntity<TuitionDto> getTuitionByStudentAndTutor(
             @RequestParam Long studentProfileId,
             @RequestParam Long tutorProfileId) {
-        //TuitionDto tuitionDto = tuitionService.getTuitionByStudentAndTutor(studentProfileId, tutorProfileId);
         TuitionDto tuitionDto = tuitionService.getTuitionByProfileIds(studentProfileId, tutorProfileId);
         return ResponseEntity.ok(tuitionDto);
     }
