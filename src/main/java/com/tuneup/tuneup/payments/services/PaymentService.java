@@ -4,6 +4,9 @@ import com.tuneup.tuneup.payments.Payment;
 import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.mappers.PaymentMapper;
 import com.tuneup.tuneup.payments.repository.PaymentRepository;
+import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,12 +22,14 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final InvoiceService invoiceService;
     private final PaymentMapper paymentMapper;
+    private final ProfileService profileService;
     private final TuitionService  tuitionService;
 
-    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService, PaymentMapper paymentMapper, TuitionService tuitionService) {
+    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService, PaymentMapper paymentMapper, ProfileService profileService, TuitionService tuitionService) {
         this.paymentRepository = paymentRepository;
         this.invoiceService = invoiceService;
         this.paymentMapper = paymentMapper;
+        this.profileService = profileService;
         this.tuitionService = tuitionService;
     }
 
@@ -47,8 +52,17 @@ public class PaymentService {
      * @return the list of payments as dtos
      */
     public List<PaymentDto> getPayments(Long profileId,String status) {
+        List<PaymentDto> payments;
 
-        return null;
+        Profile profile = profileService.fetchProfileEntityInternal(profileId);
+
+        if(profile.getProfileType().equals(ProfileType.TUTOR)){
+           payments =  paymentRepository.findAllByTutorId(profile.getId());
+        } else{
+            payments = paymentRepository.findAllByStudentId(profile.getId());
+        }
+
+        return payments;
     }
 
     /**

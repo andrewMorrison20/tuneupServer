@@ -1,8 +1,6 @@
 package com.tuneup.tuneup.payments;
 
 
-import com.tuneup.tuneup.tuitions.TuitionDto;
-
 public class PaymentDto {
 
 
@@ -10,8 +8,31 @@ public class PaymentDto {
     private String lessonDate;
     private Double amount;
     private String status;
-    private String tutorName;
-    private String studentName;
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    private String displayName;
+
+    public PaymentDto() {
+    }
+
+    public PaymentDto(Long id, Long tuitionId, String lessonDate, Double amount, String status,
+                      String displayName, String dueDate, String invoiceUrl) {
+        this.id = id;
+        this.tuitionId = tuitionId;
+        this.lessonDate = lessonDate;
+        this.amount = amount;
+        this.status = status;
+        this.displayName = displayName;
+        this.dueDate = dueDate;
+        this.invoiceUrl = invoiceUrl;
+    }
 
     public Long getTuitionId() {
         return tuitionId;
@@ -21,21 +42,6 @@ public class PaymentDto {
         this.tuitionId = tuitionId;
     }
 
-    public String getTutorName() {
-        return tutorName;
-    }
-
-    public void setTutorName(String tutorName) {
-        this.tutorName = tutorName;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
 
     private String dueDate;
     private String invoiceUrl;
