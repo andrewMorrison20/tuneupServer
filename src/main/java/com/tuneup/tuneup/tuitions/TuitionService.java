@@ -176,6 +176,16 @@ public class TuitionService {
     }
 
     /**
+     * reactivate a tuition
+     * @param id the id of the tuition to reactivate
+     */
+    public void reactivateTuition(Long id) {
+        Tuition tuition = findById(id);
+        tuition.setActiveTuition(true);
+        tuitionRepository.save(tuition);
+    }
+
+    /**
      * Fetch a given tuition from the db by id
      * @param tuitionId id of the tuition to fetch
      * @return tuition entity from db

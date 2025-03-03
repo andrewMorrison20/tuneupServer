@@ -110,19 +110,33 @@ public class ProfileService {
     }
 
 
+    /**
+     * Find a profile that relates to a given user by their user id
+     * @param userId the  id of the user to find a profile for
+     * @return profile as a dto
+     */
     public ProfileDto getProfileDtoByUserId(Long userId) {
         profileValidator.existsByUser(userId);
         Profile profile =  profileRepository.findByAppUserId(userId);
         return profileMapper.toProfileDto(profile);
     }
 
+    /**
+     * Return the profile relating to a given id as a dto
+     * @param id the iod of profile to find
+     * @return profile from the db as a dto
+     */
     public ProfileDto getProfileDto(Long id) {
             return profileRepository.findById(id)
                     .map(profileMapper::toProfileDto)
                     .orElse(null);
         }
 
-
+    /**
+     * update a given profile
+     * @param profileDto updated profile as a dto
+     * @return the saved profile as a dto
+     */
     @Transactional
     public ProfileDto updateProfile(ProfileDto profileDto) {
         Profile existingProfile = profileRepository.findById(profileDto.getId())
@@ -183,11 +197,24 @@ public class ProfileService {
         return profileMapper.toProfileDto(profile);
     }
 
+
+    /**
+     * find profiles that match a given criteria
+     * @param criteria The specification to search for
+     * @param page pag number to return
+     * @return a page of profilesa matching the criteria as dtos
+     */
     public Page<ProfileDto> searchProfiles(ProfileSearchCriteriaDto criteria, Pageable page) {
         return profileRepository.findAll(ProfileSpecification.bySearchCriteria(criteria, regionRepository, availabilityRepository),page)
                 .map(profileMapper::toProfileDto);
     }
 
+    /**
+     * Updates the pricing for a given profile
+     * @param priceDtoSet the set of pricing (period and rate) to update
+     * @param profileId the id of the profile to update pricing for
+     * @return rows effected
+     */
     @Transactional
     public Integer updatePricing(Set<PriceDto> priceDtoSet, Long profileId) {
         Set<Price> profilePricing = priceValidator.validateOrCreatePricing(priceDtoSet);
@@ -197,6 +224,12 @@ public class ProfileService {
         return profilePricing.size();
     }
 
+    /**
+     * Update the set of instrument qualifications for a give profile
+     * @param profileId id of the profile to update
+     * @param qualificationsDto the combination of instruments and qualifications
+     * @return number of rows effected
+     */
     @Transactional
     public Integer updateProfileInstrumentQualifications(Long profileId, Set<ProfileInstrumentQualificationDto> qualificationsDto) {
         Profile profile = profileValidator.fetchById(profileId);
@@ -210,6 +243,12 @@ public class ProfileService {
         return profile.getProfileInstrumentQualifications().size();
     }
 
+    /**
+     * Create a new profile qualification combination for a given profile
+     * @param profile the profile to update
+     * @param dto the instrument and qualification combination
+     * @return the saved qualification instrument as a dto
+     */
     private ProfileInstrumentQualification createProfileInstrumentQualification(Profile profile, ProfileInstrumentQualificationDto dto) {
         ProfileInstrumentQualification qualification = new ProfileInstrumentQualification();
         qualification.setProfile(profile);
@@ -223,8 +262,8 @@ public class ProfileService {
     }
 
     /**
-     *For internal use only. For fetching profileDtos for use ion controller layer and repsonses use getProfileDto
-     * @return profile
+     * For internal use only. For fetching profileDtos for use ion controller layer and repsonses use getProfileDto
+     * @return profile enitity for given id
      */
     public Profile fetchProfileEntityInternal(Long id){
        return profileValidator.fetchById(id);

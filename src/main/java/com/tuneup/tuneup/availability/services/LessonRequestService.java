@@ -17,8 +17,11 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.TuitionMapper;
+import com.tuneup.tuneup.tuitions.TuitionRepository;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,12 +43,14 @@ public class LessonRequestService {
     private final TuitionService tuitionService;
     private final AvailabilityMapper availabilityMapper;
     private final LessonService lessonService;
+    private final TuitionRepository tuitionRepository;
+    private final TuitionMapper tuitionMapper;
 
     public LessonRequestService(AvailabilityRepository availabilityRepository,
                                 LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, AvailabilityMapper availabilityMapper, LessonService lessonService) {
+                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, AvailabilityMapper availabilityMapper, LessonService lessonService, TuitionRepository tuitionRepository,  TuitionMapper tuitionMapper) {
         this.lessonRequestRepository = lessonRequestRepository;
         this.lessonRequestMapper = lessonRequestMapper;
         this.profileService = profileService;
@@ -55,6 +60,8 @@ public class LessonRequestService {
         this.tuitionService = tuitionService;
         this.availabilityMapper = availabilityMapper;
         this.lessonService = lessonService;
+        this.tuitionRepository = tuitionRepository;
+        this.tuitionMapper = tuitionMapper;
     }
 
     @Transactional
@@ -183,6 +190,11 @@ public class LessonRequestService {
                 handleConfirmedRequest(request, availability);
 
                 TuitionDto tuitionDto = tuitionService.getTuitionByProfileIds(request.getStudent().getId(),request.getTutor().getId());
+
+                //check if tuition is inactive, update to active if so
+                if(!tuitionDto.isActiveTuition()){
+                    tuitionService.reactivateTuition(tuitionDto.getId());
+                }
 
                 LessonDto lessonDto = new LessonDto();
                 lessonDto.setTuitionId(tuitionDto.getId());
