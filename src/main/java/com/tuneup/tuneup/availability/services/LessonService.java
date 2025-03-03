@@ -87,11 +87,12 @@ public class LessonService {
         if (resetAvailability) {
             availability.setStatus(AvailabilityStatus.AVAILABLE);
             availabilityService.save(availability);
+            lessonRepository.deleteById(lessonId);
         } else {
+            lessonRepository.deleteById(lessonId);
             availabilityService.deleteAvailability(availability);
         }
 
-        lessonRepository.deleteById(lessonId);
     }
 
 
