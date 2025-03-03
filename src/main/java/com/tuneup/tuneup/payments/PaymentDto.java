@@ -6,17 +6,35 @@ import com.tuneup.tuneup.tuitions.TuitionDto;
 public class PaymentDto {
 
 
-    private TuitionDto tuitionDto;
+    private Long tuitionId;
     private String lessonDate;
     private Double amount;
     private String status;
+    private String tutorName;
+    private String studentName;
 
-    public TuitionDto getTuitionDto() {
-        return tuitionDto;
+    public Long getTuitionId() {
+        return tuitionId;
     }
 
-    public void setTuitionDto(TuitionDto tuitionDto) {
-        this.tuitionDto = tuitionDto;
+    public void setTuitionId(Long tuitionId) {
+        this.tuitionId = tuitionId;
+    }
+
+    public String getTutorName() {
+        return tutorName;
+    }
+
+    public void setTutorName(String tutorName) {
+        this.tutorName = tutorName;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     private String dueDate;

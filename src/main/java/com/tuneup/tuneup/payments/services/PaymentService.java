@@ -4,6 +4,7 @@ import com.tuneup.tuneup.payments.Payment;
 import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.mappers.PaymentMapper;
 import com.tuneup.tuneup.payments.repository.PaymentRepository;
+import com.tuneup.tuneup.tuitions.TuitionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,11 +19,13 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final InvoiceService invoiceService;
     private final PaymentMapper paymentMapper;
+    private final TuitionService  tuitionService;
 
-    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService,PaymentMapper paymentMapper) {
+    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService, PaymentMapper paymentMapper, TuitionService tuitionService) {
         this.paymentRepository = paymentRepository;
         this.invoiceService = invoiceService;
         this.paymentMapper = paymentMapper;
+        this.tuitionService = tuitionService;
     }
 
     /**
@@ -31,10 +34,10 @@ public class PaymentService {
      * @return
      */
     public PaymentDto createPayment(PaymentDto paymentDto) {
-        Payment payment = paymentRepository.save(paymentMapper.toEntity(paymentDto));
-        //TO-DO create enum
+        Payment payment = paymentMapper.toEntity(paymentDto);
+        payment.setTuition(tuitionService.findById(paymentDto.getTuitionId()));
         payment.setStatus("Due");
-        return paymentMapper.toDto(payment);
+        return paymentMapper.toDto(paymentRepository.save(payment));
     }
 
     /**
@@ -44,12 +47,7 @@ public class PaymentService {
      * @return the list of payments as dtos
      */
     public List<PaymentDto> getPayments(Long profileId,String status) {
-        List<Payment> payments;
-        if (status != null) {
-            payments = paymentRepository.findByStatus(status);
-        } else {
-            payments = paymentRepository.findAll();
-        }
+
         return null;
     }
 
