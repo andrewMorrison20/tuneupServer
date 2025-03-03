@@ -1,13 +1,24 @@
 package com.tuneup.tuneup.payments;
 
 
+import com.tuneup.tuneup.tuitions.TuitionDto;
+
 public class PaymentDto {
 
 
-    private String name;
+    private TuitionDto tuitionDto;
     private String lessonDate;
     private Double amount;
     private String status;
+
+    public TuitionDto getTuitionDto() {
+        return tuitionDto;
+    }
+
+    public void setTuitionDto(TuitionDto tuitionDto) {
+        this.tuitionDto = tuitionDto;
+    }
+
     private String dueDate;
     private String invoiceUrl;
     private Long id;
@@ -20,13 +31,6 @@ public class PaymentDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getLessonDate() {
         return lessonDate;

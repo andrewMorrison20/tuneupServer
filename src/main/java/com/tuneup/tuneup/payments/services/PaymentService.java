@@ -2,7 +2,9 @@ package com.tuneup.tuneup.payments.services;
 
 import com.tuneup.tuneup.payments.Payment;
 import com.tuneup.tuneup.payments.PaymentDto;
+import com.tuneup.tuneup.payments.mappers.PaymentMapper;
 import com.tuneup.tuneup.payments.repository.PaymentRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,10 +17,12 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final InvoiceService invoiceService;
+    private final PaymentMapper paymentMapper;
 
-    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService) {
+    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService,PaymentMapper paymentMapper) {
         this.paymentRepository = paymentRepository;
         this.invoiceService = invoiceService;
+        this.paymentMapper = paymentMapper;
     }
 
     /**
@@ -27,9 +31,10 @@ public class PaymentService {
      * @return
      */
     public PaymentDto createPayment(PaymentDto paymentDto) {
-        Payment payment =null;
-        Payment savedPayment = paymentRepository.save(payment);
-        return new PaymentDto();
+        Payment payment = paymentRepository.save(paymentMapper.toEntity(paymentDto));
+        //TO-DO create enum
+        payment.setStatus("Due");
+        return paymentMapper.toDto(payment);
     }
 
     /**

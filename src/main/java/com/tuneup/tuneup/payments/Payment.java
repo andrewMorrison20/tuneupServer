@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.payments;
 
+import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,8 +9,21 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "tuition_id")
+    private Tuition tuition;
+
     private String lessonDate;
+
+    public Tuition getTuition() {
+        return tuition;
+    }
+
+    public void setTuition(Tuition tuition) {
+        this.tuition = tuition;
+    }
+
     private Double amount;
     private String status;
     private String dueDate;
@@ -20,14 +34,6 @@ public class Payment {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getLessonDate() {
