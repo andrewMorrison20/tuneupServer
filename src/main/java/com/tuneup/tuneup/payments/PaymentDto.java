@@ -7,10 +7,20 @@ public class PaymentDto {
 
 
     private Long tuitionId;
+
+    public LocalDateTime getPaidOn() {
+        return paidOn;
+    }
+
+    public void setPaidOn(LocalDateTime paidOn) {
+        this.paidOn = paidOn;
+    }
+
     private LocalDateTime lessonDate;
     private Double amount;
     private String status;
     private Long lessonId;
+    private LocalDateTime paidOn;
 
     public Long getLessonId() {
         return lessonId;
@@ -34,7 +44,7 @@ public class PaymentDto {
     }
 
     public PaymentDto(Long id, Long tuitionId, LocalDateTime lessonDate, Double amount, String status,
-                      String displayName, String dueDate, String invoiceUrl) {
+                      String displayName, LocalDateTime dueDate, String invoiceUrl, LocalDateTime paidOn) {
         this.id = id;
         this.tuitionId = tuitionId;
         this.lessonDate = lessonDate;
@@ -43,6 +53,7 @@ public class PaymentDto {
         this.displayName = displayName;
         this.dueDate = dueDate;
         this.invoiceUrl = invoiceUrl;
+        this.paidOn = paidOn;
     }
 
     public Long getTuitionId() {
@@ -54,7 +65,7 @@ public class PaymentDto {
     }
 
 
-    private String dueDate;
+    private LocalDateTime dueDate;
     private String invoiceUrl;
     private Long id;
 
@@ -91,11 +102,11 @@ public class PaymentDto {
         this.status = status;
     }
 
-    public String getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 

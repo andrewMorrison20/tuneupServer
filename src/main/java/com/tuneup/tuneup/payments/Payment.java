@@ -4,6 +4,8 @@ import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Payment {
 
@@ -37,7 +39,18 @@ public class Payment {
 
     private Double amount;
     private String status;
-    private String dueDate;
+    private LocalDateTime dueDate;
+
+    private LocalDateTime paidOn;
+
+    public LocalDateTime getPaidOn() {
+        return paidOn;
+    }
+
+    public void setPaidOn(LocalDateTime paidOn) {
+        this.paidOn = paidOn;
+    }
+
 
     public Long getId() {
         return id;
@@ -63,11 +76,11 @@ public class Payment {
         this.status = status;
     }
 
-    public String getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 

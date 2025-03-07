@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,11 +76,12 @@ public class PaymentService {
 
     /**
      * Update batch of payment statuses
-     * @param paymentIds poayments to update
+     * @param paymentIds payments to update
      */
     public void batchMarkPaymentsAsPaid(List<Long> paymentIds) {
         List<Payment> payments = paymentRepository.findAllById(paymentIds);
         payments.forEach(payment -> payment.setStatus("Paid"));
+        payments.forEach(payment -> payment.setPaidOn(LocalDateTime.now()));
         paymentRepository.saveAll(payments);
     }
 
