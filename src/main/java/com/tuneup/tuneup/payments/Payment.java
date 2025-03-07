@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.payments;
 
+import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
 
@@ -14,7 +15,17 @@ public class Payment {
     @JoinColumn(name = "tuition_id")
     private Tuition tuition;
 
-    private String lessonDate;
+    @ManyToOne
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
+
+    public Lesson getLesson() {
+        return lesson;
+    }
+
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
+    }
 
     public Tuition getTuition() {
         return tuition;
@@ -34,14 +45,6 @@ public class Payment {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getLessonDate() {
-        return lessonDate;
-    }
-
-    public void setLessonDate(String lessonDate) {
-        this.lessonDate = lessonDate;
     }
 
     public Double getAmount() {

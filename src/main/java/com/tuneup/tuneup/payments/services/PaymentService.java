@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.payments.services;
 
+import com.tuneup.tuneup.availability.services.LessonService;
 import com.tuneup.tuneup.payments.Payment;
 import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.mappers.PaymentMapper;
@@ -8,6 +9,7 @@ import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.TuitionService;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +26,15 @@ public class PaymentService {
     private final PaymentMapper paymentMapper;
     private final ProfileService profileService;
     private final TuitionService  tuitionService;
+    private final LessonService lessonService;
 
-    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService, PaymentMapper paymentMapper, ProfileService profileService, TuitionService tuitionService) {
+    public PaymentService(PaymentRepository paymentRepository, InvoiceService invoiceService, PaymentMapper paymentMapper, ProfileService profileService, TuitionService tuitionService, LessonService lessonService) {
         this.paymentRepository = paymentRepository;
         this.invoiceService = invoiceService;
         this.paymentMapper = paymentMapper;
         this.profileService = profileService;
         this.tuitionService = tuitionService;
+        this.lessonService = lessonService;
     }
 
     /**
@@ -39,7 +43,11 @@ public class PaymentService {
      * @return
      */
     public PaymentDto createPayment(PaymentDto paymentDto) {
+        if(paymentRepository.existsByLessonId(paymentDto.getLessonId())){
+            throw new ValidationException("Payment for this lesso already Exists!");
+        }
         Payment payment = paymentMapper.toEntity(paymentDto);
+        payment.setLesson(lessonService.findLessonById(paymentDto.getLessonId()));
         payment.setTuition(tuitionService.findById(paymentDto.getTuitionId()));
         payment.setStatus("Due");
         return paymentMapper.toDto(paymentRepository.save(payment));

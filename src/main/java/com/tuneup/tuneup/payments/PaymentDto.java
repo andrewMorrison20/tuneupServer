@@ -1,13 +1,24 @@
 package com.tuneup.tuneup.payments;
 
 
+import java.time.LocalDateTime;
+
 public class PaymentDto {
 
 
     private Long tuitionId;
-    private String lessonDate;
+    private LocalDateTime lessonDate;
     private Double amount;
     private String status;
+    private Long lessonId;
+
+    public Long getLessonId() {
+        return lessonId;
+    }
+
+    public void setLessonId(Long lessonId) {
+        this.lessonId = lessonId;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -22,7 +33,7 @@ public class PaymentDto {
     public PaymentDto() {
     }
 
-    public PaymentDto(Long id, Long tuitionId, String lessonDate, Double amount, String status,
+    public PaymentDto(Long id, Long tuitionId, LocalDateTime lessonDate, Double amount, String status,
                       String displayName, String dueDate, String invoiceUrl) {
         this.id = id;
         this.tuitionId = tuitionId;
@@ -56,11 +67,11 @@ public class PaymentDto {
     }
 
 
-    public String getLessonDate() {
+    public LocalDateTime getLessonDate() {
         return lessonDate;
     }
 
-    public void setLessonDate(String lessonDate) {
+    public void setLessonDate(LocalDateTime lessonDate) {
         this.lessonDate = lessonDate;
     }
 

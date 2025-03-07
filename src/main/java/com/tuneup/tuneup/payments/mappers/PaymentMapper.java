@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 public interface PaymentMapper {
 
     @Mapping(source = "tuition.id", target = "tuitionId")
+    @Mapping(source = "lesson.id", target = "lessonId")
+    @Mapping(source= "lesson.availability.startTime",target = "lessonDate")
     PaymentDto toDto(Payment payment);
+
 
     Payment toEntity(PaymentDto paymentDto);
 

@@ -13,23 +13,30 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
-                "p.id, t.id, p.lessonDate, p.amount, p.status, " +
-                "sp.displayName, p.dueDate, p.invoiceUrl) " +
-                "FROM Payment p " +
-                "JOIN p.tuition t " +
-                "JOIN t.student sp " +
-                "WHERE t.tutor.id = :tutorId")
+            "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
+            "sp.displayName, p.dueDate, p.invoiceUrl) " +
+            "FROM Payment p " +
+            "JOIN p.tuition t " +
+            "JOIN t.student sp " +
+            "JOIN p.lesson l " +
+            "JOIN l.availability a " +
+            "WHERE t.tutor.id = :tutorId")
     List<PaymentDto> findAllByTutorId(@Param("tutorId") long tutorId);
 
-
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
-                "p.id, t.id, p.lessonDate, p.amount, p.status, " +
-                "tp.displayName, p.dueDate, p.invoiceUrl) " +
-                "FROM Payment p " +
-                "JOIN p.tuition t " +
-                "JOIN t.tutor tp " +
-                "WHERE t.student.id = :studentId")
-        List<PaymentDto> findAllByStudentId(@Param("studentId") long studentId);
+            "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
+            "tp.displayName, p.dueDate, p.invoiceUrl) " +
+            "FROM Payment p " +
+            "JOIN p.tuition t " +
+            "JOIN t.tutor tp " +
+            "JOIN p.lesson l " +
+            "JOIN l.availability a " +
+            "WHERE t.student.id = :studentId")
+    List<PaymentDto> findAllByStudentId(@Param("studentId") long studentId);
 
+    Boolean existsByLessonId(Long lessonId);
 }
+
+
+
 

@@ -5,7 +5,7 @@ import com.tuneup.tuneup.profiles.enums.LessonType;
 
 public class LessonSummaryDto {
 
-    private Long lessonId;
+    private Long id;
     private Long tuitionId;
     private String displayName;
 
@@ -13,9 +13,9 @@ public class LessonSummaryDto {
 
     }
 
-    public LessonSummaryDto(Long lessonId, Long tuitionId, String studentName, Long studentProfileId,
-                                       LessonStatus lessonStatus, LessonType lessonType) {
-        this.lessonId = lessonId;
+    public LessonSummaryDto(Long id, Long tuitionId, String studentName, Long studentProfileId,
+                            LessonStatus lessonStatus, LessonType lessonType) {
+        this.id = id;
         this.tuitionId = tuitionId;
         this.displayName = studentName;
         this.studentProfileId = studentProfileId;
@@ -23,12 +23,12 @@ public class LessonSummaryDto {
         this.lessonType = lessonType;
     }
 
-    public Long getLessonId() {
-        return lessonId;
+    public Long getId() {
+        return id;
     }
 
-    public void setLessonId(Long lessonId) {
-        this.lessonId = lessonId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getTuitionId() {
