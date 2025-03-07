@@ -138,7 +138,7 @@ public class LessonService {
     }
 
     /**
-     * Get all lessons for a given tuition
+     * Get all lessons for a given tuition that do not have a payment associated with them
      * @param studentId the tuition for which to fetch lessons
      * @return set of lesson dtos`
      */
