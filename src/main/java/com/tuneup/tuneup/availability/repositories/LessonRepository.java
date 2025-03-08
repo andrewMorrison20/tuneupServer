@@ -15,7 +15,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     @Query("SELECT l FROM Lesson l " +
             "LEFT JOIN Payment p ON p.lesson.id = l.id " +
             "WHERE l.tuition.id = :tuitionId " +
-            "AND l.lessonStatus = :status " + 
+            "AND l.lessonStatus = :status " +
             "AND p.id IS NULL")
     Set<Lesson> findCompletedLessonsWithoutPayment(@Param("tuitionId") Long tuitionId,
                                                    @Param("status") LessonStatus status);
@@ -50,7 +50,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
             "FROM Lesson l " +
             "JOIN l.tuition t " +
             "JOIN t.student s " +
-            "WHERE l.availability.id = :availabilityId AND l.lessonStatus ='CONFIRMED'")
+            "WHERE l.availability.id = :availabilityId AND l.lessonStatus IN ('CONFIRMED', 'COMPLETED')")
     LessonSummaryDto findLessonSummaryByAvailabilityId(Long availabilityId);
 }
 
