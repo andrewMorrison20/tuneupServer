@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.payments.controller;
 import com.tuneup.tuneup.payments.PaymentDto;
+import com.tuneup.tuneup.payments.enums.PaymentStatus;
 import com.tuneup.tuneup.payments.services.PaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class PaymentController {
      * @return List of payments as dtos
      */
     @GetMapping
-    public ResponseEntity<List<PaymentDto>> getPayments(@RequestParam Long profileId, @RequestParam(required = false) String status) {
+    public ResponseEntity<List<PaymentDto>> getPayments(@RequestParam Long profileId, @RequestParam(required = false) PaymentStatus status) {
         return ResponseEntity.ok(paymentService.getPayments(profileId, status));
     }
 

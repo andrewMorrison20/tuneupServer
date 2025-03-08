@@ -3,6 +3,7 @@ package com.tuneup.tuneup.payments.services;
 import com.tuneup.tuneup.availability.services.LessonService;
 import com.tuneup.tuneup.payments.Payment;
 import com.tuneup.tuneup.payments.PaymentDto;
+import com.tuneup.tuneup.payments.enums.PaymentStatus;
 import com.tuneup.tuneup.payments.mappers.PaymentMapper;
 import com.tuneup.tuneup.payments.repository.PaymentRepository;
 import com.tuneup.tuneup.profiles.Profile;
@@ -57,19 +58,19 @@ public class PaymentService {
 
     /**
      * Retrieve payments from the db for a given profile
-     * @param status
+     * @param status status of the paymetns to fetch
      * @param profileId the profile to retrieve payments for
      * @return the list of payments as dtos
      */
-    public List<PaymentDto> getPayments(Long profileId,String status) {
+    public List<PaymentDto> getPayments(Long profileId, PaymentStatus status) {
         List<PaymentDto> payments;
 
         Profile profile = profileService.fetchProfileEntityInternal(profileId);
 
         if(profile.getProfileType().equals(ProfileType.TUTOR)){
-           payments =  paymentRepository.findAllByTutorId(profile.getId());
+           payments =  paymentRepository.findAllByTutorId(profile.getId(),status);
         } else{
-            payments = paymentRepository.findAllByStudentId(profile.getId());
+            payments = paymentRepository.findAllByStudentId(profile.getId(),status);
         }
 
         return payments;
