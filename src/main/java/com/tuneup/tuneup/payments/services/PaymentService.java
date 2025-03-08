@@ -12,10 +12,12 @@ import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.spi.LocaleNameProvider;
@@ -105,5 +107,22 @@ public class PaymentService {
         }
         payment.setReminderSentOn(LocalDateTime.now());
         paymentRepository.save(payment);
+    }
+
+    /**
+     * Runs every day at midnight to mark overdue payments
+     */
+    @Scheduled(cron = "0 0 0 * * ?") // Runs at 12:00 AM daily
+    public void markOverduePayments() {
+        LocalDate today = LocalDate.now();
+
+        // Fetch all payments that are Due but past their due date
+        List<Payment> overduePayments = paymentRepository.findDuePaymentsPastDueDate(today);
+
+        if (!overduePayments.isEmpty()) {
+            overduePayments.forEach(payment -> payment.setStatus(PaymentStatus.OVERDUE));
+            paymentRepository.saveAll(overduePayments);
+            System.out.println("Updated " + overduePayments.size() + " payments to OVERDUE");
+        }
     }
 }
