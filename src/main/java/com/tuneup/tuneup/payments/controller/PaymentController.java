@@ -2,6 +2,10 @@ package com.tuneup.tuneup.payments.controller;
 import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
 import com.tuneup.tuneup.payments.services.PaymentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,15 +35,23 @@ public class PaymentController {
     }
 
     /**
-     *Retrieve payments for a given profile (and status)
-     * @param profileId id of the profile to fetch payments for
-     * @param status optional status of payments, e.g paid, due
-     * @return List of payments as dtos
+     * Retrieve paginated payments for a given profile (and status)
+     * @param profileId ID of the profile to fetch payments for
+     * @param status optional status filter (Paid, Due, Overdue)
+     * @param pageable pagination and sorting information
+     * @return Paginated list of payments as DTOs
      */
     @GetMapping
-    public ResponseEntity<List<PaymentDto>> getPayments(@RequestParam Long profileId, @RequestParam(required = false) PaymentStatus status) {
-        return ResponseEntity.ok(paymentService.getPayments(profileId, status));
+    public ResponseEntity<Page<PaymentDto>> getPayments(
+            @RequestParam Long profileId,
+            @RequestParam(required = false) PaymentStatus status,
+            @RequestParam(required = false) Long profileFilterId,
+            @PageableDefault(size = 10, sort = "dueDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<PaymentDto> payments = paymentService.getPayments(profileId, status, profileFilterId, pageable);
+        return ResponseEntity.ok(payments);
     }
+
 
     /**
      * Bacth update status of paid payments

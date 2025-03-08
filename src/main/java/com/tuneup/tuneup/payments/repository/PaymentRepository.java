@@ -3,6 +3,8 @@ package com.tuneup.tuneup.payments.repository;
 import com.tuneup.tuneup.payments.Payment;
 import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +16,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     List<Payment> findByStatus(String status);
 
-
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
             "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
             "sp.displayName, p.dueDate, p.invoiceUrl, p.paidOn, p.reminderSentOn) " +
@@ -24,8 +25,14 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             "JOIN p.lesson l " +
             "JOIN l.availability a " +
             "WHERE t.tutor.id = :tutorId " +
-            "AND (:status IS NULL OR p.status = :status)")
-    List<PaymentDto> findAllByTutorId(@Param("tutorId") long tutorId, @Param("status") PaymentStatus status);
+            "AND (:status IS NULL OR p.status = :status) " +
+            "AND (:profileId IS NULL OR sp.id = :profileId)")
+    Page<PaymentDto> findAllByTutorId(@Param("tutorId") long tutorId,
+                                      @Param("status") PaymentStatus status,
+                                      @Param("profileId") Long profileId,
+                                      Pageable pageable);
+
+
 
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
             "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
@@ -36,8 +43,12 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             "JOIN p.lesson l " +
             "JOIN l.availability a " +
             "WHERE t.student.id = :studentId " +
-            "AND (:status IS NULL OR p.status = :status)")
-    List<PaymentDto> findAllByStudentId(@Param("studentId") long studentId, @Param("status") PaymentStatus status);
+            "AND (:status IS NULL OR p.status = :status) " +
+            "AND (:profileId IS NULL OR tp.id = :profileId)")
+    Page<PaymentDto> findAllByStudentId(@Param("studentId") long studentId,
+                                        @Param("status") PaymentStatus status,
+                                        @Param("profileId") Long profileId,
+                                        Pageable pageable);
 
 
     Boolean existsByLessonId(Long lessonId);

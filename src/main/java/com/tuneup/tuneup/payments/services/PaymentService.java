@@ -12,6 +12,8 @@ import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,24 +61,22 @@ public class PaymentService {
     }
 
     /**
-     * Retrieve payments from the db for a given profile
-     * @param status status of the paymetns to fetch
+     * Retrieve paginated payments from the database for a given profile
      * @param profileId the profile to retrieve payments for
-     * @return the list of payments as dtos
+     * @param status optional status of the payments to fetch
+     * @param pageable pagination information
+     * @return paginated list of payments as DTOs
      */
-    public List<PaymentDto> getPayments(Long profileId, PaymentStatus status) {
-        List<PaymentDto> payments;
-
+    public Page<PaymentDto> getPayments(Long profileId, PaymentStatus status, Long filterProfileId, Pageable pageable) {
         Profile profile = profileService.fetchProfileEntityInternal(profileId);
 
-        if(profile.getProfileType().equals(ProfileType.TUTOR)){
-           payments =  paymentRepository.findAllByTutorId(profile.getId(),status);
-        } else{
-            payments = paymentRepository.findAllByStudentId(profile.getId(),status);
+        if (profile.getProfileType().equals(ProfileType.TUTOR)) {
+            return paymentRepository.findAllByTutorId(profile.getId(), status, filterProfileId, pageable);
+        } else {
+            return paymentRepository.findAllByStudentId(profile.getId(), status, filterProfileId, pageable);
         }
-
-        return payments;
     }
+
 
     /**
      * Update batch of payment statuses
