@@ -1,7 +1,9 @@
 package com.tuneup.tuneup.availability.controllers;
 
+import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonSummaryDto;
+import com.tuneup.tuneup.availability.enums.LessonStatus;
 import com.tuneup.tuneup.availability.services.LessonService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,19 @@ public class LessonController {
 
         lessonService.cancelLesson(lessonId, resetAvailability);
         return ResponseEntity.noContent().build();
+    }
+
+
+    /**
+     * Update status by a lesson by ID.
+     */
+    @PatchMapping("/updateStatus/{lessonId}")
+    public ResponseEntity<Void>updateLessonStatus(
+            @PathVariable Long lessonId,
+            @RequestParam(value = "lessonStatus") LessonStatus lessonStatus) {
+
+        LessonDto lessonDto = lessonService.updateLessonStatus(lessonId, lessonStatus);
+        return ResponseEntity.ok().build();
     }
 
 

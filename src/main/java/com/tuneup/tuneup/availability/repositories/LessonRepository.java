@@ -11,6 +11,13 @@ import java.util.Set;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
+    @Query("SELECT l FROM Lesson l " +
+            "LEFT JOIN Payment p ON p.lesson.id = l.id " +
+            "WHERE l.tuition.id = :tuitionId " +
+            "AND l.lessonStatus = 'Completed' " +
+            "AND p.id IS NULL") // Ensures lesson has no payment
+    Set<Lesson> findCompletedLessonsWithoutPayment(@Param("tuitionId") Long tuitionId);
+
     Set<Lesson> findAllByTuitionId(Long tuitionId);
 
     @Query("SELECT l FROM Lesson l " +

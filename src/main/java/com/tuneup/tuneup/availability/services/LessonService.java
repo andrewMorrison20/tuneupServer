@@ -144,9 +144,25 @@ public class LessonService {
      */
     public Set<LessonDto> getCompletedLessonsByTuitionId(Long studentId, Long tutorId) {
         Long tuitionId = tuitionService.getByProfileIds(studentId,tutorId).getId();
-        Set<Lesson> allLessons = lessonRepository.findAllByTuitionId((tuitionId));
+        Set<Lesson> allLessons = lessonRepository.findCompletedLessonsWithoutPayment((tuitionId));
         return allLessons.stream()
                 .map(lessonMapper::toDto)
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Update the status of a given lesson
+     * @param lessonId id of the lesson to update
+     * @param lessonStatus status to update lesson to
+     * @return updated lesson as a dto
+     */
+    public LessonDto updateLessonStatus(Long lessonId, LessonStatus lessonStatus) {
+        Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(
+                ()-> new ValidationException("No lesson found with id :" + lessonId)
+        );
+        lesson.setLessonStatus(lessonStatus);
+        lessonRepository.save(lesson);
+
+        return lessonMapper.toDto(lesson);
     }
 }
