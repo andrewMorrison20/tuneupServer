@@ -52,7 +52,7 @@ public class PaymentService {
         Payment payment = paymentMapper.toEntity(paymentDto);
         payment.setLesson(lessonService.findLessonById(paymentDto.getLessonId()));
         payment.setTuition(tuitionService.findById(paymentDto.getTuitionId()));
-        payment.setStatus("Due");
+        payment.setStatus(PaymentStatus.DUE);
         return paymentMapper.toDto(paymentRepository.save(payment));
     }
 
@@ -82,7 +82,7 @@ public class PaymentService {
      */
     public void batchMarkPaymentsAsPaid(List<Long> paymentIds) {
         List<Payment> payments = paymentRepository.findAllById(paymentIds);
-        payments.forEach(payment -> payment.setStatus("Paid"));
+        payments.forEach(payment -> payment.setStatus(PaymentStatus.PAID));
         payments.forEach(payment -> payment.setPaidOn(LocalDateTime.now()));
         paymentRepository.saveAll(payments);
     }

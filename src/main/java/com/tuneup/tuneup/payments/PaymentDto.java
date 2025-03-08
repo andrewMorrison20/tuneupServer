@@ -1,6 +1,8 @@
 package com.tuneup.tuneup.payments;
 
 
+import com.tuneup.tuneup.payments.enums.PaymentStatus;
+
 import java.time.LocalDateTime;
 
 public class PaymentDto {
@@ -18,7 +20,7 @@ public class PaymentDto {
 
     private LocalDateTime lessonDate;
     private Double amount;
-    private String status;
+    private PaymentStatus status;
     private Long lessonId;
     private LocalDateTime paidOn;
 
@@ -53,7 +55,7 @@ public class PaymentDto {
     public PaymentDto() {
     }
 
-    public PaymentDto(Long id, Long tuitionId, LocalDateTime lessonDate, Double amount, String status,
+    public PaymentDto(Long id, Long tuitionId, LocalDateTime lessonDate, Double amount, PaymentStatus status,
                       String displayName, LocalDateTime dueDate, String invoiceUrl, LocalDateTime paidOn,  LocalDateTime reminderSentOn) {
         this.id = id;
         this.tuitionId = tuitionId;
@@ -105,11 +107,11 @@ public class PaymentDto {
         this.amount = amount;
     }
 
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 

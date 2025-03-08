@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.payments;
 
 import com.tuneup.tuneup.availability.Lesson;
+import com.tuneup.tuneup.payments.enums.PaymentStatus;
 import com.tuneup.tuneup.tuitions.Tuition;
 import jakarta.persistence.*;
 
@@ -48,7 +49,10 @@ public class Payment {
     }
 
     private Double amount;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
     private LocalDateTime dueDate;
 
     private LocalDateTime paidOn;
@@ -78,11 +82,11 @@ public class Payment {
         this.amount = amount;
     }
 
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 
