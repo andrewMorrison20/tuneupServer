@@ -144,7 +144,7 @@ public class LessonService {
      */
     public Set<LessonDto> getCompletedLessonsByTuitionId(Long studentId, Long tutorId) {
         Long tuitionId = tuitionService.getByProfileIds(studentId,tutorId).getId();
-        Set<Lesson> allLessons = lessonRepository.findCompletedLessonsWithoutPayment((tuitionId));
+        Set<Lesson> allLessons = lessonRepository.findCompletedLessonsWithoutPayment(tuitionId, LessonStatus.COMPLETED);
         return allLessons.stream()
                 .map(lessonMapper::toDto)
                 .collect(Collectors.toSet());
