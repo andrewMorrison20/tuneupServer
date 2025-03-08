@@ -22,6 +22,16 @@ public class PaymentDto {
     private Long lessonId;
     private LocalDateTime paidOn;
 
+    public LocalDateTime getReminderSentOn() {
+        return reminderSentOn;
+    }
+
+    public void setReminderSentOn(LocalDateTime reminderSentOn) {
+        this.reminderSentOn = reminderSentOn;
+    }
+
+    private LocalDateTime reminderSentOn;
+
     public Long getLessonId() {
         return lessonId;
     }
@@ -44,7 +54,7 @@ public class PaymentDto {
     }
 
     public PaymentDto(Long id, Long tuitionId, LocalDateTime lessonDate, Double amount, String status,
-                      String displayName, LocalDateTime dueDate, String invoiceUrl, LocalDateTime paidOn) {
+                      String displayName, LocalDateTime dueDate, String invoiceUrl, LocalDateTime paidOn,  LocalDateTime reminderSentOn) {
         this.id = id;
         this.tuitionId = tuitionId;
         this.lessonDate = lessonDate;
@@ -54,6 +64,7 @@ public class PaymentDto {
         this.dueDate = dueDate;
         this.invoiceUrl = invoiceUrl;
         this.paidOn = paidOn;
+        this.reminderSentOn = reminderSentOn;
     }
 
     public Long getTuitionId() {

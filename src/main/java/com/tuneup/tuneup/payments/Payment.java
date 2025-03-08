@@ -21,8 +21,18 @@ public class Payment {
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
+    private LocalDateTime reminderSentOn;
+
     public Lesson getLesson() {
         return lesson;
+    }
+
+    public LocalDateTime getReminderSentOn() {
+        return reminderSentOn;
+    }
+
+    public void setReminderSentOn(LocalDateTime reminderSentOn) {
+        this.reminderSentOn = reminderSentOn;
     }
 
     public void setLesson(Lesson lesson) {

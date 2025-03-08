@@ -14,7 +14,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
             "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
-            "sp.displayName, p.dueDate, p.invoiceUrl, p.paidOn) " +
+            "sp.displayName, p.dueDate, p.invoiceUrl, p.paidOn, p.reminderSentOn) " +
             "FROM Payment p " +
             "JOIN p.tuition t " +
             "JOIN t.student sp " +
@@ -25,7 +25,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
             "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
-            "tp.displayName, p.dueDate, p.invoiceUrl, p.paidOn) " +
+            "tp.displayName, p.dueDate, p.invoiceUrl, p.paidOn,p.reminderSentOn) " +
             "FROM Payment p " +
             "JOIN p.tuition t " +
             "JOIN t.tutor tp " +

@@ -71,4 +71,15 @@ public class PaymentController {
                     .body("An unexpected error occurred while uploading the invoice.");
         }
     }
+
+    /**
+     * Sends a reminder for a payment by updating the reminderSentOn field.
+     * @param paymentId the ID of the payment to send a reminder for
+     * @return 204 No Content if successful
+     */
+    @PatchMapping("/send-reminder/{paymentId}")
+    public ResponseEntity<Void> sendPaymentReminder(@PathVariable Long paymentId) {
+        paymentService.sendPaymentReminder(paymentId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.spi.LocaleNameProvider;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,5 +94,15 @@ public class PaymentService {
     public String uploadInvoice(MultipartFile file) throws IOException {
         // Simulated file upload (replace with actual storage logic)
         return invoiceService.uploadInvoice(file);
+    }
+
+    public void sendPaymentReminder(Long paymentId) {
+       Payment payment =  paymentRepository.findById(paymentId).orElseThrow(()-> new ValidationException("No Payment found for id : " + paymentId));
+       //event here to trigger notification!
+        if(payment.getReminderSentOn() != null){
+            throw new ValidationException("Reminder already sent for payment id : " + paymentId);
+        }
+        payment.setReminderSentOn(LocalDateTime.now());
+        paymentRepository.save(payment);
     }
 }
