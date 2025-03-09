@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.payments.controller;
 import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
+import com.tuneup.tuneup.payments.services.InvoiceService;
 import com.tuneup.tuneup.payments.services.PaymentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,11 @@ import java.util.List;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final InvoiceService invoiceService;
 
-    public PaymentController(PaymentService paymentService) {
+    public PaymentController(PaymentService paymentService, InvoiceService invoiceService) {
         this.paymentService = paymentService;
+        this.invoiceService = invoiceService;
     }
 
     /**
@@ -33,6 +36,14 @@ public class PaymentController {
     public ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto paymentDto) {
         return ResponseEntity.ok(paymentService.createPayment(paymentDto));
     }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deletePayments(@RequestBody List<Long> paymentIds) {
+        paymentService.deletePayments(paymentIds);
+        return ResponseEntity.noContent().build();
+    }
+
 
     /**
      * Retrieve paginated payments for a given profile (and status)
@@ -94,5 +105,16 @@ public class PaymentController {
     public ResponseEntity<Void> sendPaymentReminder(@PathVariable Long paymentId) {
         paymentService.sendPaymentReminder(paymentId);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * get the invoice for a given payment
+     * @param paymentId id of the payment to fetch invoice for
+     * @return bye array of the file
+     */
+    @GetMapping("/invoice/{paymentId}")
+    public ResponseEntity<byte[]> getPaymentInvoice(@PathVariable Long paymentId){
+        byte[] invoice = paymentService.getPaymentInvoice(paymentId);
+        return ResponseEntity.ok().body(invoice);
     }
 }

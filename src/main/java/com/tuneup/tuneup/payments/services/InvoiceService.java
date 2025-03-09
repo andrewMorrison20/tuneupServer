@@ -49,7 +49,7 @@ public class InvoiceService {
         Bucket bucket = storage.get(bucketName);
         Blob blob = bucket.create(filename, file.getBytes(), file.getContentType());
 
-        return blob.getMediaLink();
+        return filename;
     }
 
     /**
@@ -75,18 +75,22 @@ public class InvoiceService {
         return blob.getMediaLink();
     }
 
+
+
     /**
-     * Downloads an invoice by filename.
+     * Downloads an invoice by its stored filename.
      *
-     * @param fileName the name of the invoice file
-     * @return the file content as byte array
+     * @param fileName the stored filename of the invoice (e.g., "invoices/abc123-file.pdf")
+     * @return the file content as a byte array
      */
-    public byte[] downloadInvoice(String fileName) {
+    public byte[] downloadInvoiceByFileName(String fileName) {
         Bucket bucket = storage.get(bucketName);
         Blob blob = bucket.get(fileName);
+
         if (blob == null) {
-            throw new RuntimeException("Invoice not found: " + fileName);
+            throw new RuntimeException("Invoice not found for file: " + fileName);
         }
+
         return blob.getContent();
     }
 }

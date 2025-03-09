@@ -17,7 +17,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByStatus(String status);
 
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
-            "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
+            "p.id, t.id, l.availability.startTime,l.id, p.amount, p.status, " +
             "sp.displayName, p.dueDate, p.invoiceUrl, p.paidOn, p.reminderSentOn) " +
             "FROM Payment p " +
             "JOIN p.tuition t " +
@@ -35,7 +35,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 
     @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
-            "p.id, t.id, l.availability.startTime, p.amount, p.status, " +
+            "p.id, t.id, l.availability.startTime,l.id, p.amount, p.status, " +
             "tp.displayName, p.dueDate, p.invoiceUrl, p.paidOn, p.reminderSentOn) " +
             "FROM Payment p " +
             "JOIN p.tuition t " +

@@ -125,4 +125,24 @@ public class PaymentService {
             System.out.println("Updated " + overduePayments.size() + " payments to OVERDUE");
         }
     }
+
+    public void deletePayments(List<Long> paymentIds) {
+        paymentRepository.deleteAllById(paymentIds);
+    }
+
+    /**
+     * Get the onvoice file for a payment by its id
+     * @param paymentId id of the payment to fetch invoice for
+     * @return the invoice file
+     */
+
+    public byte[] getPaymentInvoice(Long paymentId){
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(
+                () ->new ValidationException("No payment fort id : " + paymentId)
+        );
+
+        byte[] file = invoiceService.downloadInvoiceByFileName(payment.getInvoiceUrl());
+        return file;
+    }
+
 }

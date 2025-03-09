@@ -55,11 +55,12 @@ public class PaymentDto {
     public PaymentDto() {
     }
 
-    public PaymentDto(Long id, Long tuitionId, LocalDateTime lessonDate, Double amount, PaymentStatus status,
+    public PaymentDto(Long id, Long tuitionId, LocalDateTime lessonDate,Long lessonId, Double amount, PaymentStatus status,
                       String displayName, LocalDateTime dueDate, String invoiceUrl, LocalDateTime paidOn,  LocalDateTime reminderSentOn) {
         this.id = id;
         this.tuitionId = tuitionId;
         this.lessonDate = lessonDate;
+        this.lessonId = lessonId;
         this.amount = amount;
         this.status = status;
         this.displayName = displayName;
