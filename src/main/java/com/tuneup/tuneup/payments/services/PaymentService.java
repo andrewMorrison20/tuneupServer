@@ -11,6 +11,7 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,12 @@ public class PaymentService {
         this.tuitionService = tuitionService;
         this.lessonService = lessonService;
     }
+
+    @PostConstruct
+    public void checkOverduePaymentsOnStartup() {
+        markOverduePayments();
+    }
+
 
     /**
      * Create a new payment
@@ -114,7 +121,7 @@ public class PaymentService {
      */
     @Scheduled(cron = "0 0 0 * * ?") // Runs at 12:00 AM daily
     public void markOverduePayments() {
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDate.now().atStartOfDay();
 
         // Fetch all payments that are Due but past their due date
         List<Payment> overduePayments = paymentRepository.findDuePaymentsPastDueDate(today);
