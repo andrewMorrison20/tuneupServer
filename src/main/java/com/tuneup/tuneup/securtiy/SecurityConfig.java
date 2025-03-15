@@ -9,13 +9,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +28,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/login","/api/qualifications","/api/profiles/**","/api/users/createNew","/api/users/requestResetPasswordEmail","/api/users/updatePassword","api/instruments","/api/genres","/api/profiles", "/api/review/**","/api/regions/**").permitAll()
+                        .requestMatchers("/auth/login",
+                                "/api/qualifications",
+                                "/api/profiles/**",
+                                "/api/users/createNew",
+                                "/api/users/requestResetPasswordEmail",
+                                "/api/users/updatePassword",
+                                "api/instruments",
+                                "/api/genres",
+                                "/api/profiles",
+                                "/api/review/**",
+                                "/api/regions/**",
+                                "/chat-ws/**" ).permitAll()
                         .anyRequest().authenticated())  // All other requests require authentication
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Set session management to stateless
@@ -53,9 +64,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:4200");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
+
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:*"));
+
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
@@ -63,4 +76,5 @@ public class SecurityConfig {
 
         return source;
     }
+
 }
