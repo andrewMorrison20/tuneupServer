@@ -18,7 +18,7 @@ public class ChatController {
     public Message handleMessage(MessageDto messageDto) {
         return chatService.sendMessage(
                 messageDto.getSenderProfileId(),
-                messageDto.getReceiverProfileId(),
+                messageDto.getConversationId(),
                 messageDto.getContent()
         );
     }

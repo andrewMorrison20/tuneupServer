@@ -276,6 +276,11 @@ public class ProfileService {
                 .map(profileInstrumentQualificationMapper::toDto)
                 .collect(Collectors.toSet());
     }
+
+    public Page<ProfileDto> getProfilesWithoutChatHistory(Long profileId, boolean isTutor, boolean active, Pageable pageable) {
+        return profileRepository.findProfilesWithoutChatHistory(profileId, isTutor, active, pageable)
+                .map(profileMapper::toProfileDto);
+    }
 }
 
 
