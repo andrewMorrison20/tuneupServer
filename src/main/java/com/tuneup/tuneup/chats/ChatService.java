@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -61,4 +62,24 @@ public class ChatService {
 
         return profileService.getProfilesWithoutChatHistory(profileId, isTutor, active, pageable);
         }
+
+
+    public ConversationDto startConversation(Long userId, Long participantId) {
+        Profile user = profileService.fetchProfileEntityInternal(userId);
+        Profile participant = profileService.fetchProfileEntityInternal(participantId);
+
+        // Check if a conversation already exists
+        Optional<Conversation> existingConversation = conversationRepository.findByProfiles(user, participant);
+        if (existingConversation.isPresent()) {
+            return new ConversationDto(existingConversation.get());
+        }
+
+        // Create new conversation
+        Conversation conversation = new Conversation();
+        conversation.setProfile1(user);
+        conversation.setProfile2(participant);
+        Conversation savedConversation = conversationRepository.save(conversation);
+
+        return new ConversationDto(savedConversation);
+    }
 }

@@ -24,6 +24,18 @@ public class Conversation {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public Message getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(Message lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "last_message_id")
+    private Message lastMessage;
+
     public Profile getProfile1() {
         return profile1;
     }

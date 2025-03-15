@@ -1,8 +1,11 @@
 package com.tuneup.tuneup.chats;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ChatController {
@@ -21,5 +24,11 @@ public class ChatController {
                 messageDto.getConversationId(),
                 messageDto.getContent()
         );
+    }
+
+    @PostMapping("/conversation/start")
+    public ResponseEntity<ConversationDto> startConversation(@RequestBody ConversationRequest request) {
+        ConversationDto conversation = chatService.startConversation(request.getUserId(), request.getParticipantId());
+        return ResponseEntity.ok(conversation);
     }
 }
