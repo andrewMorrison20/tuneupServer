@@ -22,7 +22,9 @@ public class ChatController {
     @MessageMapping("/chat/send/{conversationId}")
     @SendTo("/topic/chat/{conversationId}")
     public MessageDto sendMessage(@DestinationVariable Long conversationId, MessageDto messageDto) {
-        return chatService.sendMessage(messageDto);
+
+               MessageDto newMessageDto =  chatService.sendMessage(messageDto);
+               return newMessageDto;
     }
 
 }

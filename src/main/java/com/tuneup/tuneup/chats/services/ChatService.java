@@ -57,7 +57,9 @@ public class ChatService {
         message.setSenderProfile(sender);
         message = messageRepository.save(message);
 
-        return messageMapper.toDto(message);
+        MessageDto newMessage =  messageMapper.toDto(message);
+        newMessage.setSenderName(message.getSenderProfile().getDisplayName());
+        return newMessage;
     }
 
     /**
