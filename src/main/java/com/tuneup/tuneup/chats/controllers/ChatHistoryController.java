@@ -1,13 +1,14 @@
-package com.tuneup.tuneup.chats;
+package com.tuneup.tuneup.chats.controllers;
 
+import com.tuneup.tuneup.chats.dtos.ConversationDto;
+import com.tuneup.tuneup.chats.dtos.ConversationRequestDto;
+import com.tuneup.tuneup.chats.services.ChatService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/chats")
@@ -19,13 +20,10 @@ public class ChatHistoryController {
         this.chatService = chatService;
     }
 
-
-    @PostMapping("/send")
-    public ResponseEntity<Message> sendMessage(
-            @RequestParam Long senderProfileId,
-            @RequestParam Long receiverProfileId,
-            @RequestParam String content) {
-        return ResponseEntity.ok(chatService.sendMessage(senderProfileId, receiverProfileId, content));
+    @PostMapping("/conversation/start")
+    public ResponseEntity<ConversationDto> startConversation(@RequestBody ConversationRequestDto request) {
+        ConversationDto conversation = chatService.startConversation(request.getUserId(), request.getParticipantId());
+        return ResponseEntity.ok(conversation);
     }
 
     @GetMapping("/noHistory/{profileId}")
@@ -41,6 +39,17 @@ public class ChatHistoryController {
         return ResponseEntity.ok(profiles);
     }
 
+    @GetMapping("/conversations/{profileId}")
+    public ResponseEntity<Page<ConversationDto>> getUserConversations(
+            @PathVariable Long profileId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ConversationDto> conversations = chatService.getProfileConversations(profileId, pageable);
+
+        return ResponseEntity.ok(conversations);
+    }
 
 }
 

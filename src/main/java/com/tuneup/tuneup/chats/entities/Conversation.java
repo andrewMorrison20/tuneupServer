@@ -1,9 +1,10 @@
-package com.tuneup.tuneup.chats;
+package com.tuneup.tuneup.chats.entities;
 
 import com.tuneup.tuneup.profiles.Profile;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "conversations")
@@ -66,5 +67,9 @@ public class Conversation {
 
     public Long getId() {
         return id;
+    }
+
+    public List<Profile> getParticipants() {
+        return List.of(profile1, profile2);
     }
 }

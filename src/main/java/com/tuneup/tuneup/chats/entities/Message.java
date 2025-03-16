@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.chats;
+package com.tuneup.tuneup.chats.entities;
 
 import com.tuneup.tuneup.profiles.Profile;
 import jakarta.persistence.*;
