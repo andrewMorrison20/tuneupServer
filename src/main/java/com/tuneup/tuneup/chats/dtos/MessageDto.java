@@ -7,9 +7,27 @@ public class MessageDto {
     private Long senderProfileId;
     private Long conversationId;
     private String content;
+    private String senderName;
+    private String senderProfilePictureUrl;
 
     public long getId() {
         return id;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderProfilePictureUrl() {
+        return senderProfilePictureUrl;
+    }
+
+    public void setSenderProfilePictureUrl(String senderProfilePictureUrl) {
+        this.senderProfilePictureUrl = senderProfilePictureUrl;
     }
 
     public void setId(long id) {

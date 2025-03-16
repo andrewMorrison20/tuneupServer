@@ -19,7 +19,7 @@ public class ChatController {
 
 
     //Websockets dont use response entity
-    @MessageMapping("/chat/{conversationId}")
+    @MessageMapping("/chat/send/{conversationId}")
     @SendTo("/topic/chat/{conversationId}")
     public MessageDto sendMessage(@DestinationVariable Long conversationId, MessageDto messageDto) {
         return chatService.sendMessage(messageDto);

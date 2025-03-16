@@ -53,9 +53,9 @@ public class ChatService {
                 .orElseThrow(() -> new ValidationException("Conversation not found"));
 
         Message message = messageMapper.toEntity(messageDto);
-        message = messageRepository.save(message);
         message.setConversation(conversation);
         message.setSenderProfile(sender);
+        message = messageRepository.save(message);
 
         return messageMapper.toDto(message);
     }
