@@ -17,6 +17,8 @@ import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Optional;
 
@@ -45,6 +47,7 @@ public class ChatService {
      * @param messageDto details of the message to create
      * @return the new message as a dto
      */
+    @Transactional
     public MessageDto sendMessage(MessageDto messageDto) {
 
         Profile sender = profileService.fetchProfileEntityInternal(messageDto.getSenderProfileId());
@@ -59,6 +62,8 @@ public class ChatService {
 
         MessageDto newMessage =  messageMapper.toDto(message);
         newMessage.setSenderName(message.getSenderProfile().getDisplayName());
+        newMessage.setSenderProfilePictureUrl(sender.getProfilePicture().getUrl());
+
         return newMessage;
     }
 

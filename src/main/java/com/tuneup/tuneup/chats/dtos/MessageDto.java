@@ -1,6 +1,8 @@
 package com.tuneup.tuneup.chats.dtos;
 
 
+import java.time.LocalDateTime;
+
 public class MessageDto {
 
     private long id;
@@ -9,6 +11,16 @@ public class MessageDto {
     private String content;
     private String senderName;
     private String senderProfilePictureUrl;
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    private LocalDateTime timestamp;
 
     public long getId() {
         return id;
