@@ -15,12 +15,16 @@ import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatService {
@@ -125,6 +129,17 @@ public class ChatService {
     @Transactional(readOnly = true)
     public Page<MessageDto> getConversationMessages(Long conversationId, Pageable pageable) {
         Page<Message> messages = messageRepository.findMessagesByConversationId(conversationId, pageable);
-        return messages.map(messageMapper::toDto);
+
+        // Convert messages to DTO and reverse order so oldest appears first in the page
+        List<MessageDto> messageDtos = messages.getContent()
+                .stream()
+                .map(messageMapper::toDto)
+                .collect(Collectors.toList());
+
+        // Reverse the order within the page
+        Collections.reverse(messageDtos);
+
+        return new PageImpl<>(messageDtos, pageable, messages.getTotalElements());
     }
+
 }
