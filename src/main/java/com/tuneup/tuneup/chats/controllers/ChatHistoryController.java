@@ -2,6 +2,7 @@ package com.tuneup.tuneup.chats.controllers;
 
 import com.tuneup.tuneup.chats.dtos.ConversationDto;
 import com.tuneup.tuneup.chats.dtos.ConversationRequestDto;
+import com.tuneup.tuneup.chats.dtos.MessageDto;
 import com.tuneup.tuneup.chats.services.ChatService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import org.springframework.data.domain.Page;
@@ -51,5 +52,9 @@ public class ChatHistoryController {
         return ResponseEntity.ok(conversations);
     }
 
+    @GetMapping("/conversation/{conversationId}/messages")
+    public Page<MessageDto> getMessages(@PathVariable Long conversationId, Pageable pageable) {
+        return chatService.getConversationMessages(conversationId, pageable);
+    }
 }
 

@@ -31,6 +31,29 @@ public class Message {
     @Column(nullable = false)
     private Boolean isRead = false;
 
+    @Transient
+    private String senderName;
+
+    public String getSenderProfilePictureUrl() {
+        return senderProfilePictureUrl;
+    }
+
+    public void setSenderProfilePictureUrl(String senderProfilePictureUrl) {
+        this.senderProfilePictureUrl = senderProfilePictureUrl;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    @Transient
+    private String senderProfilePictureUrl;
+
+
     public Conversation getConversation() {
         return conversation;
     }
@@ -77,5 +100,15 @@ public class Message {
 
     public Long getId() {
         return id;
+    }
+
+    @PostLoad
+    private void populateTransientFields() {
+        if (senderProfile != null) {
+            this.senderName = senderProfile.getDisplayName();
+            this.senderProfilePictureUrl = (senderProfile.getProfilePicture() != null)
+                    ? senderProfile.getProfilePicture().getUrl()
+                    : null;
+        }
     }
 }

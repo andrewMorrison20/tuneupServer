@@ -23,6 +23,5 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
     @Query("SELECT c FROM Conversation c WHERE (c.profile1.id = :profile1Id AND c.profile2.id = :profile2Id) OR (c.profile1.id = :profile2Id AND c.profile2.id = :profile1Id)")
     Optional<Conversation> findByProfiles(@Param("profile1Id") Long profile1Id, @Param("profile2Id") Long profile2Id);
 
-
 }
 

@@ -33,6 +33,7 @@ public class ChatService {
     private final ConversationMapper conversationMapper;
     private final MessageMapper messageMapper;
 
+
     public ChatService(MessageRepository messageRepository, ConversationRepository conversationRepository, ProfileService profileService, TuitionService tuitionService, ConversationMapper conversationMapper, MessageMapper messageMapper) {
         this.messageRepository = messageRepository;
         this.conversationRepository = conversationRepository;
@@ -64,6 +65,8 @@ public class ChatService {
         newMessage.setSenderName(message.getSenderProfile().getDisplayName());
         newMessage.setSenderProfilePictureUrl(sender.getProfilePicture().getUrl());
 
+        conversation.setLastMessage(message);
+        conversationRepository.save(conversation);
         return newMessage;
     }
 
@@ -82,21 +85,6 @@ public class ChatService {
         return profileService.getProfilesWithoutChatHistory(profileId, isTutor, active, pageable);
         }
 
-
-    /**
-     * Gets a page of conversations given profile.
-     * @param profileId id of the profile to fetch chat history for
-     * @param pageable page to return
-     * @param active if tuition is active or not
-     * @return a page of profile dtos
-     */
-    public Page<ProfileDto> getProfileChatHistory(Long profileId, Pageable pageable, boolean active) {
-
-        Profile profile = profileService.fetchProfileEntityInternal(profileId);
-        boolean isTutor = profile.getProfileType() == ProfileType.TUTOR;
-
-        return profileService.getProfilesWithoutChatHistory(profileId, isTutor, active, pageable);
-    }
 
     /**
      * Creates a new conversation for two users, checks if one preexisting
@@ -126,5 +114,17 @@ public class ChatService {
     public Page<ConversationDto> getProfileConversations(Long profileId, Pageable pageable) {
         Page<Conversation> conversations = conversationRepository.findByProfileId(profileId, pageable);
         return conversations.map(conversationMapper::toDto);
+    }
+
+    /**
+     * Gets a page of conversations given profile.
+     * @param conversationId id of the conversation to fetch chat history for
+     * @param pageable page to return
+     * @return a page of message dtos
+     */
+    @Transactional(readOnly = true)
+    public Page<MessageDto> getConversationMessages(Long conversationId, Pageable pageable) {
+        Page<Message> messages = messageRepository.findMessagesByConversationId(conversationId, pageable);
+        return messages.map(messageMapper::toDto);
     }
 }
