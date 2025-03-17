@@ -141,5 +141,4 @@ public class ChatService {
 
         return new PageImpl<>(messageDtos, pageable, messages.getTotalElements());
     }
-
 }
