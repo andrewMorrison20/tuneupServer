@@ -24,11 +24,11 @@ public class EmailService {
      mailSender.send(message);
   }
 
-    public void notifyChatMessage(String recipientEmail, String messageContent) {
+    public void sendEmail(String recipientEmail, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(recipientEmail);
-        message.setSubject("New Chat Message");
-        message.setText("You have a new message: " + messageContent);
+        message.setSubject(subject);
+        message.setText(text);
         mailSender.send(message);
     }
 }
