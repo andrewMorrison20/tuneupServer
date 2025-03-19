@@ -13,7 +13,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    private NotificationType type;
     private String message;
     private Long userId;
     private LocalDateTime timestamp;
@@ -26,10 +26,10 @@ public class Notification {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getType() {
+    public NotificationType getType() {
         return type;
     }
-    public void setType(String type) {
+    public void setType(NotificationType type) {
         this.type = type;
     }
     public String getMessage() {

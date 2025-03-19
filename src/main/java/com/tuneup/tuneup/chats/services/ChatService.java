@@ -8,12 +8,16 @@ import com.tuneup.tuneup.chats.dtos.ConversationDto;
 import com.tuneup.tuneup.chats.dtos.MessageDto;
 import com.tuneup.tuneup.chats.repositories.ConversationRepository;
 import com.tuneup.tuneup.chats.repositories.MessageRepository;
+import com.tuneup.tuneup.notifications.NotificationEvent;
+import com.tuneup.tuneup.notifications.NotificationType;
 import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
+import com.tuneup.tuneup.users.services.AppUserService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,15 +40,19 @@ public class ChatService {
     private final TuitionService tuitionService;
     private final ConversationMapper conversationMapper;
     private final MessageMapper messageMapper;
+    private final ApplicationEventPublisher eventPublisher;
+    private final AppUserService appUserService;
 
 
-    public ChatService(MessageRepository messageRepository, ConversationRepository conversationRepository, ProfileService profileService, TuitionService tuitionService, ConversationMapper conversationMapper, MessageMapper messageMapper) {
+    public ChatService(MessageRepository messageRepository, ConversationRepository conversationRepository, ProfileService profileService, TuitionService tuitionService, ConversationMapper conversationMapper, MessageMapper messageMapper, ApplicationEventPublisher eventPublisher, AppUserService appUserService) {
         this.messageRepository = messageRepository;
         this.conversationRepository = conversationRepository;
         this.profileService = profileService;
         this.tuitionService = tuitionService;
         this.conversationMapper = conversationMapper;
         this.messageMapper = messageMapper;
+        this.eventPublisher = eventPublisher;
+        this.appUserService = appUserService;
     }
 
     /**
@@ -71,6 +79,15 @@ public class ChatService {
 
         conversation.setLastMessage(message);
         conversationRepository.save(conversation);
+
+        long recipientUserId = conversation.getProfile1().getId() == sender.getId()
+                ? conversation.getProfile2().getAppUser().getId()
+                : conversation.getProfile1().getAppUser().getId();
+
+        eventPublisher.publishEvent(
+                new NotificationEvent(this, recipientUserId, NotificationType.NEW_CHAT, "You have a new chat message.")
+        );
+
         return newMessage;
     }
 

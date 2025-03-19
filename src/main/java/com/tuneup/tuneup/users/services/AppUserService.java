@@ -67,7 +67,7 @@ public class AppUserService {
                 .toList();
     }
 
-    public AppUser  findById(Long appUserId) {
+    public AppUser findById(Long appUserId) {
         return appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new RuntimeException("AppUser with ID " + appUserId + " not found"));
     }

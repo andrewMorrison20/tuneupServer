@@ -1,15 +1,17 @@
-// File: src/main/java/com/tuneup/tuneup/notifications/services/NotificationService.java
+
 package com.tuneup.tuneup.notifications.services;
 
 import com.tuneup.tuneup.notifications.Notification;
+import com.tuneup.tuneup.notifications.NotificationEvent;
 import com.tuneup.tuneup.notifications.NotificationMapper;
+import com.tuneup.tuneup.notifications.NotificationType;
 import com.tuneup.tuneup.notifications.dtos.NotificationDto;
 import com.tuneup.tuneup.notifications.repositories.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 
 @Service
 public class NotificationService {
@@ -29,15 +31,18 @@ public class NotificationService {
         this.notificationMapper = notificationMapper;
     }
 
-    public NotificationDto createAndSendNotification(String type, String message, Long userId) {
-        // Create and persist the notification
+    @EventListener
+    public void handleNotificationEvent(NotificationEvent event) {
+        createAndSendNotification(event.getNotificationType(), event.getMessage(), event.getUserId());
+    }
+
+    private NotificationDto createAndSendNotification(NotificationType type, String message, Long userId) {
+
         Notification notification = new Notification();
         Notification savedNotification = notificationRepository.save(notification);
 
-        // Map to DTO
         NotificationDto dto = notificationMapper.toDto(savedNotification);
 
-        // Push via WebSocket using a user-specific destination.
         messagingTemplate.convertAndSendToUser(userId.toString(), "/queue/notifications", dto);
 
         // Trigger asynchronous email sending.

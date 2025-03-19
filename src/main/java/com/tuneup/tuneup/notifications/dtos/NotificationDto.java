@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.notifications.dtos;
 
+import com.tuneup.tuneup.notifications.NotificationType;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 @Component
 public class NotificationDto {
     private Long id;
-    private String type;
+    private NotificationType type;
     private String message;
     private Long userId;
     private LocalDateTime timestamp;
@@ -21,11 +22,11 @@ public class NotificationDto {
         this.id = id;
     }
 
-    public String getType() {
+    public NotificationType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(NotificationType type) {
         this.type = type;
     }
 
