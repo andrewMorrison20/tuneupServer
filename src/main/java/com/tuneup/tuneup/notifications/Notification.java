@@ -18,6 +18,7 @@ public class Notification {
     private Long userId;
     private LocalDateTime timestamp;
 
+    @Column(name = "[read]")
     private boolean read;
 
     public Long getId() {
