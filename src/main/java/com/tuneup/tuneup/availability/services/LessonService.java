@@ -9,6 +9,8 @@ import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.enums.LessonStatus;
 import com.tuneup.tuneup.availability.mappers.LessonMapper;
 import com.tuneup.tuneup.availability.repositories.LessonRepository;
+import com.tuneup.tuneup.notifications.NotificationEvent;
+import com.tuneup.tuneup.notifications.NotificationType;
 import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
@@ -16,6 +18,7 @@ import com.tuneup.tuneup.tuitions.TuitionRepository;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.tuitions.TuitionValidator;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,19 +36,20 @@ public class LessonService {
     private final TuitionService tuitionService;
     private final ProfileService profileService;
     private final AvailabilityService availabilityService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public LessonService(LessonMapper lessonMapper,
                          LessonRepository lessonRepository,
-                         TuitionValidator tuitionValidator,
                          TuitionRepository tuitionRepository,
                          TuitionService tuitionService,
-                         ProfileService profileService, AvailabilityService availabilityService) {
+                         ProfileService profileService, AvailabilityService availabilityService, ApplicationEventPublisher eventPublisher) {
         this.lessonMapper = lessonMapper;
         this.lessonRepository = lessonRepository;
         this.tuitionRepository = tuitionRepository;
         this.tuitionService = tuitionService;
         this.profileService = profileService;
         this.availabilityService = availabilityService;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -92,6 +96,17 @@ public class LessonService {
             lessonRepository.deleteById(lessonId);
             availabilityService.deleteAvailability(availability);
         }
+
+        Profile student = lesson.getTuition().getStudent();
+        Profile tutor = lesson.getTuition().getTutor();
+
+        eventPublisher.publishEvent(
+                new NotificationEvent(this, student.getId(), NotificationType.LESSON_CANCEL, "Lesson has been Cancelled")
+        );
+
+        eventPublisher.publishEvent(
+                new NotificationEvent(this, tutor.getId(), NotificationType.LESSON_CANCEL, "Lesson Has been Cancelled")
+        );
 
     }
 

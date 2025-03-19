@@ -37,22 +37,23 @@ public class ChatService {
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
     private final ProfileService profileService;
-    private final TuitionService tuitionService;
     private final ConversationMapper conversationMapper;
     private final MessageMapper messageMapper;
     private final ApplicationEventPublisher eventPublisher;
-    private final AppUserService appUserService;
 
 
-    public ChatService(MessageRepository messageRepository, ConversationRepository conversationRepository, ProfileService profileService, TuitionService tuitionService, ConversationMapper conversationMapper, MessageMapper messageMapper, ApplicationEventPublisher eventPublisher, AppUserService appUserService) {
+    public ChatService(MessageRepository messageRepository,
+                       ConversationRepository conversationRepository,
+                       ProfileService profileService,
+                       ConversationMapper conversationMapper,
+                       MessageMapper messageMapper,
+                       ApplicationEventPublisher eventPublisher) {
         this.messageRepository = messageRepository;
         this.conversationRepository = conversationRepository;
         this.profileService = profileService;
-        this.tuitionService = tuitionService;
         this.conversationMapper = conversationMapper;
         this.messageMapper = messageMapper;
         this.eventPublisher = eventPublisher;
-        this.appUserService = appUserService;
     }
 
     /**

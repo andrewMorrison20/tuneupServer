@@ -19,7 +19,6 @@ public class NotificationService {
     private final SimpMessagingTemplate messagingTemplate;
     private final EmailNotificationService emailNotificationService;
     private final NotificationMapper notificationMapper;
-    private final NotificationMapperImpl notificationMapperImpl;
 
     @Autowired
     public NotificationService(NotificationRepository notificationRepository,
@@ -29,7 +28,6 @@ public class NotificationService {
         this.messagingTemplate = messagingTemplate;
         this.emailNotificationService = emailNotificationService;
         this.notificationMapper = notificationMapper;
-        this.notificationMapperImpl = notificationMapperImpl;
     }
 
     @EventListener

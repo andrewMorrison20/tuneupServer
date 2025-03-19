@@ -11,6 +11,8 @@ import com.tuneup.tuneup.availability.mappers.LessonRequestMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.availability.validators.LessonRequestValidator;
+import com.tuneup.tuneup.notifications.NotificationEvent;
+import com.tuneup.tuneup.notifications.NotificationType;
 import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
@@ -22,6 +24,7 @@ import com.tuneup.tuneup.tuitions.TuitionRepository;
 import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,12 +48,13 @@ public class LessonRequestService {
     private final LessonService lessonService;
     private final TuitionRepository tuitionRepository;
     private final TuitionMapper tuitionMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public LessonRequestService(AvailabilityRepository availabilityRepository,
                                 LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, AvailabilityMapper availabilityMapper, LessonService lessonService, TuitionRepository tuitionRepository,  TuitionMapper tuitionMapper) {
+                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, AvailabilityMapper availabilityMapper, LessonService lessonService, TuitionRepository tuitionRepository, TuitionMapper tuitionMapper, ApplicationEventPublisher eventPublisher) {
         this.lessonRequestRepository = lessonRequestRepository;
         this.lessonRequestMapper = lessonRequestMapper;
         this.profileService = profileService;
@@ -62,6 +66,7 @@ public class LessonRequestService {
         this.lessonService = lessonService;
         this.tuitionRepository = tuitionRepository;
         this.tuitionMapper = tuitionMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -95,6 +100,11 @@ public class LessonRequestService {
         lessonRequest.setAvailability(pendingAvailability);
 
         lessonRequest = lessonRequestRepository.save(lessonRequest);
+
+
+        eventPublisher.publishEvent(
+                new NotificationEvent(this, lessonRequest.getTutor().getId(), NotificationType.LESSON_REQUEST, "You have a lesson Request.")
+        );
 
         return lessonRequestMapper.toDto(lessonRequest);
     }
@@ -184,6 +194,7 @@ public class LessonRequestService {
         LessonRequest request = getLessonRequestByIdInternal(lessonRequestId);
         Availability availability = request.getAvailability();
         LessonRequestStatus status = LessonRequestStatus.valueOf(lessonReqStatus);
+        NotificationType type = null;
 
         switch (status) {
             case CONFIRMED:
@@ -202,10 +213,12 @@ public class LessonRequestService {
                 lessonDto.setLessonType(request.getLessonType());
 
                 lessonService.createLesson(lessonDto);
+                type = NotificationType.REQUEST_ACCEPTED;
 
                 break;
             case DECLINED:
                 handleDeclinedRequest(availability);
+                type = NotificationType.REQUEST_REJECTED;
                 break;
         }
 
@@ -214,6 +227,9 @@ public class LessonRequestService {
             declineConflictingRequests(availability);
         }
 
+        eventPublisher.publishEvent(
+                new NotificationEvent(this, request.getStudent().getId(), type, "You have a lesson Request.")
+        );
 
         lessonRequestRepository.delete(request);
     }

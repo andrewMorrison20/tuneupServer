@@ -8,11 +8,13 @@ public class NotificationEvent extends ApplicationEvent {
     private final NotificationType notificationType;
     private final String message;
 
+
     public NotificationEvent(Object source, Long userId, NotificationType notificationType, String message) {
         super(source);
         this.userId = userId;
         this.notificationType = notificationType;
         this.message = message;
+
     }
 
     public Long getUserId() {
