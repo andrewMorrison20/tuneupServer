@@ -20,7 +20,7 @@ public class EmailNotificationService {
     @Async
     public void sendEmailNotification(NotificationDto notification) {
         String recipientEmail = getUserEmail(notification.getUserId());
-        String subject = "Notification: " + notification.getType();
+        String subject = "Notification: " + notification.getType().toString();
         String text = notification.getMessage();
 
         emailService.sendEmail(recipientEmail, subject, text);

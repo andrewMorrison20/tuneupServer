@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -84,6 +85,7 @@ public class LessonService {
      */
     @Transactional
     public void cancelLesson(Long lessonId, Boolean resetAvailability) {
+        //not using exists since we need to access the availability associated with the lesson, hence lesson loaded into memory
         Lesson lesson = findLessonById(lessonId);
         Availability availability = lesson.getAvailability();
 
@@ -99,17 +101,20 @@ public class LessonService {
         Profile student = lesson.getTuition().getStudent();
         Profile tutor = lesson.getTuition().getTutor();
 
+        String tutorMessage = buildLessonCancellationMessage(availability, student.getDisplayName());
+        String studentMessage = buildLessonCancellationMessage(availability, tutor.getDisplayName());
+
+        //Publish a notification event for both student and tutor since critical operation
+
         eventPublisher.publishEvent(
-                new NotificationEvent(this, student.getId(), NotificationType.LESSON_CANCEL, "Lesson has been Cancelled")
+                new NotificationEvent(this, student.getId(), NotificationType.LESSON_CANCEL, studentMessage)
         );
 
         eventPublisher.publishEvent(
-                new NotificationEvent(this, tutor.getId(), NotificationType.LESSON_CANCEL, "Lesson Has been Cancelled")
+                new NotificationEvent(this, tutor.getId(), NotificationType.LESSON_CANCEL, tutorMessage)
         );
 
     }
-
-
 
     /**
      * Get the set of lessons that exist for a given profile during a given period
@@ -178,5 +183,22 @@ public class LessonService {
         lessonRepository.save(lesson);
 
         return lessonMapper.toDto(lesson);
+    }
+
+    /**
+     *
+     * @param availability availability associated with a cancelled lesson
+     * @return message for notificiation
+     */
+    //Done at service layer since lesson always loaded into memory when we generate notification in service.
+    private String buildLessonCancellationMessage(Availability availability,String otherPartyDisplayName) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+
+        String lessonDate = availability.getStartTime().format(dateFormatter);
+        String lessonTime = availability.getStartTime().format(timeFormatter)
+                + " - " + availability.getEndTime().format(timeFormatter);
+
+        return "Lesson on " + lessonDate + " (" + lessonTime + ") with " + otherPartyDisplayName + " has been cancelled.";
     }
 }
