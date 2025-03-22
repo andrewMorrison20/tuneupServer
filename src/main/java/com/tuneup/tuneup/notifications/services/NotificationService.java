@@ -7,7 +7,10 @@ import com.tuneup.tuneup.notifications.repositories.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +33,8 @@ public class NotificationService {
         this.notificationMapper = notificationMapper;
     }
 
-    @EventListener
+    @Async("notificationExecutor")
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleNotificationEvent(NotificationEvent event) {
         createAndSendNotification(event.getNotificationType(), event.getMessage(), event.getUserId());
     }

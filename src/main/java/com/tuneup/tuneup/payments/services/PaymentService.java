@@ -3,7 +3,6 @@ package com.tuneup.tuneup.payments.services;
 import com.tuneup.tuneup.availability.services.LessonService;
 import com.tuneup.tuneup.notifications.NotificationEvent;
 import com.tuneup.tuneup.notifications.NotificationType;
-import com.tuneup.tuneup.notifications.services.NotificationService;
 import com.tuneup.tuneup.payments.Payment;
 import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
