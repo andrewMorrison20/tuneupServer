@@ -16,7 +16,6 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.TuitionRepository;
 import com.tuneup.tuneup.tuitions.TuitionService;
-import com.tuneup.tuneup.tuitions.TuitionValidator;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
