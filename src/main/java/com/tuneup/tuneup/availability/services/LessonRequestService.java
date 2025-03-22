@@ -8,7 +8,6 @@ import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
 import com.tuneup.tuneup.availability.mappers.AvailabilityMapper;
 import com.tuneup.tuneup.availability.mappers.LessonRequestMapper;
-import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.availability.validators.LessonRequestValidator;
 import com.tuneup.tuneup.notifications.NotificationEvent;
@@ -19,11 +18,7 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.tuitions.TuitionDto;
-import com.tuneup.tuneup.tuitions.TuitionMapper;
-import com.tuneup.tuneup.tuitions.TuitionRepository;
 import com.tuneup.tuneup.tuitions.TuitionService;
-import com.tuneup.tuneup.users.exceptions.ValidationException;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,15 +41,18 @@ public class LessonRequestService {
     private final TuitionService tuitionService;
     private final AvailabilityMapper availabilityMapper;
     private final LessonService lessonService;
-    private final TuitionRepository tuitionRepository;
-    private final TuitionMapper tuitionMapper;
     private final ApplicationEventPublisher eventPublisher;
 
-    public LessonRequestService(AvailabilityRepository availabilityRepository,
-                                LessonRequestRepository lessonRequestRepository,
+    public LessonRequestService(LessonRequestRepository lessonRequestRepository,
                                 LessonRequestMapper lessonRequestMapper,
                                 ProfileService profileService,
-                                ProfileMapper profileMapper, AvailabilityService availabilityService, LessonRequestValidator lessonRequestValidator, TuitionService tuitionService, AvailabilityMapper availabilityMapper, LessonService lessonService, TuitionRepository tuitionRepository, TuitionMapper tuitionMapper, ApplicationEventPublisher eventPublisher) {
+                                ProfileMapper profileMapper,
+                                AvailabilityService availabilityService,
+                                LessonRequestValidator lessonRequestValidator,
+                                TuitionService tuitionService,
+                                AvailabilityMapper availabilityMapper,
+                                LessonService lessonService,
+                                ApplicationEventPublisher eventPublisher) {
         this.lessonRequestRepository = lessonRequestRepository;
         this.lessonRequestMapper = lessonRequestMapper;
         this.profileService = profileService;
@@ -64,8 +62,6 @@ public class LessonRequestService {
         this.tuitionService = tuitionService;
         this.availabilityMapper = availabilityMapper;
         this.lessonService = lessonService;
-        this.tuitionRepository = tuitionRepository;
-        this.tuitionMapper = tuitionMapper;
         this.eventPublisher = eventPublisher;
     }
 
@@ -260,7 +256,6 @@ public class LessonRequestService {
             lessonRequestRepository.deleteAll(conflictingRequests);
         }
     }
-
 
     /**
      * Fetch and validate an lessonRequest by id
