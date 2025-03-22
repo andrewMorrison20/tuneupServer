@@ -13,6 +13,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private NotificationType type;
     private String message;
     private Long userId;

@@ -107,11 +107,11 @@ public class LessonService {
         //Publish a notification event for both student and tutor since critical operation
 
         eventPublisher.publishEvent(
-                new NotificationEvent(this, student.getId(), NotificationType.LESSON_CANCEL, studentMessage)
+                new NotificationEvent(this, student.getAppUser().getId(), NotificationType.LESSON_CANCEL, studentMessage)
         );
 
         eventPublisher.publishEvent(
-                new NotificationEvent(this, tutor.getId(), NotificationType.LESSON_CANCEL, tutorMessage)
+                new NotificationEvent(this, tutor.getAppUser().getId(), NotificationType.LESSON_CANCEL, tutorMessage)
         );
 
     }

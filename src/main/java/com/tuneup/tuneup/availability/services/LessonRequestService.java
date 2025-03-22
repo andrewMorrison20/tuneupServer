@@ -95,15 +95,17 @@ public class LessonRequestService {
 
         //TO-DO validate lesson request - lesson type
         LessonRequest lessonRequest = lessonRequestMapper.toLessonRequest(requestDto);
-        lessonRequest.setStudent(profileMapper.toProfile(profileService.getProfileDto(requestDto.getStudentProfileId())));
-        lessonRequest.setTutor(profileMapper.toProfile(profileService.getProfileDto(requestDto.getTutorProfileId())));
+        lessonRequest.setStudent(profileService.fetchProfileEntityInternal(requestDto.getStudentProfileId()));
+        lessonRequest.setTutor(profileService.fetchProfileEntityInternal(requestDto.getTutorProfileId()));
         lessonRequest.setAvailability(pendingAvailability);
 
         lessonRequest = lessonRequestRepository.save(lessonRequest);
 
+        //Law of demeter well and truly broken here.
+        Long userId = lessonRequest.getTutor().getAppUser().getId();
 
         eventPublisher.publishEvent(
-                new NotificationEvent(this, lessonRequest.getTutor().getId(), NotificationType.LESSON_REQUEST, "You have a lesson Request.")
+                new NotificationEvent(this, userId, NotificationType.LESSON_REQUEST, "You have a lesson Request.")
         );
 
         return lessonRequestMapper.toDto(lessonRequest);
