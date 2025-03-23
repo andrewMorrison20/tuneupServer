@@ -5,7 +5,6 @@ import com.tuneup.tuneup.notifications.*;
 import com.tuneup.tuneup.notifications.dtos.NotificationDto;
 import com.tuneup.tuneup.notifications.repositories.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,9 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,7 +28,8 @@ public class NotificationService {
     @Autowired
     public NotificationService(NotificationRepository notificationRepository,
                                SimpMessagingTemplate messagingTemplate,
-                               EmailNotificationService emailNotificationService, NotificationMapper notificationMapper, NotificationMapperImpl notificationMapperImpl) {
+                               EmailNotificationService emailNotificationService,
+                               NotificationMapper notificationMapper) {
         this.notificationRepository = notificationRepository;
         this.messagingTemplate = messagingTemplate;
         this.emailNotificationService = emailNotificationService;
@@ -39,6 +42,13 @@ public class NotificationService {
         createAndSendNotification(event.getNotificationType(), event.getMessage(), event.getUserId());
     }
 
+    /**
+     * Creates a notificaiton and saves it to the db, also broadcasts the notification via websockets
+     * @param type the type of notification
+     * @param message the message to include in the notificaiton
+     * @param userId the id of the user to notify
+     * @return the notification as a dto
+     */
     private NotificationDto createAndSendNotification(NotificationType type, String message, Long userId) {
 
         Notification notification = new Notification();
@@ -57,6 +67,12 @@ public class NotificationService {
         emailNotificationService.sendEmailNotification(dto);
 
         return dto;
+    }
+
+    public Set<NotificationDto> getUnreadNotifications(Long userId){
+       List<Notification> notifications = notificationRepository.findByUserIdAndReadFalse(userId);
+       return notifications.stream().map(notificationMapper::toDto).collect(Collectors.toSet());
+
     }
 }
 
