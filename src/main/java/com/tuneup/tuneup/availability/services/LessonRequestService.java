@@ -101,7 +101,7 @@ public class LessonRequestService {
         Long userId = lessonRequest.getTutor().getAppUser().getId();
 
         eventPublisher.publishEvent(
-                new NotificationEvent(this, userId, NotificationType.LESSON_REQUEST, "You have a new lesson Request from ")
+                new NotificationEvent(this, userId, NotificationType.LESSON_REQUEST, "You have a new lesson Request from  " + lessonRequest.getStudent().getDisplayName())
         );
 
         return lessonRequestMapper.toDto(lessonRequest);
@@ -226,7 +226,9 @@ public class LessonRequestService {
         }
 
         eventPublisher.publishEvent(
-                new NotificationEvent(this, request.getStudent().getAppUser().getId(), type, "Your lesson Request has been " + type.getDisplayName())
+                new NotificationEvent(this, request.getStudent().getAppUser().getId(), type, "Your lesson Request with : " +
+                        request.getTutor().getDisplayName()+
+                        "has been updated : " + type.getDisplayName())
         );
 
         lessonRequestRepository.delete(request);
