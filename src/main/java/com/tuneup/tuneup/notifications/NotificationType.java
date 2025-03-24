@@ -8,6 +8,7 @@ public enum NotificationType {
     NEW_PAYMENT("New Payment"),
     PAYMENT_OVERDUE("Payment Overdue"),
     PAYMENT_MADE("Payment Made"),
+    PAYMENT_DUE("Payment Due"),
     REQUEST_ACCEPTED("Request Accepted");
 
     private final String displayName;

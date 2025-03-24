@@ -136,7 +136,7 @@ public class PaymentService {
         paymentRepository.save(payment);
 
         eventPublisher.publishEvent(
-                new NotificationEvent(this, userId, NotificationType.PAYMENT_OVERDUE, "Reminder: You have an outstanding payment due on: " + payment.getDueDate())
+                new NotificationEvent(this, userId, NotificationType.PAYMENT_DUE, "Reminder: You have an outstanding payment due on: " + payment.getDueDate())
         );
     }
 
