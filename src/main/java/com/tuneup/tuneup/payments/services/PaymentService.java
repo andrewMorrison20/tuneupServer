@@ -65,16 +65,26 @@ public class PaymentService {
     /**
      * Create a new payment
      * @param paymentDto details of the payment to create
-     * @return
+     * @return created payment as a dto
      */
     public PaymentDto createPayment(PaymentDto paymentDto) {
-        if(paymentRepository.existsByLessonId(paymentDto.getLessonId())){
-            throw new ValidationException("Payment for this lesso already Exists!");
+        if(Boolean.TRUE.equals(paymentRepository.existsByLessonId(paymentDto.getLessonId()))){
+            throw new ValidationException("Payment for this lesson already Exists!");
         }
         Payment payment = paymentMapper.toEntity(paymentDto);
         payment.setLesson(lessonService.findLessonById(paymentDto.getLessonId()));
-        payment.setTuition(tuitionService.findById(paymentDto.getTuitionId()));
+
+        Tuition tuition = tuitionService.findById(paymentDto.getTuitionId());
+
+        Profile student = tuition.getStudent();
+        Long userId = student.getAppUser().getId();
+        payment.setTuition(tuition);
         payment.setStatus(PaymentStatus.DUE);
+
+        eventPublisher.publishEvent(
+                new NotificationEvent(this, userId, NotificationType.PAYMENT_DUE, "Reminder: You have an outstanding payment due on: " + payment.getDueDate())
+        );
+
         return paymentMapper.toDto(paymentRepository.save(payment));
     }
 
