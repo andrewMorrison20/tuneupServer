@@ -20,6 +20,7 @@ import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMapper;
 import com.tuneup.tuneup.qualifications.mappers.QualificationMapper;
+import com.tuneup.tuneup.qualifications.repositories.ProfileInstrumentQualificationRepository;
 import com.tuneup.tuneup.qualifications.services.QualificationService;
 import com.tuneup.tuneup.regions.RegionDto;
 import com.tuneup.tuneup.regions.RegionMapper;
@@ -32,6 +33,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,12 +58,13 @@ public class ProfileService {
     private final QualificationService qualificationService;
     private final AvailabilityRepository availabilityRepository;
     private final ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper;
+    private final ProfileInstrumentQualificationRepository profileInstrumentQualificationRepository;
 
     public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator,
                           AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper,
                           InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository,
                           RegionRepository regionRepository, InstrumentService instrumentService, QualificationMapper qualificationMapper
-                          , QualificationService qualificationService, AvailabilityRepository availabilityRepository,ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper) {
+                          , QualificationService qualificationService, AvailabilityRepository availabilityRepository, ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper, ProfileInstrumentQualificationRepository profileInstrumentQualificationRepository) {
 
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
@@ -80,6 +83,7 @@ public class ProfileService {
         this.qualificationService = qualificationService;
         this.availabilityRepository = availabilityRepository;
         this.profileInstrumentQualificationMapper = profileInstrumentQualificationMapper;
+        this.profileInstrumentQualificationRepository = profileInstrumentQualificationRepository;
     }
 
 
@@ -269,10 +273,9 @@ public class ProfileService {
        return profileValidator.fetchById(id);
     }
 
-    public Set<ProfileInstrumentQualificationDto> getProfileQualificationsById(Long profileId){
-        Profile profile = fetchProfileEntityInternal(profileId);
-        return profile.getProfileInstrumentQualifications()
-                .stream()
+    public Set<ProfileInstrumentQualificationDto> getProfileQualificationsById(Long profileId) {
+        List<ProfileInstrumentQualification> quals = profileInstrumentQualificationRepository.findByProfileId(profileId);
+        return quals.stream()
                 .map(profileInstrumentQualificationMapper::toDto)
                 .collect(Collectors.toSet());
     }
@@ -282,8 +285,3 @@ public class ProfileService {
                 .map(profileMapper::toProfileDto);
     }
 }
-
-
-
-
-

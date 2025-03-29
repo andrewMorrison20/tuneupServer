@@ -5,8 +5,18 @@ import java.util.List;
 
 public class ConversationDto {
 
+    private List<ConversationParticipantDto> participants;
+    private LocalDateTime lastMessageTimestamp;
     private Long id;
-    private List<String> participants;
+    private String lastMessage;
+
+    public List<ConversationParticipantDto> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<ConversationParticipantDto> participants) {
+        this.participants = participants;
+    }
 
     public Long getId() {
         return id;
@@ -14,14 +24,6 @@ public class ConversationDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<String> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<String> participants) {
-        this.participants = participants;
     }
 
     public String getLastMessage() {
@@ -39,8 +41,4 @@ public class ConversationDto {
     public void setLastMessageTimestamp(LocalDateTime lastMessageTimestamp) {
         this.lastMessageTimestamp = lastMessageTimestamp;
     }
-
-    private String lastMessage;
-    private LocalDateTime lastMessageTimestamp;
-
 }

@@ -1,8 +1,10 @@
 package com.tuneup.tuneup.chats.mappers;
 
 
+import com.tuneup.tuneup.chats.dtos.ConversationParticipantDto;
 import com.tuneup.tuneup.chats.entities.Conversation;
 import com.tuneup.tuneup.chats.dtos.ConversationDto;
+import com.tuneup.tuneup.profiles.Profile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 public interface ConversationMapper {
 
-    @Mapping(target = "participants", expression = "java(java.util.Arrays.asList(conversation.getProfile1().getDisplayName(), conversation.getProfile2().getDisplayName()))")
     @Mapping(target = "lastMessage", expression = "java(conversation.getLastMessage() != null ? conversation.getLastMessage().getContent() : null)")
     @Mapping(target = "lastMessageTimestamp", expression = "java(conversation.getLastMessage() != null ? conversation.getLastMessage().getTimestamp() : null)")
     ConversationDto toDto(Conversation conversation);
@@ -22,4 +23,10 @@ public interface ConversationMapper {
     @Mapping(target = "lastMessage", ignore = true)
     @Mapping(target = "participants", ignore = true)
     Conversation toEntity(ConversationDto conversationDto);
+
+
+    @Mapping(source = "profile.id", target = "id")
+    @Mapping(source = "profile.displayName", target = "displayName")
+    @Mapping(source = "profile.profilePicture.url", target = "profilePictureUrl")
+    ConversationParticipantDto profileToConversationParticipantDto(Profile profile);
 }

@@ -25,6 +25,10 @@ public class Conversation {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @OneToOne
+    @JoinColumn(name = "last_message_id")
+    private Message lastMessage;
+
     public Message getLastMessage() {
         return lastMessage;
     }
@@ -32,10 +36,6 @@ public class Conversation {
     public void setLastMessage(Message lastMessage) {
         this.lastMessage = lastMessage;
     }
-
-    @OneToOne
-    @JoinColumn(name = "last_message_id")
-    private Message lastMessage;
 
     public Profile getProfile1() {
         return profile1;
