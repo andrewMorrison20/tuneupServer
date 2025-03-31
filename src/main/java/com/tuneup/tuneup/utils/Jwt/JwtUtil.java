@@ -29,13 +29,14 @@ public class JwtUtil {
     }
 
     // Generate a JWT token
-    public String generateToken(String username, long id, long profileId, ProfileType profileType) throws JOSEException {
+    public String generateToken(String username, String name, long id, long profileId, ProfileType profileType) throws JOSEException {
         JWSSigner signer = new MACSigner(secret);
 
         // Build claims for the token
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject("User Details")
                 .claim("username", username)
+                .claim("name",name)
                 .claim("userId", id)
                 .claim("profileId",profileId)
                 .claim("profileType",profileType)

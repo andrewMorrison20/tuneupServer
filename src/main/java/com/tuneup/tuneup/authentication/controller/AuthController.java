@@ -63,7 +63,7 @@ public class AuthController {
         Long profileId = profile.getId();
         ProfileType profileType = profile.getProfileType();
         // Generate JWT token
-        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getId(),profileId,profileType);
+        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getName(),userDetails.getId(),profileId,profileType);
         return new LoginResponseDto(token);
     }
 
