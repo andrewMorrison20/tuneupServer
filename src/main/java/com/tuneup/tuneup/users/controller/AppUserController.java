@@ -73,12 +73,17 @@ public class AppUserController {
 
         emailService.sendResetEmail(email, resetUrl);
 
-
         Map<String, String> response = new HashMap<>();
         response.put("message", "Password reset email sent successfully.");
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
+    }
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+            appUserService.verifyEmail(token);
+            return ResponseEntity.ok("Email verified successfully.");
     }
 
     @PostMapping("/updatePassword")

@@ -146,6 +146,23 @@ public class AppUserService {
         passwordResetTokenRepository.delete(resetToken);
     }
 
+    @Transactional
+    public void verifyEmail(String token) {
+        EmailVerificationToken verificationToken = emailVerificationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new ValidationException("Invalid or expired token."));
+
+        if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new ValidationException("Token has expired.");
+        }
+
+        AppUser user = verificationToken.getUser();
+        user.setVerified(true);
+        appUserRepository.save(user);
+
+        emailVerificationTokenRepository.delete(verificationToken);
+    }
+
+
     public String generateResetToken(String email) {
        AppUser user = appUserRepository.findByEmail(email);
        if(user == null){
