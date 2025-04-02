@@ -24,6 +24,17 @@ public class EmailService {
      mailSender.send(message);
   }
 
+
+    public void sendVerificationEmail(String email, String verificationUrl) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Account Verification");
+        message.setText("Click the link to verify your account: " + verificationUrl);
+        mailSender.send(message);
+    }
+
+
+
     public void sendEmail(String recipientEmail, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(recipientEmail);

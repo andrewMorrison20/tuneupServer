@@ -26,6 +26,16 @@ public class AppUser {
     )
     private Set<Role> roles = new HashSet<>();
 
+    private Boolean isVerified;
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;

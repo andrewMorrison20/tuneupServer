@@ -15,7 +15,15 @@ public class AppUserDto {
     private String password;
     private String username;
     private AddressDto address;
+    private Boolean isVerified;
 
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
 
     public Long getId() {
 

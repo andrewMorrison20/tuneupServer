@@ -2,12 +2,15 @@ package com.tuneup.tuneup.authentication.controller;
 
 
 
+import com.google.auth.oauth2.TokenVerifier;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.LoginRequestDto;
 import com.tuneup.tuneup.users.dtos.LoginResponseDto;
+import com.tuneup.tuneup.users.exceptions.EmailNotVerifiedException;
+import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserService;
 import com.tuneup.tuneup.utils.Jwt.JwtUtil;
@@ -59,6 +62,11 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         AppUserDto userDetails = appUserService.getUserByEmail(loginRequest.getEmail());
+
+        if (!userDetails.getVerified()) {
+            throw new EmailNotVerifiedException("Email is not verified. Please verify your email before logging in.");
+        }
+
         ProfileDto profile = profileService.getProfileDtoByUserId(userDetails.getId());
         Long profileId = profile.getId();
         ProfileType profileType = profile.getProfileType();

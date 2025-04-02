@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.LocalDateTime;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -19,6 +17,17 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    // Handle EmailNotVerifiedException specifically
+    @ExceptionHandler(EmailNotVerifiedException.class)
+    public ResponseEntity<CustomErrorResponse> handleEmailNotVerifiedException(EmailNotVerifiedException ex) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
+                "EMAIL_NOT_VERIFIED",
+                ex.getMessage(),
+                HttpStatus.FORBIDDEN.value()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
     // Handle generic RuntimeException

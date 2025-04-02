@@ -13,8 +13,10 @@ import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
 import com.tuneup.tuneup.users.model.AppUser;
+import com.tuneup.tuneup.users.model.EmailVerificationToken;
 import com.tuneup.tuneup.users.model.PasswordResetToken;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
+import com.tuneup.tuneup.users.repository.EmailVerificationTokenRepository;
 import com.tuneup.tuneup.users.repository.PasswordResetTokenRepository;
 import com.tuneup.tuneup.users.validators.AppUserValidator;
 import jakarta.transaction.Transactional;
@@ -35,8 +37,10 @@ public class AppUserService {
     private final AddressService addressService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final ProfileRepository profileRepository;
+    private final EmailVerificationTokenRepository emailVerificationTokenRepository;
+    private final EmailService emailService;
 
-    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator, PasswordEncoder passwordEncoder, AddressService addressService, PasswordResetTokenRepository passwordResetTokenRepository, ProfileRepository profileRepository) {
+    public AppUserService(AppUserRepository appUserRepository, AppUserMapper appUserMapper, AppUserValidator appUserValidator, PasswordEncoder passwordEncoder, AddressService addressService, PasswordResetTokenRepository passwordResetTokenRepository, ProfileRepository profileRepository, EmailVerificationTokenRepository emailVerificationTokenRepository, EmailService emailService) {
         this.appUserRepository = appUserRepository;
         this.appUserMapper = appUserMapper;
         this.appUserValidator = appUserValidator;
@@ -44,20 +48,32 @@ public class AppUserService {
         this.addressService = addressService;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.profileRepository = profileRepository;
+        this.emailVerificationTokenRepository = emailVerificationTokenRepository;
+        this.emailService = emailService;
     }
 
     @Transactional
     public AppUserDto createUser(AppUserDto appUserDto,ProfileType profileType) {
         appUserValidator.validateAppUserCreation(appUserDto);
         AppUser appUser = appUserMapper.toAppUser(appUserDto);
+        appUser.setVerified(false);
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUser = appUserRepository.save(appUser);
+        sendVerificationEmail(appUser.getEmail());
         Profile defaultProfile = new Profile();
         defaultProfile.setAppUser(appUser);
         defaultProfile.setDisplayName(appUser.getName());
         defaultProfile.setProfileType(profileType);
         profileRepository.save(defaultProfile);
         return appUserMapper.toAppUserDto(appUser);
+    }
+
+    private void sendVerificationEmail(String email) {
+
+        String token = generateVerificationToken(email);
+        String verificationUrl = "http://localhost:4200/login/verified?token=" + token;
+
+        emailService.sendVerificationEmail(email, verificationUrl);
     }
 
     public List<AppUserDto> findAll() {
@@ -114,10 +130,6 @@ public class AppUserService {
         return updateUserDto;
     }
 
-    /*
-    *does this need to be transactional? we would still want the token to delete even in the event of invalid user passed
-    * and failed update. Immediate deletion of token would prevent retry logic without generating a new token.
-     */
     @Transactional
     public void verifyPasswordReset(String token, String newPassword) {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
@@ -146,6 +158,21 @@ public class AppUserService {
                 LocalDateTime.now().plusHours(1)
         );
         passwordResetTokenRepository.save(resetToken);
+        return token;
+    }
+
+    public String generateVerificationToken(String email) {
+        AppUser user = appUserRepository.findByEmail(email);
+        if(user == null){
+            throw new ValidationException("User with this email address, does not exist");
+        }
+        String token = UUID.randomUUID().toString();
+        EmailVerificationToken verificationToken = new EmailVerificationToken(
+                user,
+                token,
+                LocalDateTime.now().plusHours(24)
+        );
+        emailVerificationTokenRepository.save(verificationToken);
         return token;
     }
 }
