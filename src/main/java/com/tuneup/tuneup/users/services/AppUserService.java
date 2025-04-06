@@ -68,7 +68,16 @@ public class AppUserService {
         return appUserMapper.toAppUserDto(appUser);
     }
 
-    private void sendVerificationEmail(String email) {
+    /**
+     * Generates a verification link and sends it to a users email if registered
+     * @param email the registered email address
+     */
+    public void sendVerificationEmail(String email) {
+
+        if(!appUserRepository.existsByEmail(email))
+        {
+            throw new ValidationException("User with this email address not registered");
+        }
 
         String token = generateVerificationToken(email);
         String verificationUrl = "http://localhost:4200/login/verified?token=" + token;

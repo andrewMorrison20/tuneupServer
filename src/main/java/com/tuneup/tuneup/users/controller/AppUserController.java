@@ -65,6 +65,11 @@ public class AppUserController {
       return ResponseEntity.ok().body(createdUser);
     }
 
+    @GetMapping("/requestVerification")
+    public ResponseEntity<String> requestNewVerficationLink(@RequestBody String email){
+        appUserService.sendVerificationEmail(email);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping("/requestResetPasswordEmail")
     public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
