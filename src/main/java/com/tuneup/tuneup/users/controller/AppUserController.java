@@ -70,7 +70,7 @@ public class AppUserController {
         appUserService.sendVerificationEmail(email);
         return ResponseEntity.ok().build();
     }
-    
+
     @PostMapping("/requestResetPasswordEmail")
     public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");

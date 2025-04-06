@@ -1,14 +1,10 @@
 package com.tuneup.tuneup.users.services;
 
-import com.tuneup.tuneup.address.Address;
 import com.tuneup.tuneup.address.AddressDto;
 import com.tuneup.tuneup.address.AddressService;
 import com.tuneup.tuneup.profiles.Profile;
-import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
-import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
-import com.tuneup.tuneup.users.Operation;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.mappers.AppUserMapper;
@@ -25,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -72,14 +69,15 @@ public class AppUserService {
      * Generates a verification link and sends it to a users email if registered
      * @param email the registered email address
      */
+
+    @Transactional
     public void sendVerificationEmail(String email) {
+       AppUser user = appUserRepository.findByEmail(email);
 
-        if(!appUserRepository.existsByEmail(email))
-        {
-            throw new ValidationException("User with this email address not registered");
-        }
-
-        String token = generateVerificationToken(email);
+        Optional<EmailVerificationToken> existingToken = emailVerificationTokenRepository.findByUserId(user.getId());
+        existingToken.ifPresent(emailVerificationTokenRepository::delete);
+        emailVerificationTokenRepository.flush();
+        String token = generateVerificationToken(user);
         String verificationUrl = "http://localhost:4200/login/verified?token=" + token;
 
         emailService.sendVerificationEmail(email, verificationUrl);
@@ -187,11 +185,7 @@ public class AppUserService {
         return token;
     }
 
-    public String generateVerificationToken(String email) {
-        AppUser user = appUserRepository.findByEmail(email);
-        if(user == null){
-            throw new ValidationException("User with this email address, does not exist");
-        }
+    public String generateVerificationToken(AppUser user) {
         String token = UUID.randomUUID().toString();
         EmailVerificationToken verificationToken = new EmailVerificationToken(
                 user,
