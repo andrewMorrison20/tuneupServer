@@ -1,8 +1,8 @@
 package com.tuneup.tuneup.users.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -24,7 +24,7 @@ public class EmailService {
      mailSender.send(message);
   }
 
-
+    @Async
     public void sendVerificationEmail(String email, String verificationUrl) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
@@ -32,7 +32,6 @@ public class EmailService {
         message.setText("Click the link to verify your account: " + verificationUrl);
         mailSender.send(message);
     }
-
 
 
     public void sendEmail(String recipientEmail, String subject, String text) {
