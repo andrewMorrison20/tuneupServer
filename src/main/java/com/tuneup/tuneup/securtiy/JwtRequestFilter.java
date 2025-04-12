@@ -1,7 +1,10 @@
 package com.tuneup.tuneup.securtiy;
 
+import com.nimbusds.jwt.SignedJWT;
 import com.tuneup.tuneup.utils.Jwt.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -14,48 +17,58 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+    public JwtRequestFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        // Exclude specific endpoints from the filter
-        String requestPath = request.getServletPath();
-        if (requestPath.equals("/login") || requestPath.startsWith("/public")) {
+
+        String path = request.getServletPath();
+        if (path.equals("/login") || path.startsWith("/public")) {
             chain.doFilter(request, response);
             return;
         }
 
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String username = null;
-        String jwt;
-
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
+            String token = authorizationHeader.substring(7);
+
             try {
-                username = jwtUtil.validateTokenAndRetrieveSubject(jwt);
+                // Parse JWT
+                SignedJWT jwt = SignedJWT.parse(token);
+                var claims = jwt.getJWTClaimsSet();
+
+                if (!jwtUtil.isTokenBlacklisted(token)) {
+                    String username = claims.getStringClaim("username");
+                    @SuppressWarnings("unchecked")
+                    List<String> roles = (List<String>) claims.getClaim("roles");
+
+                    List<GrantedAuthority> authorities = roles.stream()
+                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                            .collect(Collectors.toList());
+
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
+
             } catch (Exception e) {
-                // Log the error (avoid exposing details in production)
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
                 return;
             }
-        }
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    username, null, new ArrayList<>()
-            );
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 
         chain.doFilter(request, response);

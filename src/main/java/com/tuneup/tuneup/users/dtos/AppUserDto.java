@@ -3,7 +3,10 @@ package com.tuneup.tuneup.users.dtos;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuneup.tuneup.address.AddressDto;
+import com.tuneup.tuneup.roles.services.Role;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @Component
 public class AppUserDto {
@@ -16,6 +19,7 @@ public class AppUserDto {
     private String username;
     private AddressDto address;
     private Boolean isVerified;
+    private Set<Role> roles;
 
     public Boolean getVerified() {
         return isVerified;
@@ -75,4 +79,13 @@ public class AppUserDto {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 }

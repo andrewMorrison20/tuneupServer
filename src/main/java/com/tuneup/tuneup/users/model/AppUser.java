@@ -2,14 +2,16 @@ package com.tuneup.tuneup.users.model;
 
 import com.tuneup.tuneup.address.Address;
 import com.tuneup.tuneup.roles.services.Role;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@SuppressWarnings("lombok")
 public class AppUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +19,7 @@ public class AppUser {
     private String email;
     private String password;
     private String username;
+    private LocalDateTime deletedAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -28,17 +31,21 @@ public class AppUser {
 
     private Boolean isVerified;
 
-    public Boolean getVerified() {
-        return isVerified;
-    }
-
-    public void setVerified(Boolean verified) {
-        isVerified = verified;
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public boolean isDeleted() {
+        return deletedAt != null;
+    }
 
     public Address getAddress() {
         return address;
@@ -77,10 +84,9 @@ public class AppUser {
     }
 
     public void setUsername(String username) {
-        if(username == null){
+        if (username == null) {
             this.username = this.email;
-        }
-        else {
+        } else {
             this.username = username;
         }
 
@@ -98,9 +104,15 @@ public class AppUser {
         return this.roles;
     }
 
-    public void  setRoles(Set<Role> roles ) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
+    public Boolean getVerified() {
+        return isVerified;
+    }
 
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
 }

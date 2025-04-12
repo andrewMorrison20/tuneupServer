@@ -10,6 +10,7 @@ import com.tuneup.tuneup.regions.Region;
 import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -69,14 +70,28 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProfileInstrumentQualification> profileInstrumentQualifications;
 
+    private LocalDateTime deletedAt;
+
     // Getters and Setters
 
     public long getId() {
         return id;
     }
 
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isDeleted() {
+        return deletedAt != null;
     }
 
     public String getDisplayName() {

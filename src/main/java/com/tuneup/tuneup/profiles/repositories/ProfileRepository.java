@@ -8,11 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.nio.channels.FileChannel;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> , JpaSpecificationExecutor<Profile> {
@@ -47,6 +50,11 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> , JpaSpe
                                                      @Param("isTutor") boolean isTutor,
                                                      @Param("active") boolean active,
                                                      Pageable pageable);
+
+    @Modifying
+    @Query("UPDATE Profile p SET p.deletedAt = :timestamp WHERE p.appUser.id IN :ids")
+    void softDeleteProfilesByUserIds(@Param("ids") List<Long> ids, @Param("timestamp") LocalDateTime timestamp);
+
 }
 
 

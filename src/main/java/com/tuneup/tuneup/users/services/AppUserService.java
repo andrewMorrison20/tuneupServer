@@ -195,4 +195,16 @@ public class AppUserService {
         emailVerificationTokenRepository.save(verificationToken);
         return token;
     }
+
+    /**
+     * Marks users and their associated profiles as deleted. Soft delete only. Retains all records.
+     * Primarily for admin console
+     * @param userIds ids of the users to soft-delete
+     */
+    @Transactional
+    public void softDeleteUsers(List<Long> userIds) {
+        LocalDateTime time = LocalDateTime.now();
+        appUserRepository.softDeleteUsersByIds(userIds, time);
+        profileRepository.softDeleteProfilesByUserIds(userIds, time);
+    }
 }

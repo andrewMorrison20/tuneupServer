@@ -18,6 +18,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +55,7 @@ class AuthControllerTests {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
         when(appUserService.getUserByEmail("user@example.com")).thenReturn(userDto);
-        when(jwtUtil.generateToken("user@example.com", 1L,1L, ProfileType.STUDENT)).thenReturn("mock-jwt-token");
+        when(jwtUtil.generateToken("user@example.com","user", 1L,1L, ProfileType.STUDENT, List.of("ADMIN"))).thenReturn("mock-jwt-token");
 
         LoginResponseDto response = authController.login(loginRequest);
 

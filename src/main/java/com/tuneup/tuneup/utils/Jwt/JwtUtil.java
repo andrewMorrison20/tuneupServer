@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -29,7 +30,7 @@ public class JwtUtil {
     }
 
     // Generate a JWT token
-    public String generateToken(String username, String name, long id, long profileId, ProfileType profileType) throws JOSEException {
+    public String generateToken(String username, String name, long id, long profileId, ProfileType profileType, List<String> roles) throws JOSEException {
         JWSSigner signer = new MACSigner(secret);
 
         // Build claims for the token
@@ -40,6 +41,7 @@ public class JwtUtil {
                 .claim("userId", id)
                 .claim("profileId",profileId)
                 .claim("profileType",profileType)
+                .claim("roles", roles)
                 .issuer("TUNEUP")
                 .issueTime(new Date())
                 .expirationTime(new Date(System.currentTimeMillis() + 3600 * 1000)) // Set expiry to 1 hour

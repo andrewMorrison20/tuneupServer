@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -67,11 +68,15 @@ public class AuthController {
             throw new EmailNotVerifiedException("Email is not verified. Please verify your email before logging in.");
         }
 
+        List<String> roles = userDetails.getRoles().stream()
+                .map(role -> role.getName().name())
+                .toList();
+
         ProfileDto profile = profileService.getProfileDtoByUserId(userDetails.getId());
         Long profileId = profile.getId();
         ProfileType profileType = profile.getProfileType();
         // Generate JWT token
-        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getName(),userDetails.getId(),profileId,profileType);
+        String token = jwtUtil.generateToken(loginRequest.getEmail(),userDetails.getName(),userDetails.getId(),profileId,profileType,roles);
         return new LoginResponseDto(token);
     }
 

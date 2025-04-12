@@ -1,6 +1,7 @@
 package com.tuneup.tuneup.junit.services;
 
 import com.tuneup.tuneup.roles.services.Role;
+import com.tuneup.tuneup.roles.services.RoleName;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserDetailsService;
@@ -37,7 +38,7 @@ class AppUserDetailsServiceTest {
         AppUser mockAppUser = new AppUser();
         mockAppUser.setEmail(email);
         mockAppUser.setPassword("password123");
-        mockAppUser.setRoles(Set.of(new Role("ROLE_USER"), new Role("ROLE_ADMIN")));
+        mockAppUser.setRoles(Set.of(new Role(RoleName.USER), new Role(RoleName.ADMIN)));
 
         when(appUserRepository.findByEmail(email)).thenReturn(mockAppUser);
 
