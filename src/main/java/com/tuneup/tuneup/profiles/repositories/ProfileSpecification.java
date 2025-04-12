@@ -26,6 +26,8 @@ public class ProfileSpecification {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            predicates.add(builder.isNull(root.get("deletedAt")));
+
             if (criteria.getProfileType() != null) {
                 predicates.add(builder.equal(root.get("profileType"), criteria.getProfileType()));
             }
