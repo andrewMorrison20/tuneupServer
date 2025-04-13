@@ -15,14 +15,6 @@ public class Tuition {
     @JoinColumn(name = "student_id", nullable = false)
     private Profile student;
 
-    public void setStudent(Profile student) {
-        this.student = student;
-    }
-
-    public void setTutor(Profile tutor) {
-        this.tutor = tutor;
-    }
-
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
     private Profile tutor;
@@ -46,5 +38,18 @@ public class Tuition {
     public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
     public void setActiveTuition(boolean activeTuition) { this.activeTuition = activeTuition; }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setStudent(Profile student) {
+        this.student = student;
+    }
+
+    public void setTutor(Profile tutor) {
+        this.tutor = tutor;
+    }
+
 }
 
