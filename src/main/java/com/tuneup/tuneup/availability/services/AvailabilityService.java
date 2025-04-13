@@ -104,7 +104,7 @@ public class AvailabilityService {
      *  Handles availability adjustment logic
      */
     @Transactional
-    protected Availability handleAvailabilityAdjustment(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
+    public Availability handleAvailabilityAdjustment(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         if (availability.getStartTime().equals(requestStart) && availability.getEndTime().equals(requestEnd)) {
             availability.setStatus(AvailabilityStatus.PENDING);
             return availabilityRepository.save(availability);
