@@ -1,5 +1,6 @@
 package com.tuneup.tuneup.users.services;
 
+import com.tuneup.tuneup.users.dtos.EmailDto;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
@@ -39,6 +40,32 @@ public class EmailService {
         message.setTo(recipientEmail);
         message.setSubject(subject);
         message.setText(text);
+        mailSender.send(message);
+    }
+
+    public void sendFaqEmail(EmailDto emailDto) {
+        String body = """
+        New contact form submission:
+
+        From: %s <%s>
+        Subject: %s
+
+        Message:
+        %s
+        """.formatted(
+                emailDto.getName(),
+                emailDto.getEmailAddress(),
+                emailDto.getSubject(),
+                emailDto.getMessage()
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo("tuneup.ad.confirm@gmail.com");
+        message.setSubject("New Contact Message: " + emailDto.getSubject());
+        message.setText(body);
+        message.setFrom("noreply@yourdomain.com");
+        message.setReplyTo(emailDto.getEmailAddress());
+
         mailSender.send(message);
     }
 }

@@ -35,6 +35,7 @@ public class SecurityConfig {
                                 "/api/profiles/**",
                                 "/api/users/createNew",
                                 "/api/users/requestVerification",
+                                "/api/email/contact",
                                 "/api/users/requestResetPasswordEmail",
                                 "/api/users/verify-email",
                                 "/api/users/updatePassword",
