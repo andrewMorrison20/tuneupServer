@@ -35,6 +35,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -189,6 +190,7 @@ class LessonRequestServiceTest {
     void updateLessonRequestStatus_shouldHandleInactiveTuition() {
 
         when(lessonRequestValidator.fetchAndValidateById(1L)).thenReturn(lessonRequest);
+        when( lessonRequestRepository.findAllByAvailabilityId(any())).thenReturn(Set.of(lessonRequest));
         tuitionDto.setActiveTuition(false);
         lessonRequestService.updateLessonRequestStatus(1L, LessonRequestStatus.DECLINED.name(), true);
 
