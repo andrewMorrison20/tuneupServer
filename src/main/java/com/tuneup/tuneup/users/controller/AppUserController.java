@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
+import com.nimbusds.jwt.SignedJWT;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,5 +112,17 @@ public class AppUserController {
         appUserService.softDeleteUsers(userIds);
         return ResponseEntity.ok().build();
     }
+
+    //grabbing the id directly from req here to prevent malicious deletes by other authed users
+    @DeleteMapping("/anonymise")
+    public ResponseEntity<Void> anonymiseSelf(HttpServletRequest request) throws ParseException {
+        String token = request.getHeader("Authorization").substring(7);
+        SignedJWT jwt = SignedJWT.parse(token);
+        Long userId = jwt.getJWTClaimsSet().getLongClaim("userId");
+
+        appUserService.anonymiseUserById(userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
 

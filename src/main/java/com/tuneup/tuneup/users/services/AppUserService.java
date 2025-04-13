@@ -207,4 +207,42 @@ public class AppUserService {
         appUserRepository.softDeleteUsersByIds(userIds, time);
         profileRepository.softDeleteProfilesByUserIds(userIds, time);
     }
+
+    //note this is a single method as refactoring the profile logic would require setting self in bean context to ensure transactional
+    //Other option is to refactor to profile service but then beans would have to be lazy loaded.
+
+    /**
+     * Anonymise a user and remove all their personal details
+     * @param userId id of the user to anonymise
+     */
+    @Transactional
+    public void anonymiseUserById(Long userId) {
+        AppUser user = appUserRepository.findById(userId)
+                .orElseThrow(() -> new ValidationException("User not found"));
+
+        String uid = UUID.randomUUID().toString().substring(0, 8);
+        user.setName("Deleted User");
+        user.setEmail("deleted_" + uid + "@tuneup.local");
+        user.setUsername("deleted_" + uid);
+        user.setPassword(null);
+        user.setAddress(null);
+        user.setVerified(false);
+        user.setDeletedAt(LocalDateTime.now());
+
+        Profile profile = profileRepository.findByAppUserId(user.getId());
+        if (profile != null) {
+            profile.setDisplayName("Deleted User");
+            profile.setBio(null);
+            profile.setProfilePicture(null);
+            profile.setInstruments(null);
+            profile.setPrices(null);
+            profile.setGenres(null);
+            profile.setTuitionRegion(null);
+            profile.setProfileInstrumentQualifications(null);
+            profile.setDeletedAt(LocalDateTime.now());
+            profileRepository.save(profile);
+        }
+
+        appUserRepository.save(user);
+    }
 }
