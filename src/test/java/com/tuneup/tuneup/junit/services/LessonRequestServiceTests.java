@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.availability;
+package com.tuneup.tuneup.junit.services;
 
+import com.tuneup.tuneup.availability.Availability;
+import com.tuneup.tuneup.availability.LessonRequest;
 import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
@@ -16,6 +18,7 @@ import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
+import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.enums.LessonType;
 import com.tuneup.tuneup.tuitions.TuitionDto;
 import com.tuneup.tuneup.tuitions.TuitionService;
@@ -27,6 +30,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -196,5 +200,79 @@ class LessonRequestServiceTest {
         NotificationEvent event = captor.getValue();
         assertEquals(NotificationType.REQUEST_REJECTED, event.getNotificationType());
         assertEquals(99L, event.getUserId());
+    }
+
+    @Test
+    void getRequestsByTutor_shouldReturnDtoPage() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LessonRequest> lessonRequestPage = new PageImpl<>(Collections.singletonList(lessonRequest));
+        LessonRequestDto dto = new LessonRequestDto();
+
+        when(profileService.existById(1L)).thenReturn(true);
+        when(lessonRequestRepository.findByTutorId(1L, pageable)).thenReturn(lessonRequestPage);
+        when(lessonRequestMapper.toDto(any())).thenReturn(dto);
+
+        Page<LessonRequestDto> result = lessonRequestService.getRequestsByTutor(1L, pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals(dto, result.getContent().get(0));
+    }
+
+    @Test
+    void getRequestsByStudent_shouldReturnDtoPage() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LessonRequest> lessonRequestPage = new PageImpl<>(Collections.singletonList(lessonRequest));
+        LessonRequestDto dto = new LessonRequestDto();
+
+        when(profileService.existById(2L)).thenReturn(true);
+        when(lessonRequestRepository.findByStudentId(2L, pageable)).thenReturn(lessonRequestPage);
+        when(lessonRequestMapper.toDto(any())).thenReturn(dto);
+
+        Page<LessonRequestDto> result = lessonRequestService.getRequestsByStudent(2L, pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals(dto, result.getContent().get(0));
+    }
+
+    @Test
+    void getAllRequestProfilesByProfileId_shouldReturnStudentsByTutor() {
+        Pageable pageable = PageRequest.of(0, 10);
+        ProfileDto profileDto = new ProfileDto();
+        Page<Profile> students = new PageImpl<>(Collections.singletonList(studentProfile));
+
+        Profile tutor = new Profile();
+        tutor.setProfileType(ProfileType.TUTOR);
+
+        when(profileService.fetchProfileEntityInternal(3L)).thenReturn(tutor);
+        when(lessonRequestRepository.findStudentsByTutorId(3L, pageable)).thenReturn(students);
+        when(profileMapper.toProfileDto(any())).thenReturn(profileDto);
+
+        Page<ProfileDto> result = lessonRequestService.getAllRequestProfilesByProfileId(3L, pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals(profileDto, result.getContent().get(0));
+    }
+
+    @Test
+    void getAllRequestProfilesByProfileId_shouldReturnTutorsByStudent() {
+        Pageable pageable = PageRequest.of(0, 10);
+        ProfileDto profileDto = new ProfileDto();
+        Page<Profile> tutors = new PageImpl<>(Collections.singletonList(tutorProfile));
+
+        Profile student = new Profile();
+        student.setProfileType(ProfileType.STUDENT);
+
+        when(profileService.fetchProfileEntityInternal(2L)).thenReturn(student);
+        when(lessonRequestRepository.findTutorsByStudentId(2L, pageable)).thenReturn(tutors);
+        when(profileMapper.toProfileDto(any())).thenReturn(profileDto);
+
+        Page<ProfileDto> result = lessonRequestService.getAllRequestProfilesByProfileId(2L, pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals(profileDto, result.getContent().get(0));
     }
 }
