@@ -156,13 +156,17 @@ public class LessonRequestService {
                 .map(lessonRequestMapper::toDto);
     }
 
-    public Page<ProfileDto> getAllRequestProfilesByProfileId(Long profileId,Pageable pageable){
+    public Page<ProfileDto> getAllRequestProfilesByProfileId(Long profileId, Pageable pageable) {
         Profile profile = profileService.fetchProfileEntityInternal(profileId);
-        if(profile.getProfileType().equals(ProfileType.TUTOR)){
-            return getStudentsByTutor(profileId,pageable);
-        } else if(profile.getProfileType().equals(ProfileType.STUDENT)){
-            return getTutorsByStudent(profileId,pageable);
+
+        ProfileType type = profile != null ? profile.getProfileType() : null;
+
+        if (ProfileType.TUTOR.equals(type)) {
+            return getStudentsByTutor(profileId, pageable);
+        } else if (ProfileType.STUDENT.equals(type)) {
+            return getTutorsByStudent(profileId, pageable);
         }
+
         return Page.empty();
     }
     /**

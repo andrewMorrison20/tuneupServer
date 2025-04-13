@@ -275,4 +275,18 @@ class LessonRequestServiceTest {
         assertEquals(1, result.getTotalElements());
         assertEquals(profileDto, result.getContent().get(0));
     }
+
+    @Test
+    void getAllRequestProfilesByProfileId_shouldReturnEmptyForInvalidProfileType() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Profile unknownTypeProfile = new Profile();
+        unknownTypeProfile.setProfileType(null); // simulate unexpected or null type
+
+        when(profileService.fetchProfileEntityInternal(999L)).thenReturn(unknownTypeProfile);
+
+        Page<ProfileDto> result = lessonRequestService.getAllRequestProfilesByProfileId(999L, pageable);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
 }
