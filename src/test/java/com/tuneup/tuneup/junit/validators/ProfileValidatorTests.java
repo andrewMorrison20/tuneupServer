@@ -77,9 +77,21 @@ class ProfileValidatorTest {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to NullPointerException")
+    void testValidateProfileId_ValidId(){
+        when(profileRepository.existsById(any())).thenReturn(false);
+        assertThrows(ValidationException.class, () -> profileValidator.validateProfileId(1L));
+    }
+
+    @Test
+    void testExistsByProfileId_ValidId() {
+        when(profileRepository.existsById(any())).thenReturn(true);
+        assertDoesNotThrow(() -> profileValidator.existsById(1L));
+    }
+
+    @Test
     void validatorProfileDto_ShouldThrowExceptionForInvalidGenre() {
         when(genreRepository.existsById(anyLong())).thenReturn(false);
+        when(instrumentRepository.existsById(any())).thenReturn(true);
         assertThrows(ValidationException.class, () -> profileValidator.validatorProfileDto(profileDto));
     }
 

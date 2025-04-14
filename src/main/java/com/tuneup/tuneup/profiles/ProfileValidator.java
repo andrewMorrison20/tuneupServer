@@ -42,10 +42,9 @@ public class ProfileValidator {
         }
     }
 
-
     private void validateInstruments(Set<InstrumentDto> instruments) {
         if (instruments == null || instruments.isEmpty()) {
-            throw new ValidationException("The instrument list is empty");
+           return;
         }
         for (InstrumentDto instrument : instruments) {
            if(! instrumentRepository.existsById(instrument.getId())){
