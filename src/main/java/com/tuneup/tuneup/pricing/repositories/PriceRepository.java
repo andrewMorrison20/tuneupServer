@@ -1,5 +1,7 @@
-    package com.tuneup.tuneup.pricing;
+    package com.tuneup.tuneup.pricing.repositories;
 
+    import com.tuneup.tuneup.pricing.enums.Period;
+    import com.tuneup.tuneup.pricing.entities.Price;
     import org.springframework.data.jpa.repository.JpaRepository;
     import org.springframework.stereotype.Repository;
 

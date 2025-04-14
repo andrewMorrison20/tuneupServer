@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.pricing;
+package com.tuneup.tuneup.pricing.mappers;
 
+import com.tuneup.tuneup.pricing.PriceDto;
+import com.tuneup.tuneup.pricing.entities.Price;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 

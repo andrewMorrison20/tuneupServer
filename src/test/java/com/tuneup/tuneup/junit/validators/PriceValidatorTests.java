@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.junit.validators;
 
-import com.tuneup.tuneup.pricing.PriceRepository;
-import com.tuneup.tuneup.pricing.PriceValidator;
+import com.tuneup.tuneup.pricing.repositories.PriceRepository;
+import com.tuneup.tuneup.pricing.services.PriceValidator;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import com.tuneup.tuneup.pricing.Price;
+import com.tuneup.tuneup.pricing.entities.Price;
 import com.tuneup.tuneup.pricing.PriceDto;
 
 @ExtendWith(MockitoExtension.class)

@@ -1,12 +1,12 @@
-package com.tuneup.tuneup.pricing;
+package com.tuneup.tuneup.pricing.controllers;
 
+import com.tuneup.tuneup.pricing.PriceDto;
+import com.tuneup.tuneup.pricing.services.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/prices")

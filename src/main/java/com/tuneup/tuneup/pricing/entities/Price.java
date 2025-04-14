@@ -1,5 +1,6 @@
-package com.tuneup.tuneup.pricing;
+package com.tuneup.tuneup.pricing.entities;
 
+import com.tuneup.tuneup.pricing.enums.Period;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import jakarta.persistence.*;
 

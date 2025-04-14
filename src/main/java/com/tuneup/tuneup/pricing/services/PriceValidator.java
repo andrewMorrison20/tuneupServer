@@ -1,5 +1,9 @@
-package com.tuneup.tuneup.pricing;
+package com.tuneup.tuneup.pricing.services;
 
+import com.tuneup.tuneup.pricing.PriceDto;
+import com.tuneup.tuneup.pricing.entities.Price;
+import com.tuneup.tuneup.pricing.enums.Period;
+import com.tuneup.tuneup.pricing.repositories.PriceRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Component;
 

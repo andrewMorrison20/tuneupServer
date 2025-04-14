@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.pricing;
+package com.tuneup.tuneup.pricing.enums;
 
 public enum Period {
         ONE_HOUR,

@@ -1,14 +1,14 @@
 package com.tuneup.tuneup.junit.services;
 
-import com.tuneup.tuneup.pricing.PriceRepository;
+import com.tuneup.tuneup.pricing.repositories.PriceRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.tuneup.tuneup.pricing.PriceMapper;
-import com.tuneup.tuneup.pricing.PriceValidator;
-import com.tuneup.tuneup.pricing.PriceService;
+import com.tuneup.tuneup.pricing.mappers.PriceMapper;
+import com.tuneup.tuneup.pricing.services.PriceValidator;
+import com.tuneup.tuneup.pricing.services.PriceService;
 import com.tuneup.tuneup.pricing.PriceDto;
-import com.tuneup.tuneup.pricing.Price;
+import com.tuneup.tuneup.pricing.entities.Price;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

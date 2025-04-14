@@ -2,10 +2,9 @@ package com.tuneup.tuneup.junit.controllers;
 
 
 
-import com.tuneup.tuneup.pricing.Period;
-import com.tuneup.tuneup.pricing.PriceController;
+import com.tuneup.tuneup.pricing.controllers.PriceController;
 import com.tuneup.tuneup.pricing.PriceDto;
-import com.tuneup.tuneup.pricing.PriceService;
+import com.tuneup.tuneup.pricing.services.PriceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

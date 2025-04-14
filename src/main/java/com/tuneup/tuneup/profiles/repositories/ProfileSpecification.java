@@ -2,7 +2,7 @@ package com.tuneup.tuneup.profiles.repositories;
 
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.genres.Genre;
-import com.tuneup.tuneup.pricing.Price;
+import com.tuneup.tuneup.pricing.entities.Price;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
