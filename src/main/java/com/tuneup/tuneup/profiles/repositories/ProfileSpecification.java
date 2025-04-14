@@ -6,7 +6,7 @@ import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
-import com.tuneup.tuneup.regions.RegionRepository;
+import com.tuneup.tuneup.regions.repositories.RegionRepository;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

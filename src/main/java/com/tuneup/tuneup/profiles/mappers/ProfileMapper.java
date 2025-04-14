@@ -7,7 +7,7 @@ import com.tuneup.tuneup.images.ImageMapper;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
-import com.tuneup.tuneup.regions.RegionMapper;
+import com.tuneup.tuneup.regions.mappers.RegionMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;

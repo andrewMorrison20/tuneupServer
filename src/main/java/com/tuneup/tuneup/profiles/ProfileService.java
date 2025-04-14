@@ -23,8 +23,8 @@ import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMa
 import com.tuneup.tuneup.qualifications.repositories.ProfileInstrumentQualificationRepository;
 import com.tuneup.tuneup.qualifications.services.QualificationService;
 import com.tuneup.tuneup.regions.RegionDto;
-import com.tuneup.tuneup.regions.RegionMapper;
-import com.tuneup.tuneup.regions.RegionRepository;
+import com.tuneup.tuneup.regions.mappers.RegionMapper;
+import com.tuneup.tuneup.regions.repositories.RegionRepository;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.springframework.data.domain.Page;

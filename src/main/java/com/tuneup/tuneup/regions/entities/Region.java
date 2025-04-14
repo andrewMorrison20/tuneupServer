@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.regions;
+package com.tuneup.tuneup.regions.entities;
 
 import jakarta.persistence.*;
 

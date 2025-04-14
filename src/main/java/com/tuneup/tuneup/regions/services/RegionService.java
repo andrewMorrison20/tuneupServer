@@ -1,5 +1,9 @@
-package com.tuneup.tuneup.regions;
+package com.tuneup.tuneup.regions.services;
 
+import com.tuneup.tuneup.regions.RegionDto;
+import com.tuneup.tuneup.regions.entities.Region;
+import com.tuneup.tuneup.regions.mappers.RegionMapper;
+import com.tuneup.tuneup.regions.repositories.RegionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

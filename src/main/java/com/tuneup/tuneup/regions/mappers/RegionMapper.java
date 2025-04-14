@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.regions;
+package com.tuneup.tuneup.regions.mappers;
 
+import com.tuneup.tuneup.regions.entities.Region;
+import com.tuneup.tuneup.regions.RegionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
