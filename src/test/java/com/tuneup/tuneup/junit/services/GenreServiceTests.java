@@ -1,6 +1,11 @@
 package com.tuneup.tuneup.junit.services;
 
-import com.tuneup.tuneup.genres.*;
+import com.tuneup.tuneup.genres.dtos.GenreDto;
+import com.tuneup.tuneup.genres.entities.Genre;
+import com.tuneup.tuneup.genres.mappers.GenreMapper;
+import com.tuneup.tuneup.genres.repositories.GenreRepository;
+import com.tuneup.tuneup.genres.services.GenreService;
+import com.tuneup.tuneup.genres.services.GenreValidator;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

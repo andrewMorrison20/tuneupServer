@@ -2,8 +2,8 @@ package com.tuneup.tuneup.profiles;
 
 import com.tuneup.tuneup.Instruments.InstrumentDto;
 import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
-import com.tuneup.tuneup.genres.GenreDto;
-import com.tuneup.tuneup.genres.GenreRepository;
+import com.tuneup.tuneup.genres.dtos.GenreDto;
+import com.tuneup.tuneup.genres.repositories.GenreRepository;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;

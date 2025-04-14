@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.genres;
+package com.tuneup.tuneup.genres.controller;
 
+import com.tuneup.tuneup.genres.dtos.GenreDto;
+import com.tuneup.tuneup.genres.services.GenreService;
 import com.tuneup.tuneup.profiles.entities.Profile;
 
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,8 @@
 package com.tuneup.tuneup.junit.controllers;
 
-import com.tuneup.tuneup.genres.GenreController;
-import com.tuneup.tuneup.genres.GenreDto;
-import com.tuneup.tuneup.genres.GenreService;
+import com.tuneup.tuneup.genres.controller.GenreController;
+import com.tuneup.tuneup.genres.dtos.GenreDto;
+import com.tuneup.tuneup.genres.services.GenreService;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

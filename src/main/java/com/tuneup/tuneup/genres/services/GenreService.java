@@ -1,5 +1,9 @@
-package com.tuneup.tuneup.genres;
+package com.tuneup.tuneup.genres.services;
 
+import com.tuneup.tuneup.genres.dtos.GenreDto;
+import com.tuneup.tuneup.genres.entities.Genre;
+import com.tuneup.tuneup.genres.mappers.GenreMapper;
+import com.tuneup.tuneup.genres.repositories.GenreRepository;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

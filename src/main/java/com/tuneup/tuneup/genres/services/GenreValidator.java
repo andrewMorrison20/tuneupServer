@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.genres;
+package com.tuneup.tuneup.genres.services;
 
+import com.tuneup.tuneup.genres.dtos.GenreDto;
+import com.tuneup.tuneup.genres.repositories.GenreRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Component;
 

@@ -1,9 +1,6 @@
-package com.tuneup.tuneup.genres;
+package com.tuneup.tuneup.genres.dtos;
 
-import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 @Component
 public class GenreDto {

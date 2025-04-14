@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.genres;
+package com.tuneup.tuneup.genres.entities;
 
 import com.tuneup.tuneup.profiles.entities.Profile;
 import jakarta.persistence.*;

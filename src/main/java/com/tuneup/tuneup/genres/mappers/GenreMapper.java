@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.genres;
+package com.tuneup.tuneup.genres.mappers;
 
+import com.tuneup.tuneup.genres.dtos.GenreDto;
+import com.tuneup.tuneup.genres.entities.Genre;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
