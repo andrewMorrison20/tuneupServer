@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.tuitions;
+package com.tuneup.tuneup.tuitions.mappers;
 
+import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.entities.Tuition;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,7 @@ package com.tuneup.tuneup.payments;
 
 import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
-import com.tuneup.tuneup.tuitions.Tuition;
+import com.tuneup.tuneup.tuitions.entities.Tuition;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

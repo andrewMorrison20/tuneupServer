@@ -1,10 +1,15 @@
-package com.tuneup.tuneup.tuitions;
+package com.tuneup.tuneup.tuitions.services;
 
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.validators.TuitionValidator;
+import com.tuneup.tuneup.tuitions.entities.Tuition;
+import com.tuneup.tuneup.tuitions.mappers.TuitionMapper;
+import com.tuneup.tuneup.tuitions.repositories.TuitionRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +21,15 @@ public class TuitionService {
     private final TuitionRepository tuitionRepository;
     private final ProfileService profileService;
     private final TuitionMapper tuitionMapper;
-    private final  TuitionValidator tuitionValidator;
+    private final TuitionValidator tuitionValidator;
     private final ProfileMapper  profileMapper;
 
 
-    public TuitionService(TuitionRepository tuitionRepository, ProfileService profileService, TuitionMapper tuitionMapper, TuitionValidator tuitionValidator, TuitionMapperImpl tuitionMapperImpl, ProfileMapper profileMapper) {
+    public TuitionService(TuitionRepository tuitionRepository,
+                          ProfileService profileService,
+                          TuitionMapper tuitionMapper,
+                          TuitionValidator tuitionValidator,
+                          ProfileMapper profileMapper) {
         this.tuitionRepository = tuitionRepository;
         this.profileService = profileService;
         this.tuitionMapper = tuitionMapper;

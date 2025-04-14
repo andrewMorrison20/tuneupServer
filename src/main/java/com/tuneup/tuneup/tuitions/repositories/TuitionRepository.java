@@ -1,6 +1,7 @@
-package com.tuneup.tuneup.tuitions;
+package com.tuneup.tuneup.tuitions.repositories;
 
 import com.tuneup.tuneup.profiles.entities.Profile;
+import com.tuneup.tuneup.tuitions.entities.Tuition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

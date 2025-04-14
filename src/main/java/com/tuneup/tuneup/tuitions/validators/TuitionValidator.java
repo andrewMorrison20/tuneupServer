@@ -1,5 +1,8 @@
-package com.tuneup.tuneup.tuitions;
+package com.tuneup.tuneup.tuitions.validators;
 
+import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.entities.Tuition;
+import com.tuneup.tuneup.tuitions.repositories.TuitionRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Component;
 

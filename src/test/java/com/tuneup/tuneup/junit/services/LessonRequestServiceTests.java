@@ -20,7 +20,7 @@ import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.enums.LessonType;
 import com.tuneup.tuneup.tuitions.TuitionDto;
-import com.tuneup.tuneup.tuitions.TuitionService;
+import com.tuneup.tuneup.tuitions.services.TuitionService;
 import com.tuneup.tuneup.users.model.AppUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

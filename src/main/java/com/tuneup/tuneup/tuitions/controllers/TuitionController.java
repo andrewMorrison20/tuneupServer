@@ -1,6 +1,8 @@
-package com.tuneup.tuneup.tuitions;
+package com.tuneup.tuneup.tuitions.controllers;
 
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
+import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.services.TuitionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

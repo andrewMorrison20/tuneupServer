@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.address;
 
-import com.tuneup.tuneup.tuitions.TuitionRepository;
+import com.tuneup.tuneup.tuitions.repositories.TuitionRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

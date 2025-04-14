@@ -2,7 +2,7 @@ package com.tuneup.tuneup.availability;
 
 import com.tuneup.tuneup.availability.enums.LessonStatus;
 import com.tuneup.tuneup.profiles.enums.LessonType;
-import com.tuneup.tuneup.tuitions.Tuition;
+import com.tuneup.tuneup.tuitions.entities.Tuition;
 import jakarta.persistence.*;
 
 @Entity
