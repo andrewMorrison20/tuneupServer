@@ -6,20 +6,19 @@ import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.images.Image;
 import com.tuneup.tuneup.images.ImageRepository;
-import com.tuneup.tuneup.images.ImageService;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.pricing.PriceValidator;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
+import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
 import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMapper;
-import com.tuneup.tuneup.qualifications.mappers.QualificationMapper;
 import com.tuneup.tuneup.qualifications.repositories.ProfileInstrumentQualificationRepository;
 import com.tuneup.tuneup.qualifications.services.QualificationService;
 import com.tuneup.tuneup.regions.RegionDto;
@@ -27,7 +26,6 @@ import com.tuneup.tuneup.regions.RegionMapper;
 import com.tuneup.tuneup.regions.RegionRepository;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,22 +47,31 @@ public class ProfileService {
     private final GenreMapper genreMapper;
     private final RegionMapper regionMapper;
     private final InstrumentMapper instrumentMapper;
-    private final ImageService imageService;
     private final PriceValidator priceValidator;
     private final ImageRepository imageRepository;
     private final RegionRepository regionRepository;
     private final InstrumentService instrumentService;
-    private final QualificationMapper qualificationMapper;
     private final QualificationService qualificationService;
     private final AvailabilityRepository availabilityRepository;
     private final ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper;
     private final ProfileInstrumentQualificationRepository profileInstrumentQualificationRepository;
 
-    public ProfileService(ProfileRepository profileRepository, ProfileMapper profileMapper, ProfileValidator profileValidator,
-                          AppUserService appUserService, PriceMapper priceMapper, GenreMapper genreMapper, RegionMapper regionMapper,
-                          InstrumentMapper instrumentMapper, ImageService imageService, PriceValidator priceValidator, ImageRepository imageRepository,
-                          RegionRepository regionRepository, InstrumentService instrumentService, QualificationMapper qualificationMapper
-                          , QualificationService qualificationService, AvailabilityRepository availabilityRepository, ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper, ProfileInstrumentQualificationRepository profileInstrumentQualificationRepository) {
+    public ProfileService(ProfileRepository profileRepository,
+                          ProfileMapper profileMapper,
+                          ProfileValidator profileValidator,
+                          AppUserService appUserService,
+                          PriceMapper priceMapper,
+                          GenreMapper genreMapper,
+                          RegionMapper regionMapper,
+                          InstrumentMapper instrumentMapper,
+                          PriceValidator priceValidator,
+                          ImageRepository imageRepository,
+                          RegionRepository regionRepository,
+                          InstrumentService instrumentService,
+                          QualificationService qualificationService,
+                          AvailabilityRepository availabilityRepository,
+                          ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper,
+                          ProfileInstrumentQualificationRepository profileInstrumentQualificationRepository) {
 
         this.appUserService = appUserService;
         this.profileMapper = profileMapper;
@@ -74,12 +81,10 @@ public class ProfileService {
         this.genreMapper = genreMapper;
         this.regionMapper = regionMapper;
         this.instrumentMapper = instrumentMapper;
-        this.imageService = imageService;
         this.priceValidator = priceValidator;
         this.imageRepository = imageRepository;
         this.regionRepository = regionRepository;
         this.instrumentService = instrumentService;
-        this.qualificationMapper = qualificationMapper;
         this.qualificationService = qualificationService;
         this.availabilityRepository = availabilityRepository;
         this.profileInstrumentQualificationMapper = profileInstrumentQualificationMapper;

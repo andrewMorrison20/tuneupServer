@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.tuitions;
 
 import com.tuneup.tuneup.profiles.Profile;
-import com.tuneup.tuneup.profiles.ProfileMapper;
+import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
@@ -9,9 +9,6 @@ import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class TuitionService {

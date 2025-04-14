@@ -1,11 +1,11 @@
-package com.tuneup.tuneup.profiles;
+package com.tuneup.tuneup.profiles.mappers;
 
 
 import com.tuneup.tuneup.Instruments.InstrumentMapper;
-import com.tuneup.tuneup.address.AddressMapper;
 import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.images.ImageMapper;
 import com.tuneup.tuneup.pricing.PriceMapper;
+import com.tuneup.tuneup.profiles.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.regions.RegionMapper;
 import org.mapstruct.Mapper;

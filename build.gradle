@@ -25,6 +25,11 @@ tasks.named('test') {
 }
 
 jacocoTestReport {
+	classDirectories.setFrom(files(classDirectories.files.collect {
+		fileTree(dir: it, exclude: [
+				'**/mappers/**' // <--- Adjust this path to match your package
+		])
+	}))
 	dependsOn test
 
 	reports {

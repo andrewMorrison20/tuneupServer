@@ -2,35 +2,43 @@ package com.tuneup.tuneup.junit.services;
 
 
 import com.tuneup.tuneup.Instruments.Instrument;
+import com.tuneup.tuneup.Instruments.InstrumentMapper;
 import com.tuneup.tuneup.Instruments.InstrumentService;
+import com.tuneup.tuneup.genres.Genre;
+import com.tuneup.tuneup.genres.GenreMapper;
 import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceDto;
+import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.pricing.PriceValidator;
 import com.tuneup.tuneup.profiles.Profile;
-import com.tuneup.tuneup.profiles.ProfileMapper;
+import com.tuneup.tuneup.profiles.ProfileType;
+import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
+import com.tuneup.tuneup.profiles.enums.LessonType;
+import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileValidator;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
+import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.Qualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
+import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMapper;
+import com.tuneup.tuneup.qualifications.repositories.ProfileInstrumentQualificationRepository;
 import com.tuneup.tuneup.qualifications.services.QualificationService;
+import com.tuneup.tuneup.regions.Region;
+import com.tuneup.tuneup.regions.RegionMapper;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.services.AppUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -57,6 +65,24 @@ import static org.mockito.Mockito.*;
 
         @Mock
         private InstrumentService instrumentService;
+
+        @Mock
+        private PriceMapper priceMapper;
+
+        @Mock
+        private ProfileInstrumentQualificationRepository profileInstrumentQualificationRepository;
+
+        @Mock
+        private ProfileInstrumentQualificationMapper profileInstrumentQualificationMapper;
+
+        @Mock
+        private InstrumentMapper instrumentMapper;
+
+        @Mock
+        private GenreMapper genreMapper;
+
+        @Mock
+        private RegionMapper regionMapper;
 
         @InjectMocks
         private ProfileService profileService;
@@ -171,6 +197,122 @@ import static org.mockito.Mockito.*;
             Integer result = profileService.updateProfileInstrumentQualifications(1L, qualificationDtoSet);
             assertEquals(1, result);
         }
+
+        // Existing test class remains unchanged...
+
+        @Test
+        void updateProfile_shouldUpdateAllFields_WhenDtoHasValues() {
+            ProfileDto dto = new ProfileDto();
+            dto.setId(1L);
+            dto.setDisplayName("John");
+            dto.setBio("Bio");
+            dto.setProfileType(ProfileType.STUDENT);
+            dto.setLessonType(LessonType.INPERSON);
+            dto.setGenres(Collections.emptySet());
+            dto.setPrices(Collections.emptySet());
+            dto.setInstruments(Collections.emptySet());
+            dto.setTuitionRegion(new com.tuneup.tuneup.regions.RegionDto());
+
+
+            Profile existingProfile = new Profile();
+            when(profileRepository.findById(any())).thenReturn(Optional.of(existingProfile));
+            when(profileRepository.save(existingProfile)).thenReturn(existingProfile);
+            when(profileMapper.toProfileDto(existingProfile)).thenReturn(dto);
+            when(instrumentMapper.toInstrument(any())).thenReturn((new Instrument()));
+            when(priceMapper.toPrice(any())).thenReturn(new Price());
+            when(genreMapper.toGenre(any())).thenReturn(new Genre());
+            when(regionMapper.toRegion(any())).thenReturn(new Region());
+
+            ProfileDto result = profileService.updateProfile(dto);
+
+            assertNotNull(result);
+            verify(profileRepository).save(existingProfile);
+        }
+
+        @Test
+        void updateProfile_shouldThrow_WhenProfileNotFound() {
+            ProfileDto dto = new ProfileDto();
+            dto.setId(99L);
+
+            when(profileRepository.findById(99L)).thenReturn(Optional.empty());
+
+            assertThrows(NoSuchElementException.class, () -> profileService.updateProfile(dto));
+        }
+
+        @Test
+        void getProfileDtoByUserId_shouldReturnDto() {
+            Long userId = 1L;
+            Profile profile = new Profile();
+            ProfileDto dto = new ProfileDto();
+
+            when(profileRepository.findByAppUserId(userId)).thenReturn(profile);
+            when(profileMapper.toProfileDto(profile)).thenReturn(dto);
+
+            ProfileDto result = profileService.getProfileDtoByUserId(userId);
+
+            assertEquals(dto, result);
+            verify(profileValidator).existsByUser(userId);
+        }
+
+        @Test
+        void existById_shouldReturnTrue() {
+            when(profileValidator.existsById(1L)).thenReturn(true);
+            assertTrue(profileService.existById(1L));
+        }
+
+        @Test
+        void fetchProfileEntityInternal_shouldReturnProfile() {
+            Profile profile = new Profile();
+            when(profileValidator.fetchById(1L)).thenReturn(profile);
+            assertEquals(profile, profileService.fetchProfileEntityInternal(1L));
+        }
+
+        @Test
+        void searchProfiles_shouldReturnPage() {
+            Page<Profile> profilePage = new PageImpl<>(List.of(new Profile()));
+            Pageable pageable = PageRequest.of(0, 10);
+            ProfileDto dto = new ProfileDto();
+
+            when(profileRepository.findAll(ArgumentMatchers.<Specification<Profile>>any(), ArgumentMatchers.<Pageable>any()))
+                    .thenReturn(profilePage);
+            when(profileMapper.toProfileDto(any())).thenReturn(dto);
+
+            Page<ProfileDto> result = profileService.searchProfiles(new ProfileSearchCriteriaDto(), pageable);
+
+            assertEquals(1, result.getTotalElements());
+            assertEquals(dto, result.getContent().get(0));
+        }
+
+        @Test
+        void getProfileQualificationsById_shouldReturnMappedQualifications() {
+            Long profileId = 1L;
+            ProfileInstrumentQualification qual = new ProfileInstrumentQualification();
+            ProfileInstrumentQualificationDto dto = new ProfileInstrumentQualificationDto();
+
+            when(profileInstrumentQualificationRepository.findByProfileId(profileId)).thenReturn(List.of(qual));
+            when(profileInstrumentQualificationMapper.toDto(qual)).thenReturn(dto);
+
+            Set<ProfileInstrumentQualificationDto> result = profileService.getProfileQualificationsById(profileId);
+
+            assertEquals(1, result.size());
+            assertTrue(result.contains(dto));
+        }
+
+        @Test
+        void getProfilesWithoutChatHistory_shouldReturnMappedPage() {
+            Pageable pageable = PageRequest.of(0, 10);
+            Page<Profile> profilePage = new PageImpl<>(List.of(new Profile()));
+            ProfileDto dto = new ProfileDto();
+
+            when(profileRepository.findProfilesWithoutChatHistory(1L, true, true, pageable)).thenReturn(profilePage);
+            when(profileMapper.toProfileDto(any())).thenReturn(dto);
+
+            Page<ProfileDto> result = profileService.getProfilesWithoutChatHistory(1L, true, true, pageable);
+
+            assertEquals(1, result.getTotalElements());
+            assertEquals(dto, result.getContent().get(0));
+        }
+
     }
 
 

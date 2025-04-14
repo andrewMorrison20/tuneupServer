@@ -14,7 +14,7 @@ import com.tuneup.tuneup.availability.validators.LessonRequestValidator;
 import com.tuneup.tuneup.notifications.NotificationEvent;
 import com.tuneup.tuneup.notifications.NotificationType;
 import com.tuneup.tuneup.profiles.Profile;
-import com.tuneup.tuneup.profiles.ProfileMapper;
+import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
