@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.availability;
 
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.enums.LessonType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

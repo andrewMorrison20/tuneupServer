@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.Instruments;
 
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import jakarta.persistence.*;
 

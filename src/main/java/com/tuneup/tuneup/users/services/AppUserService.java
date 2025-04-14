@@ -2,7 +2,7 @@ package com.tuneup.tuneup.users.services;
 
 import com.tuneup.tuneup.address.AddressDto;
 import com.tuneup.tuneup.address.AddressService;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.users.dtos.AppUserDto;

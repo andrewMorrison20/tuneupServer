@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.chats.entities;
 
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

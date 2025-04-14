@@ -10,7 +10,7 @@ import com.tuneup.tuneup.pricing.Price;
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.pricing.PriceValidator;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
 import com.tuneup.tuneup.profiles.enums.LessonType;

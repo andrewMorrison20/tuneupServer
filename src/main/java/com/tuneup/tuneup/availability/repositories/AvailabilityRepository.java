@@ -2,7 +2,7 @@ package com.tuneup.tuneup.availability.repositories;
 
 import com.tuneup.tuneup.availability.Availability;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

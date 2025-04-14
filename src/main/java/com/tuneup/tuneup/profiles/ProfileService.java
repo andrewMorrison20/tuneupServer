@@ -12,6 +12,7 @@ import com.tuneup.tuneup.pricing.PriceMapper;
 import com.tuneup.tuneup.pricing.PriceValidator;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 

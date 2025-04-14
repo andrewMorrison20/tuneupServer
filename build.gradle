@@ -27,7 +27,9 @@ tasks.named('test') {
 jacocoTestReport {
 	classDirectories.setFrom(files(classDirectories.files.collect {
 		fileTree(dir: it, exclude: [
-				'**/mappers/**' // <--- Adjust this path to match your package
+				'**/mappers/**',
+				"**/entities/**",
+				"**/model/**",
 		])
 	}))
 	dependsOn test

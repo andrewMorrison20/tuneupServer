@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.genres;
 
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import jakarta.persistence.*;
 
 import java.util.Set;

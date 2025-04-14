@@ -8,7 +8,7 @@ import com.tuneup.tuneup.availability.repositories.LessonRepository;
 import com.tuneup.tuneup.availability.services.AvailabilityService;
 import com.tuneup.tuneup.availability.services.LessonService;
 import com.tuneup.tuneup.notifications.NotificationEvent;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.Tuition;
@@ -17,7 +17,6 @@ import com.tuneup.tuneup.tuitions.TuitionService;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.model.AppUser;
 import org.junit.jupiter.api.*;
-import org.mockito.*;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.*;
@@ -27,7 +26,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class LessonServiceTest {
+class LessonServiceTests {
 
     private LessonMapper lessonMapper;
     private LessonRepository lessonRepository;

@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.reviews.model;
 
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import jakarta.persistence.*;
 
 @Entity

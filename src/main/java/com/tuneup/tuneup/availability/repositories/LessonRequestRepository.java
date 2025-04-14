@@ -1,8 +1,7 @@
 package com.tuneup.tuneup.availability.repositories;
 
-import aj.org.objectweb.asm.commons.Remapper;
 import com.tuneup.tuneup.availability.LessonRequest;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

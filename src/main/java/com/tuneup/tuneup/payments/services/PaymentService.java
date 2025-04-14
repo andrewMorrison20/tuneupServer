@@ -8,7 +8,7 @@ import com.tuneup.tuneup.payments.PaymentDto;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
 import com.tuneup.tuneup.payments.mappers.PaymentMapper;
 import com.tuneup.tuneup.payments.repository.PaymentRepository;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.tuitions.Tuition;

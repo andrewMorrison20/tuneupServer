@@ -4,7 +4,7 @@ package com.tuneup.tuneup.chats.mappers;
 import com.tuneup.tuneup.chats.dtos.ConversationParticipantDto;
 import com.tuneup.tuneup.chats.entities.Conversation;
 import com.tuneup.tuneup.chats.dtos.ConversationDto;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;

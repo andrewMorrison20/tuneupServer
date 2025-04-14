@@ -1,9 +1,7 @@
 package com.tuneup.tuneup.junit.services;
 
-import com.tuneup.tuneup.Instruments.Instrument;
-import com.tuneup.tuneup.Instruments.InstrumentDto;
 import com.tuneup.tuneup.genres.*;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

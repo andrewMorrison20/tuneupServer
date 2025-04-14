@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.reviews.services;
 
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.reviews.dtos.ReviewDto;
@@ -8,11 +8,9 @@ import com.tuneup.tuneup.reviews.mappers.ReviewMapper;
 import com.tuneup.tuneup.reviews.model.Review;
 import com.tuneup.tuneup.reviews.repositories.ReviewRepository;
 import com.tuneup.tuneup.reviews.validators.ReviewValidator;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

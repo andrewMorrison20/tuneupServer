@@ -5,7 +5,7 @@ import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.mappers.AvailabilityMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.availability.validators.AvailabilityValidator;
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 import com.tuneup.tuneup.profiles.ProfileValidator;

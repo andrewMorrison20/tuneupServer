@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.genres;
 
-import com.tuneup.tuneup.profiles.Profile;
+import com.tuneup.tuneup.profiles.entities.Profile;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
