@@ -179,6 +179,17 @@ class AvailabilityServiceTests {
     }
 
     @Test
+    void testUpdateAvailability_InvalidAvailabilityId() {
+        Long profileId = 1L;
+        AvailabilityDto dto = new AvailabilityDto();
+        dto.setId(999L);
+
+        when(availabilityRepository.findById(dto.getId())).thenReturn(Optional.empty());
+
+        assertThrows(ValidationException.class, () -> availabilityService.updateAvailability(profileId, dto));
+    }
+
+    @Test
     void testDeleteAvailabilityById_Valid() {
         Long profileId = 1L;
         Long id = 1L;

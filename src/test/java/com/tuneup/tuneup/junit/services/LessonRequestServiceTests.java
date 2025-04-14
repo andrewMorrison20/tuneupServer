@@ -2,7 +2,6 @@ package com.tuneup.tuneup.junit.services;
 
 import com.tuneup.tuneup.availability.Availability;
 import com.tuneup.tuneup.availability.LessonRequest;
-import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
 import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
 import com.tuneup.tuneup.availability.mappers.AvailabilityMapper;
@@ -32,7 +31,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
