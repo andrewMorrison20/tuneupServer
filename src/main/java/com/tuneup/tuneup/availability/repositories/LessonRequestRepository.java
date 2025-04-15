@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.availability.repositories;
 
-import com.tuneup.tuneup.availability.LessonRequest;
+import com.tuneup.tuneup.availability.entities.LessonRequest;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

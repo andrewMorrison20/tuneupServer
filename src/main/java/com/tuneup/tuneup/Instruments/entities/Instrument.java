@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.Instruments;
+package com.tuneup.tuneup.Instruments.entities;
 
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;

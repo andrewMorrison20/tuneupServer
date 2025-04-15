@@ -1,5 +1,8 @@
-package com.tuneup.tuneup.Instruments;
+package com.tuneup.tuneup.Instruments.services;
 
+import com.tuneup.tuneup.Instruments.dtos.InstrumentDto;
+import com.tuneup.tuneup.Instruments.entities.Instrument;
+import com.tuneup.tuneup.Instruments.mappers.InstrumentMapper;
 import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

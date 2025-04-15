@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.availability;
+package com.tuneup.tuneup.availability.entities;
 
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.profiles.entities.Profile;

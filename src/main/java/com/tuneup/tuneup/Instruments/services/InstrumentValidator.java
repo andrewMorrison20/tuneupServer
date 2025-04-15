@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.Instruments;
+package com.tuneup.tuneup.Instruments.services;
 
+import com.tuneup.tuneup.Instruments.dtos.InstrumentDto;
+import com.tuneup.tuneup.Instruments.entities.Instrument;
 import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.availability.validators;
 
-import com.tuneup.tuneup.availability.Availability;
+import com.tuneup.tuneup.availability.entities.Availability;
 import com.tuneup.tuneup.availability.dtos.AvailabilityDto;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;

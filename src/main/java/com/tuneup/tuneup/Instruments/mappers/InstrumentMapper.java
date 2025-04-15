@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.Instruments;
+package com.tuneup.tuneup.Instruments.mappers;
 
+import com.tuneup.tuneup.Instruments.dtos.InstrumentDto;
+import com.tuneup.tuneup.Instruments.entities.Instrument;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;

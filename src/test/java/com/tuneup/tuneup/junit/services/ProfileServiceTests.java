@@ -1,9 +1,9 @@
 package com.tuneup.tuneup.junit.services;
 
 
-import com.tuneup.tuneup.Instruments.Instrument;
-import com.tuneup.tuneup.Instruments.InstrumentMapper;
-import com.tuneup.tuneup.Instruments.InstrumentService;
+import com.tuneup.tuneup.Instruments.entities.Instrument;
+import com.tuneup.tuneup.Instruments.mappers.InstrumentMapper;
+import com.tuneup.tuneup.Instruments.services.InstrumentService;
 import com.tuneup.tuneup.genres.entities.Genre;
 import com.tuneup.tuneup.genres.mappers.GenreMapper;
 import com.tuneup.tuneup.pricing.entities.Price;

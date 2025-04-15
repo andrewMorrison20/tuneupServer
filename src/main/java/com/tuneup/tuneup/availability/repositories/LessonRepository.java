@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.availability.repositories;
 
-import com.tuneup.tuneup.availability.Lesson;
+import com.tuneup.tuneup.availability.entities.Lesson;
 import com.tuneup.tuneup.availability.dtos.LessonSummaryDto;
 import com.tuneup.tuneup.availability.enums.LessonStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

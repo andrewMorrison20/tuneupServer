@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.junit.services;
 
-import com.tuneup.tuneup.availability.Lesson;
+import com.tuneup.tuneup.availability.entities.Lesson;
 import com.tuneup.tuneup.availability.services.LessonService;
 import com.tuneup.tuneup.notifications.NotificationEvent;
 import com.tuneup.tuneup.payments.Payment;

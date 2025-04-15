@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.profiles;
 
-import com.tuneup.tuneup.Instruments.InstrumentMapper;
-import com.tuneup.tuneup.Instruments.InstrumentService;
+import com.tuneup.tuneup.Instruments.mappers.InstrumentMapper;
+import com.tuneup.tuneup.Instruments.services.InstrumentService;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;
 import com.tuneup.tuneup.genres.mappers.GenreMapper;
 import com.tuneup.tuneup.images.Image;

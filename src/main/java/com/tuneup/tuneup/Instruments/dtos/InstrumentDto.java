@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.Instruments;
+package com.tuneup.tuneup.Instruments.dtos;
 import org.springframework.stereotype.Component;
 
 @Component

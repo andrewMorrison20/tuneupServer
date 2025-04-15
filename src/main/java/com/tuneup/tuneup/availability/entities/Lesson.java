@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.availability;
+package com.tuneup.tuneup.availability.entities;
 
 import com.tuneup.tuneup.availability.enums.LessonStatus;
 import com.tuneup.tuneup.profiles.enums.LessonType;

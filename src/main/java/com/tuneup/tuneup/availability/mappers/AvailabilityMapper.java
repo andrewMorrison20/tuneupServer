@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.availability.mappers;
 
-import com.tuneup.tuneup.availability.Availability;
+import com.tuneup.tuneup.availability.entities.Availability;
 import com.tuneup.tuneup.availability.dtos.AvailabilityDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

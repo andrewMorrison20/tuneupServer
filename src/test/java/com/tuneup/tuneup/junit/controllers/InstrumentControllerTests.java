@@ -1,9 +1,9 @@
 package com.tuneup.tuneup.junit.controllers;
 
 
-import com.tuneup.tuneup.Instruments.InstrumentController;
-import com.tuneup.tuneup.Instruments.InstrumentDto;
-import com.tuneup.tuneup.Instruments.InstrumentService;
+import com.tuneup.tuneup.Instruments.controllers.InstrumentController;
+import com.tuneup.tuneup.Instruments.dtos.InstrumentDto;
+import com.tuneup.tuneup.Instruments.services.InstrumentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

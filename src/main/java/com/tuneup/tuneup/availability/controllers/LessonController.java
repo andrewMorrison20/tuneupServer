@@ -1,6 +1,5 @@
 package com.tuneup.tuneup.availability.controllers;
 
-import com.tuneup.tuneup.availability.Lesson;
 import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonSummaryDto;
 import com.tuneup.tuneup.availability.enums.LessonStatus;

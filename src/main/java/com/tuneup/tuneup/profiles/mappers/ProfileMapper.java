@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.profiles.mappers;
 
 
-import com.tuneup.tuneup.Instruments.InstrumentMapper;
+import com.tuneup.tuneup.Instruments.mappers.InstrumentMapper;
 import com.tuneup.tuneup.genres.mappers.GenreMapper;
 import com.tuneup.tuneup.images.ImageMapper;
 import com.tuneup.tuneup.pricing.mappers.PriceMapper;

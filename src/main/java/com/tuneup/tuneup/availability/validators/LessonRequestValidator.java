@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.availability.validators;
 
-import com.tuneup.tuneup.availability.LessonRequest;
+import com.tuneup.tuneup.availability.entities.LessonRequest;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Component;

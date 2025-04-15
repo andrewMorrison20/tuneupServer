@@ -10,7 +10,7 @@ import com.tuneup.tuneup.regions.repositories.RegionRepository;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
-import com.tuneup.tuneup.Instruments.Instrument;
+import com.tuneup.tuneup.Instruments.entities.Instrument;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

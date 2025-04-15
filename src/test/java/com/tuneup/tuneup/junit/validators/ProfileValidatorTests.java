@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.junit.validators;
 
-import com.tuneup.tuneup.Instruments.InstrumentDto;
+import com.tuneup.tuneup.Instruments.dtos.InstrumentDto;
 import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
 import com.tuneup.tuneup.genres.dtos.GenreDto;
 import com.tuneup.tuneup.genres.repositories.GenreRepository;

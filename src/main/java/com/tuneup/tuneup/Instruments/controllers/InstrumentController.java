@@ -1,6 +1,7 @@
-package com.tuneup.tuneup.Instruments;
+package com.tuneup.tuneup.Instruments.controllers;
 
-import com.tuneup.tuneup.Instruments.repositories.InstrumentRepository;
+import com.tuneup.tuneup.Instruments.dtos.InstrumentDto;
+import com.tuneup.tuneup.Instruments.services.InstrumentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

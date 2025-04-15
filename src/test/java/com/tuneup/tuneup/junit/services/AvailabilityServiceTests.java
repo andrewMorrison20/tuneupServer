@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.junit.services;
 
-import com.tuneup.tuneup.availability.*;
 import com.tuneup.tuneup.availability.dtos.AvailabilityDto;
+import com.tuneup.tuneup.availability.entities.Availability;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
 import com.tuneup.tuneup.availability.mappers.AvailabilityMapper;
 import com.tuneup.tuneup.availability.repositories.AvailabilityRepository;

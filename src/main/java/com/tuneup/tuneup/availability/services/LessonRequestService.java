@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.availability.services;
 
-import com.tuneup.tuneup.availability.Availability;
-import com.tuneup.tuneup.availability.LessonRequest;
+import com.tuneup.tuneup.availability.entities.Availability;
+import com.tuneup.tuneup.availability.entities.LessonRequest;
 import com.tuneup.tuneup.availability.dtos.LessonDto;
 import com.tuneup.tuneup.availability.dtos.LessonRequestDto;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
