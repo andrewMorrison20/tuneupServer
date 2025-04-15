@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -117,4 +118,51 @@ class AddressControllerTests {
         assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
     }
+    @Test
+    void getAddressSuggestions_ShouldReturnListOfSuggestions() {
+        String postcode = "BT5 6BN";
+        String streetName = "Thornhill";
+
+        AddressDto suggestion1 = new AddressDto();
+        suggestion1.setId(1L);
+        suggestion1.setAddressLine1("122 Thornhill");
+        suggestion1.setCity("Belfast");
+        suggestion1.setPostcode("BT5 6BN");
+        suggestion1.setCountry("Northern Ireland");
+
+        AddressDto suggestion2 = new AddressDto();
+        suggestion2.setId(2L);
+        suggestion2.setAddressLine1("123 Thornhill");
+        suggestion2.setCity("Belfast");
+        suggestion2.setPostcode("BT5 6BN");
+        suggestion2.setCountry("Northern Ireland");
+
+        List<AddressDto> suggestions = Arrays.asList(suggestion1, suggestion2);
+        when(addressService.getAddressSuggestions(postcode, streetName)).thenReturn(suggestions);
+
+        ResponseEntity<List<AddressDto>> response = addressController.getAddressSuggestions(postcode, streetName);
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+        assertEquals(suggestions, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void getLessonAddressById_ShouldReturnAddress() {
+        Long tuitionId = 1L;
+        AddressDto lessonAddress = new AddressDto();
+        lessonAddress.setId(10L);
+        lessonAddress.setAddressLine1("99 Lesson Street");
+        lessonAddress.setCity("Belfast");
+        lessonAddress.setPostcode("BT9 9ZZ");
+        lessonAddress.setCountry("Northern Ireland");
+
+        when(addressService.getAddressByTuitionId(tuitionId)).thenReturn(lessonAddress);
+
+        ResponseEntity<AddressDto> response = addressController.getLessonAddressById(tuitionId);
+        assertNotNull(response.getBody());
+        assertEquals(lessonAddress, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
 }
