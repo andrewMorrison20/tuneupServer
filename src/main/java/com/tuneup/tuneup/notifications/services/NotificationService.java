@@ -3,6 +3,9 @@ package com.tuneup.tuneup.notifications.services;
 
 import com.tuneup.tuneup.notifications.*;
 import com.tuneup.tuneup.notifications.dtos.NotificationDto;
+import com.tuneup.tuneup.notifications.entities.Notification;
+import com.tuneup.tuneup.notifications.enums.NotificationType;
+import com.tuneup.tuneup.notifications.mappers.NotificationMapper;
 import com.tuneup.tuneup.notifications.repositories.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

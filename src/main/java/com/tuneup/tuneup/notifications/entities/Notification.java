@@ -1,5 +1,6 @@
-package com.tuneup.tuneup.notifications;
+package com.tuneup.tuneup.notifications.entities;
 
+import com.tuneup.tuneup.notifications.enums.NotificationType;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

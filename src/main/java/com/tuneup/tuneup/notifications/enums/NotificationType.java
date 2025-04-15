@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.notifications;
+package com.tuneup.tuneup.notifications.enums;
 
 public enum NotificationType {
     NEW_CHAT("New Chat Message"),

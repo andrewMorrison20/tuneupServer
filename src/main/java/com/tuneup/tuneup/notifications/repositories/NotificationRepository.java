@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.notifications.repositories;
 
-import com.tuneup.tuneup.notifications.Notification;
+import com.tuneup.tuneup.notifications.entities.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

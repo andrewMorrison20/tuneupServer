@@ -1,6 +1,8 @@
 package com.tuneup.tuneup.notifications;
 
+import com.tuneup.tuneup.notifications.enums.NotificationType;
 import org.springframework.context.ApplicationEvent;
+
 
 public class NotificationEvent extends ApplicationEvent {
 

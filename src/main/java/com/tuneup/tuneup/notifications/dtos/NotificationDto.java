@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.notifications.dtos;
 
-import com.tuneup.tuneup.notifications.NotificationType;
+import com.tuneup.tuneup.notifications.enums.NotificationType;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

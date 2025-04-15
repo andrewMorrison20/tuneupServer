@@ -40,7 +40,7 @@ public class RegionService {
                 .collect(Collectors.toList());
 
         // Step 3: Save fetched regions to the database
-        regionRepository.saveAll(fetchedRegions);
+        regionRepository.saveAll(newRegions);
 
         return fetchedRegions.stream().map(regionMapper::toRegionDto).collect(Collectors.toSet());
     }

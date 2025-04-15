@@ -9,7 +9,7 @@ import com.tuneup.tuneup.chats.dtos.MessageDto;
 import com.tuneup.tuneup.chats.repositories.ConversationRepository;
 import com.tuneup.tuneup.chats.repositories.MessageRepository;
 import com.tuneup.tuneup.notifications.NotificationEvent;
-import com.tuneup.tuneup.notifications.NotificationType;
+import com.tuneup.tuneup.notifications.enums.NotificationType;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;

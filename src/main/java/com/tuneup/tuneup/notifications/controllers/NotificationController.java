@@ -1,6 +1,7 @@
-package com.tuneup.tuneup.notifications;
+package com.tuneup.tuneup.notifications.controllers;
 
 import com.tuneup.tuneup.notifications.dtos.NotificationDto;
+import com.tuneup.tuneup.notifications.entities.Notification;
 import com.tuneup.tuneup.notifications.repositories.NotificationRepository;
 import com.tuneup.tuneup.notifications.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;

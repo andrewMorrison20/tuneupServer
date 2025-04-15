@@ -11,7 +11,7 @@ import com.tuneup.tuneup.availability.mappers.LessonRequestMapper;
 import com.tuneup.tuneup.availability.repositories.LessonRequestRepository;
 import com.tuneup.tuneup.availability.validators.LessonRequestValidator;
 import com.tuneup.tuneup.notifications.NotificationEvent;
-import com.tuneup.tuneup.notifications.NotificationType;
+import com.tuneup.tuneup.notifications.enums.NotificationType;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
