@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.payments.repository;
 
-import com.tuneup.tuneup.payments.Payment;
-import com.tuneup.tuneup.payments.PaymentDto;
+import com.tuneup.tuneup.payments.entities.Payment;
+import com.tuneup.tuneup.payments.dtos.PaymentDto;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     List<Payment> findByStatus(String status);
 
-    @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
+    @Query("SELECT new com.tuneup.tuneup.payments.dtos.PaymentDto( " +
             "p.id, t.id, l.availability.startTime,l.id, p.amount, p.status, " +
             "sp.displayName, p.dueDate, p.invoiceUrl, p.paidOn, p.reminderSentOn) " +
             "FROM Payment p " +
@@ -35,7 +34,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
 
 
-    @Query("SELECT new com.tuneup.tuneup.payments.PaymentDto( " +
+    @Query("SELECT new com.tuneup.tuneup.payments.dtos.PaymentDto( " +
             "p.id, t.id, l.availability.startTime,l.id, p.amount, p.status, " +
             "tp.displayName, p.dueDate, p.invoiceUrl, p.paidOn, p.reminderSentOn) " +
             "FROM Payment p " +

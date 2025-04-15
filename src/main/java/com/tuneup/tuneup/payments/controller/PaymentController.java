@@ -1,5 +1,5 @@
 package com.tuneup.tuneup.payments.controller;
-import com.tuneup.tuneup.payments.PaymentDto;
+import com.tuneup.tuneup.payments.dtos.PaymentDto;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;
 import com.tuneup.tuneup.payments.services.InvoiceService;
 import com.tuneup.tuneup.payments.services.PaymentService;

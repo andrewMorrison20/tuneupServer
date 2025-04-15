@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.payments;
+package com.tuneup.tuneup.payments.dtos;
 
 
 import com.tuneup.tuneup.payments.enums.PaymentStatus;

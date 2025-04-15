@@ -3,7 +3,7 @@ package com.tuneup.tuneup.junit.services;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
-import com.tuneup.tuneup.payments.Payment;
+import com.tuneup.tuneup.payments.entities.Payment;
 import com.tuneup.tuneup.payments.repository.PaymentRepository;
 import com.tuneup.tuneup.payments.services.InvoiceService;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.payments;
+package com.tuneup.tuneup.payments.entities;
 
 import com.tuneup.tuneup.availability.entities.Lesson;
 import com.tuneup.tuneup.payments.enums.PaymentStatus;

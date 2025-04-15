@@ -5,7 +5,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import com.tuneup.tuneup.payments.Payment;
+import com.tuneup.tuneup.payments.entities.Payment;
 import com.tuneup.tuneup.payments.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

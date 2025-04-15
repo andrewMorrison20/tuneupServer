@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.payments.mappers;
 
-import com.tuneup.tuneup.payments.Payment;
-import com.tuneup.tuneup.payments.PaymentDto;
+import com.tuneup.tuneup.payments.entities.Payment;
+import com.tuneup.tuneup.payments.dtos.PaymentDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
