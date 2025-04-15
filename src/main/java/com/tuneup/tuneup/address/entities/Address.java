@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.address;
+package com.tuneup.tuneup.address.entities;
 
 import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;

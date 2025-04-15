@@ -1,9 +1,8 @@
 package com.tuneup.tuneup.users.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.tuneup.tuneup.address.AddressDto;
-import com.tuneup.tuneup.roles.services.Role;
+import com.tuneup.tuneup.address.dtos.AddressDto;
+import com.tuneup.tuneup.roles.entities.Role;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

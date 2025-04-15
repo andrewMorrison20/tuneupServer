@@ -1,8 +1,8 @@
 package com.tuneup.tuneup.junit.controllers;
 
-import com.tuneup.tuneup.address.AddressController;
-import com.tuneup.tuneup.address.AddressDto;
-import com.tuneup.tuneup.address.AddressService;
+import com.tuneup.tuneup.address.controllers.AddressController;
+import com.tuneup.tuneup.address.dtos.AddressDto;
+import com.tuneup.tuneup.address.services.AddressService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

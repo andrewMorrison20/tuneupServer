@@ -1,11 +1,11 @@
-package com.tuneup.tuneup.address;
+package com.tuneup.tuneup.address.controllers;
 
+import com.tuneup.tuneup.address.dtos.AddressDto;
+import com.tuneup.tuneup.address.services.AddressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This api is for creating a users residential address, this is primarily for verification and billing details once integrated

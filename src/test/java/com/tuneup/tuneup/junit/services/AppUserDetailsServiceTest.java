@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.junit.services;
 
-import com.tuneup.tuneup.roles.services.Role;
-import com.tuneup.tuneup.roles.services.RoleName;
+import com.tuneup.tuneup.roles.entities.Role;
+import com.tuneup.tuneup.roles.enums.RoleName;
 import com.tuneup.tuneup.users.model.AppUser;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserDetailsService;

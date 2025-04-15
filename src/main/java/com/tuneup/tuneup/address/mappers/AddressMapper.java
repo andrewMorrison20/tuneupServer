@@ -1,5 +1,7 @@
-package com.tuneup.tuneup.address;
+package com.tuneup.tuneup.address.mappers;
 
+import com.tuneup.tuneup.address.dtos.AddressDto;
+import com.tuneup.tuneup.address.entities.Address;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 

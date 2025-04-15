@@ -1,6 +1,10 @@
 package com.tuneup.tuneup.junit.services;
 
-import com.tuneup.tuneup.address.*;
+import com.tuneup.tuneup.address.dtos.AddressDto;
+import com.tuneup.tuneup.address.entities.Address;
+import com.tuneup.tuneup.address.mappers.AddressMapper;
+import com.tuneup.tuneup.address.repositories.AddressRepository;
+import com.tuneup.tuneup.address.services.AddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

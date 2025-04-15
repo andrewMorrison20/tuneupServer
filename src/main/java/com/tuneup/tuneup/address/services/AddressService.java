@@ -1,5 +1,9 @@
-package com.tuneup.tuneup.address;
+package com.tuneup.tuneup.address.services;
 
+import com.tuneup.tuneup.address.dtos.AddressDto;
+import com.tuneup.tuneup.address.entities.Address;
+import com.tuneup.tuneup.address.mappers.AddressMapper;
+import com.tuneup.tuneup.address.repositories.AddressRepository;
 import com.tuneup.tuneup.tuitions.repositories.TuitionRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Value;

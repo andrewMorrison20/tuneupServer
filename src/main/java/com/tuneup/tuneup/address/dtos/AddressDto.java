@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.address;
+package com.tuneup.tuneup.address.dtos;
 
 import org.springframework.stereotype.Component;
 

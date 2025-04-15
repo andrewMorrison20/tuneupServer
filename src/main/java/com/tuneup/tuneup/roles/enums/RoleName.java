@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.roles.services;
+package com.tuneup.tuneup.roles.enums;
 
 public enum RoleName {
         ADMIN,

@@ -1,8 +1,7 @@
-package com.tuneup.tuneup.roles.services;
+package com.tuneup.tuneup.roles.entities;
 
+import com.tuneup.tuneup.roles.enums.RoleName;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 public class Role {

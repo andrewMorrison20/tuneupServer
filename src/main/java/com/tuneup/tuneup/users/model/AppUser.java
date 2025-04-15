@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.users.model;
 
-import com.tuneup.tuneup.address.Address;
-import com.tuneup.tuneup.roles.services.Role;
+import com.tuneup.tuneup.address.entities.Address;
+import com.tuneup.tuneup.roles.entities.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
