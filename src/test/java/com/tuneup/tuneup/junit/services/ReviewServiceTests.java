@@ -1,5 +1,8 @@
 package com.tuneup.tuneup.junit.services;
 
+import com.tuneup.tuneup.profiles.ProfileService;
+import com.tuneup.tuneup.profiles.entities.Profile;
+import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.reviews.dtos.ReviewDto;
 import com.tuneup.tuneup.reviews.mappers.ReviewMapper;
 import com.tuneup.tuneup.reviews.model.Review;
@@ -17,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -26,10 +30,16 @@ class ReviewServiceTests {
     private ReviewRepository reviewRepository;
 
     @Mock
+    private ProfileRepository profileRepository;
+
+    @Mock
     private ReviewMapper reviewMapper;
 
     @Mock
     private ReviewValidator reviewValidator;
+
+    @Mock
+    private ProfileService profileService;
 
     @InjectMocks
     private ReviewService reviewService;
@@ -77,18 +87,28 @@ class ReviewServiceTests {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to NullPointerException")
     void testCreateReview() {
-
         ReviewDto reviewDto = new ReviewDto();
         reviewDto.setComment("Outstanding tutor!");
+        reviewDto.setProfileId(10L);
+        reviewDto.setReviewerProfileId(20L);
+
+        Profile targetProfile = new Profile();
+        targetProfile.setId(10L);
+        Profile reviewerProfile = new Profile();
+        reviewerProfile.setId(20L);
 
         Review review = new Review();
         review.setComment("Outstanding tutor!");
+        review.setProfile(targetProfile);
+        review.setReviewerProfile(reviewerProfile);
 
         Review savedReview = new Review();
         savedReview.setId(1L);
         savedReview.setComment("Outstanding tutor!");
+        savedReview.setProfile(targetProfile);
+        savedReview.setReviewerProfile(reviewerProfile);
+        savedReview.setRating(5L);
 
         ReviewDto savedReviewDto = new ReviewDto();
         savedReviewDto.setId(1L);
@@ -96,18 +116,30 @@ class ReviewServiceTests {
 
         doNothing().when(reviewValidator).validateReviewDto(reviewDto);
         when(reviewMapper.toReview(reviewDto)).thenReturn(review);
+        when(profileService.fetchProfileEntityInternal(10L)).thenReturn(targetProfile);
+        when(profileService.fetchProfileEntityInternal(20L)).thenReturn(reviewerProfile);
         when(reviewRepository.save(review)).thenReturn(savedReview);
+        when(reviewRepository.findAllByProfileId(10L)).thenReturn(Set.of(savedReview));
+        when(profileRepository.save(targetProfile)).thenReturn(targetProfile);
         when(reviewMapper.toReviewDto(savedReview)).thenReturn(savedReviewDto);
 
         ReviewDto result = reviewService.createReview(reviewDto);
 
+        assertNotNull(result);
         assertEquals(1L, result.getId());
         assertEquals("Outstanding tutor!", result.getComment());
+        assertEquals(5.0, targetProfile.getAverageRating());
+
         verify(reviewValidator).validateReviewDto(reviewDto);
         verify(reviewMapper).toReview(reviewDto);
+        verify(profileService).fetchProfileEntityInternal(10L);
+        verify(profileService).fetchProfileEntityInternal(20L);
         verify(reviewRepository).save(review);
+        verify(reviewRepository).findAllByProfileId(10L);
+        verify(profileRepository).save(targetProfile);
         verify(reviewMapper).toReviewDto(savedReview);
     }
+
 }
 
 
