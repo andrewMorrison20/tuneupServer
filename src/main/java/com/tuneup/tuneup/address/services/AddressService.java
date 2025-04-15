@@ -210,13 +210,14 @@ public class AddressService {
                 .findFirst();
     }
 
+    @Transactional
     public AddressDto createOrUpdateAddress(AddressDto addressDto) {
 
         Optional<Address> existingAddress = getMatchingDuplicateAddress(addressDto);
 
         // Check if existingAddress is present
         if (existingAddress.isEmpty()) {
-            return createAddress(addressDto);  // Create a new address
+            return createAddress(addressDto);
         }
 
         Address existing = existingAddress.get();
@@ -226,8 +227,6 @@ public class AddressService {
                 (addressDto.getLongitude() != null && !Objects.equals(addressDto.getLongitude(), existing.getLongitude()))) {
             return updateAddress(existing.getId(), addressDto);
         }
-
-
 
         return addressMapper.toDto(existing);
     }
