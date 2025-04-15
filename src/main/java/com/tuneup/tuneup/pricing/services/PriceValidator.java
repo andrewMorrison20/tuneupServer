@@ -92,7 +92,7 @@ public class PriceValidator {
         }
     }
 
-    protected Price fetchAndValidateById(long id) {
+    public Price fetchAndValidateById(long id) {
         return priceRepository.findById(id)
                 .orElseThrow(() -> new ValidationException("Price with that ID not found"));
     }
