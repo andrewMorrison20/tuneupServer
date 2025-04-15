@@ -29,7 +29,7 @@ public class InstrumentValidator {
         }
     }
 
-    protected Instrument fetchAndValidateById(Long id){
+    public Instrument fetchAndValidateById(Long id){
             return instrumentRepository.findById(id)
                     .orElseThrow(() -> new ValidationException("Instrument with the given ID not found"));
         }
