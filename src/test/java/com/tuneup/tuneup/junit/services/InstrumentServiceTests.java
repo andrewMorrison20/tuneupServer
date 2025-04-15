@@ -8,9 +8,11 @@ import com.tuneup.tuneup.Instruments.services.InstrumentService;
 import com.tuneup.tuneup.Instruments.services.InstrumentValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Set;
@@ -18,6 +20,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class InstrumentServiceTests {
 
     @Mock
@@ -32,9 +35,19 @@ class InstrumentServiceTests {
     @InjectMocks
     private InstrumentService instrumentService;
 
+    private Instrument instrument;
+    private InstrumentDto instrumentDto;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        // Create a dummy Instrument and InstrumentDto for testing
+        instrument = new Instrument();
+        instrument.setId(1L);
+        instrument.setName("Guitar");
+
+        instrumentDto = new InstrumentDto();
+        instrumentDto.setId(1L);
+        instrumentDto.setName("Guitar");
     }
 
     @Test
@@ -83,5 +96,35 @@ class InstrumentServiceTests {
 
         assertNotNull(result);
         assertEquals(expectedDto, result);
+    }
+
+    @Test
+    void getInstrumentById_ShouldReturnInstrumentDto() {
+
+        when(instrumentValidator.fetchAndValidateById(1L)).thenReturn(instrument);
+        when(instrumentMapper.toInstrumentDto(instrument)).thenReturn(instrumentDto);
+
+        InstrumentDto result = instrumentService.getInstrumentById(1L);
+
+        assertNotNull(result);
+        assertEquals(instrumentDto.getId(), result.getId());
+        assertEquals(instrumentDto.getName(), result.getName());
+        verify(instrumentValidator, times(1)).fetchAndValidateById(1L);
+        verify(instrumentMapper, times(1)).toInstrumentDto(instrument);
+    }
+
+    @Test
+    void getInstrumentByIdInternal_ShouldReturnInstrumentEntity() {
+        // Arrange: Simulate the validator returning a valid instrument.
+        when(instrumentValidator.fetchAndValidateById(1L)).thenReturn(instrument);
+
+        // Act: Call the internal retrieval method.
+        Instrument result = instrumentService.getInstrumentByIdInternal(1L);
+
+        // Assert: Verify that the returned instrument is the same.
+        assertNotNull(result);
+        assertEquals(instrument.getId(), result.getId());
+        assertEquals(instrument.getName(), result.getName());
+        verify(instrumentValidator, times(1)).fetchAndValidateById(1L);
     }
 }
