@@ -5,7 +5,7 @@ import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
-import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.dtos.TuitionDto;
 import com.tuneup.tuneup.tuitions.entities.Tuition;
 import com.tuneup.tuneup.tuitions.mappers.TuitionMapper;
 import com.tuneup.tuneup.tuitions.services.TuitionService;

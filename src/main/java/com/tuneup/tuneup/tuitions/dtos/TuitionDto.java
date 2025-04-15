@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.tuitions;
+package com.tuneup.tuneup.tuitions.dtos;
 
 import java.time.LocalDate;
 

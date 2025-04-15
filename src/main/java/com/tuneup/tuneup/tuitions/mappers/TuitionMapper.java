@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.tuitions.mappers;
 
-import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.dtos.TuitionDto;
 import com.tuneup.tuneup.tuitions.entities.Tuition;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

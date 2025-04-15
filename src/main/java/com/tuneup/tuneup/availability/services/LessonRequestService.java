@@ -17,7 +17,7 @@ import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
-import com.tuneup.tuneup.tuitions.TuitionDto;
+import com.tuneup.tuneup.tuitions.dtos.TuitionDto;
 import com.tuneup.tuneup.tuitions.services.TuitionService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
