@@ -18,7 +18,9 @@ public class TuitionValidator {
     }
 
     public void validateDto(TuitionDto tuitionDto){
-       List<ValidationException> errors = new ArrayList<>();
+       if(existsByTutorStudentId(tuitionDto.getTutorProfileId(),tuitionDto.getStudentProfileId())){
+           throw new ValidationException("Tuition for these profiles already exists!");
+       }
     }
 
     public boolean existsByTutorStudentId(Long tutorId, Long studentId) {
