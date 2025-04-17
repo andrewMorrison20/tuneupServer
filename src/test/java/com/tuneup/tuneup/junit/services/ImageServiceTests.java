@@ -1,20 +1,20 @@
 package com.tuneup.tuneup.junit.services;
 
+
+
 import com.google.cloud.storage.*;
 import com.tuneup.tuneup.images.entities.Image;
-import com.tuneup.tuneup.images.repositories.ImageRepository;
 import com.tuneup.tuneup.images.services.ImageService;
+import com.tuneup.tuneup.images.repositories.ImageRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.util.ReflectionTestUtils;
 import java.io.IOException;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -23,76 +23,68 @@ import static org.mockito.Mockito.*;
 class ImageServiceTests {
 
     @Mock
+    private ImageRepository imageRepository;
+    @Mock
     private Storage storage;
-
     @Mock
     private Bucket bucket;
-
     @Mock
     private Blob blob;
 
-    @Mock
-    private ImageRepository imageRepository;
-
-    @Mock
-    private MultipartFile file;
-
-    @InjectMocks
     private ImageService imageService;
 
     @BeforeEach
-    void setUp() {
-        when(bucket.create(anyString(), (byte[]) any(), anyString())).thenReturn(blob);
-        when(storage.get(anyString())).thenReturn(bucket);
-        when(blob.getMediaLink()).thenReturn("https://test-url.com/image.jpg");
+    void setUp() throws Exception {
+
+        imageService = new ImageService(imageRepository);
+
+        ReflectionTestUtils.setField(imageService, "storage", storage);
+        ReflectionTestUtils.setField(imageService, "bucketName", "test-bucket");
+        when(storage.get("test-bucket")).thenReturn(bucket);
     }
 
-
     @Test
-    @Disabled("Temporarily disabled due to NullPointerException")
-    void testUploadFile() throws IOException {
-        String filename = "test.jpg";
-        Image image = new Image();
-        image.setUrl("https://test-url.com/image.jpg");
-        image.setDescription(filename);
+    void uploadFile_Success() throws IOException {
+        byte[] content = "hello".getBytes();
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "hello.txt", "text/plain", content);
 
-        when(file.getOriginalFilename()).thenReturn(filename);
-        when(file.getBytes()).thenReturn(new byte[]{1, 2, 3});
-        when(file.getContentType()).thenReturn("image/jpeg");
-        when(imageRepository.save(any(Image.class))).thenReturn(image);
-
+        when(bucket.create(startsWith(""), eq(content), eq("text/plain")))
+                .thenReturn(blob);
+        when(blob.getMediaLink()).thenReturn("http://media-link");
+        // simulate save
+        Image saved = new Image();
+        saved.setUrl("http://media-link");
+        saved.setDescription("hello.txt");
+        when(imageRepository.save(any())).thenReturn(saved);
 
         Image result = imageService.uploadFile(file);
 
         assertNotNull(result);
-        assertEquals("https://test-url.com/image.jpg", result.getUrl());
-        assertEquals(filename, result.getDescription());
+        assertEquals("http://media-link", result.getUrl());
+        assertEquals("hello.txt", result.getDescription());
+        verify(bucket).create(anyString(), eq(content), eq("text/plain"));
+        verify(imageRepository).save(any());
     }
 
     @Test
-    @Disabled("Temporarily disabled due to NullPointerException")
-    void testDownloadFileReturnsFile() {
-        String fileName = UUID.randomUUID().toString();
-        byte[] content = new byte[]{1, 2, 3};
+    void downloadFile_Success() {
+        byte[] data = {1, 2, 3};
+        when(bucket.get("myfile")).thenReturn(blob);
+        when(blob.getContent()).thenReturn(data);
 
-        when(bucket.get(fileName)).thenReturn(blob);
-        when(blob.getContent()).thenReturn(content);
+        byte[] result = imageService.downloadFile("myfile");
 
-        byte[] result = imageService.downloadFile(fileName);
-
-        assertNotNull(result);
-        assertArrayEquals(content, result);
+        assertArrayEquals(data, result);
+        verify(bucket).get("myfile");
     }
 
     @Test
-    @Disabled("Temporarily disabled due to NullPointerException")
-    void testDownloadFileExpectsException() {
-        String fileName = "non-existent.jpg";
-
-        when(bucket.get(fileName)).thenReturn(null);
-
-        Exception exception = assertThrows(RuntimeException.class, () -> imageService.downloadFile(fileName));
-        assertEquals("File not found: " + fileName, exception.getMessage());
+    void downloadFile_NotFound() {
+        when(bucket.get("nofile")).thenReturn(null);
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> imageService.downloadFile("nofile"));
+        assertEquals("File not found: nofile", ex.getMessage());
     }
 }
 
