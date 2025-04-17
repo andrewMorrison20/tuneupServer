@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.regions.controllers;
 
-import com.tuneup.tuneup.regions.RegionDto;
+import com.tuneup.tuneup.regions.dtos.RegionDto;
 import com.tuneup.tuneup.regions.services.RegionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

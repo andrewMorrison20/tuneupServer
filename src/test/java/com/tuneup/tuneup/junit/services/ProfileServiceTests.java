@@ -25,6 +25,7 @@ import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMapper;
 import com.tuneup.tuneup.qualifications.repositories.ProfileInstrumentQualificationRepository;
 import com.tuneup.tuneup.qualifications.services.QualificationService;
+import com.tuneup.tuneup.regions.dtos.RegionDto;
 import com.tuneup.tuneup.regions.entities.Region;
 import com.tuneup.tuneup.regions.mappers.RegionMapper;
 import com.tuneup.tuneup.users.model.AppUser;
@@ -211,7 +212,7 @@ import static org.mockito.Mockito.*;
             dto.setGenres(Collections.emptySet());
             dto.setPrices(Collections.emptySet());
             dto.setInstruments(Collections.emptySet());
-            dto.setTuitionRegion(new com.tuneup.tuneup.regions.RegionDto());
+            dto.setTuitionRegion(new RegionDto());
 
 
             Profile existingProfile = new Profile();

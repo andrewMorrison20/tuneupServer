@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.junit.controllers;
 
-import com.tuneup.tuneup.regions.RegionDto;
+import com.tuneup.tuneup.regions.dtos.RegionDto;
 import com.tuneup.tuneup.regions.services.RegionService;
 import com.tuneup.tuneup.regions.controllers.RegionController;
 import org.junit.jupiter.api.Test;

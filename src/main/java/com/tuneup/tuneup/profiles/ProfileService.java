@@ -22,7 +22,7 @@ import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMapper;
 import com.tuneup.tuneup.qualifications.repositories.ProfileInstrumentQualificationRepository;
 import com.tuneup.tuneup.qualifications.services.QualificationService;
-import com.tuneup.tuneup.regions.RegionDto;
+import com.tuneup.tuneup.regions.dtos.RegionDto;
 import com.tuneup.tuneup.regions.mappers.RegionMapper;
 import com.tuneup.tuneup.regions.repositories.RegionRepository;
 import com.tuneup.tuneup.users.model.AppUser;

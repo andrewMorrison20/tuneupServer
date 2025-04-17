@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.regions.services;
 
-import com.tuneup.tuneup.regions.RegionDto;
+import com.tuneup.tuneup.regions.dtos.RegionDto;
 import com.tuneup.tuneup.regions.entities.Region;
 import com.tuneup.tuneup.regions.mappers.RegionMapper;
 import com.tuneup.tuneup.regions.repositories.RegionRepository;

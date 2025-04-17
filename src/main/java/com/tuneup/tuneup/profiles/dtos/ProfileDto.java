@@ -7,7 +7,7 @@ import com.tuneup.tuneup.images.dtos.ImageDto;
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.enums.LessonType;
-import com.tuneup.tuneup.regions.RegionDto;
+import com.tuneup.tuneup.regions.dtos.RegionDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
