@@ -20,17 +20,15 @@ import java.util.List;
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final InvoiceService invoiceService;
 
-    public PaymentController(PaymentService paymentService, InvoiceService invoiceService) {
+    public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
-        this.invoiceService = invoiceService;
     }
 
     /**
      * Creates a new payment
      * @param paymentDto details the payment to be created
-     * @return
+     * @return payment do
      */
     @PostMapping
     public ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto paymentDto) {
