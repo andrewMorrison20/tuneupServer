@@ -1,8 +1,5 @@
 package com.tuneup.tuneup.authentication.controller;
 
-
-
-import com.google.auth.oauth2.TokenVerifier;
 import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
@@ -10,12 +7,10 @@ import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.dtos.LoginRequestDto;
 import com.tuneup.tuneup.users.dtos.LoginResponseDto;
 import com.tuneup.tuneup.users.exceptions.EmailNotVerifiedException;
-import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.services.AppUserService;
 import com.tuneup.tuneup.utils.Jwt.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
