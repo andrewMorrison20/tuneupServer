@@ -21,14 +21,13 @@ public class QualificationController {
         this.qualificationService = qualificationService;
     }
 
-    // Fetch all qualifications
     @GetMapping
     public ResponseEntity<Set<QualificationDto>> getAllQualifications() {
         Set<QualificationDto> qualifications = qualificationService.getAllQualifications ();
         return ResponseEntity.ok(qualifications);
     }
 
-    // Add multiple qualifications
+
     @PostMapping("/batch")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<QualificationDto>> batchCreateQualifications(
@@ -38,15 +37,12 @@ public class QualificationController {
     }
 
 
-
-    // Fetch a single qualification by ID
     @GetMapping("/{id}")
     public ResponseEntity<QualificationDto> getQualificationById(@PathVariable Long id) {
         QualificationDto qualificationDto = qualificationService.getQualificationById(id);
         return ResponseEntity.ok(qualificationDto);
     }
 
-    // Add a new qualification
     @PostMapping
     public ResponseEntity<QualificationDto> addQualification(@RequestBody QualificationDto qualificationDto) {
 
@@ -54,15 +50,14 @@ public class QualificationController {
         return ResponseEntity.status(201).body(savedQualification);
     }
 
-    // Update an existing qualification
+
     @PutMapping("/{id}")
     public ResponseEntity<QualificationDto> updateQualification(
             @PathVariable Long id,
             @RequestBody QualificationDto qualificationDto) {
         QualificationDto updatedQualification = qualificationService.updateQualification(id, qualificationDto);
-        return ResponseEntity.ok(qualificationDto);}
+        return ResponseEntity.ok(updatedQualification);}
 
-    // Delete a qualification
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteQualification(@PathVariable Long id) {
         try {
