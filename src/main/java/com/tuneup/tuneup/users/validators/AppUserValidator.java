@@ -1,6 +1,5 @@
 package com.tuneup.tuneup.users.validators;
 
-import com.tuneup.tuneup.users.Operation;
 import com.tuneup.tuneup.users.dtos.AppUserDto;
 import com.tuneup.tuneup.users.repository.AppUserRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
@@ -44,7 +43,7 @@ public class AppUserValidator {
          }
     }
 
-    protected void checkAppUserId(Long appUserId) {
+    public void checkAppUserId(Long appUserId) {
         if (appUserId != null && appUserRepository.existsById(appUserId)) {
             throw new ValidationException("App user already exists");
         }
