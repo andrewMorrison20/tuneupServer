@@ -6,9 +6,6 @@ import com.tuneup.tuneup.tuitions.repositories.TuitionRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class TuitionValidator {
     private final TuitionRepository tuitionRepository;
