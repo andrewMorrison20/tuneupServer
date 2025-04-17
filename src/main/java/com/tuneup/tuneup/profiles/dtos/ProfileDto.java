@@ -3,7 +3,7 @@ package com.tuneup.tuneup.profiles.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuneup.tuneup.Instruments.dtos.InstrumentDto;
 import com.tuneup.tuneup.genres.dtos.GenreDto;
-import com.tuneup.tuneup.images.ImageDto;
+import com.tuneup.tuneup.images.dtos.ImageDto;
 import com.tuneup.tuneup.pricing.PriceDto;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.enums.LessonType;

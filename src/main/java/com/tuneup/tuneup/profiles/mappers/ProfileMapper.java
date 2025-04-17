@@ -3,7 +3,7 @@ package com.tuneup.tuneup.profiles.mappers;
 
 import com.tuneup.tuneup.Instruments.mappers.InstrumentMapper;
 import com.tuneup.tuneup.genres.mappers.GenreMapper;
-import com.tuneup.tuneup.images.ImageMapper;
+import com.tuneup.tuneup.images.mappers.ImageMapper;
 import com.tuneup.tuneup.pricing.mappers.PriceMapper;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;

@@ -1,6 +1,8 @@
-package com.tuneup.tuneup.images;
+package com.tuneup.tuneup.images.mappers;
 
 
+import com.tuneup.tuneup.images.entities.Image;
+import com.tuneup.tuneup.images.dtos.ImageDto;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 

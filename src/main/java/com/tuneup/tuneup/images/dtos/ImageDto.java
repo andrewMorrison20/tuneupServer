@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.images;
+package com.tuneup.tuneup.images.dtos;
 
 public class ImageDto {
     private Long id;

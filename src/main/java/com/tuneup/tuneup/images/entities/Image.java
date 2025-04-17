@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.images;
+package com.tuneup.tuneup.images.entities;
 
 import jakarta.persistence.*;
 

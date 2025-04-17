@@ -2,7 +2,7 @@ package com.tuneup.tuneup.profiles.entities;
 
 import com.tuneup.tuneup.Instruments.entities.Instrument;
 import com.tuneup.tuneup.genres.entities.Genre;
-import com.tuneup.tuneup.images.Image;
+import com.tuneup.tuneup.images.entities.Image;
 import com.tuneup.tuneup.pricing.entities.Price;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.enums.LessonType;

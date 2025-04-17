@@ -1,5 +1,8 @@
-package com.tuneup.tuneup.images;
+package com.tuneup.tuneup.images.controllers;
 
+import com.tuneup.tuneup.images.entities.Image;
+import com.tuneup.tuneup.images.services.ImageService;
+import com.tuneup.tuneup.images.mappers.ImageMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

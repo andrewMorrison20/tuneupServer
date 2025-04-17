@@ -1,6 +1,10 @@
 package com.tuneup.tuneup.junit.controllers;
 
-import com.tuneup.tuneup.images.*;
+import com.tuneup.tuneup.images.controllers.ImageController;
+import com.tuneup.tuneup.images.dtos.ImageDto;
+import com.tuneup.tuneup.images.entities.Image;
+import com.tuneup.tuneup.images.mappers.ImageMapper;
+import com.tuneup.tuneup.images.services.ImageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,9 +1,9 @@
 package com.tuneup.tuneup.junit.services;
 
 import com.google.cloud.storage.*;
-import com.tuneup.tuneup.images.Image;
-import com.tuneup.tuneup.images.ImageRepository;
-import com.tuneup.tuneup.images.ImageService;
+import com.tuneup.tuneup.images.entities.Image;
+import com.tuneup.tuneup.images.repositories.ImageRepository;
+import com.tuneup.tuneup.images.services.ImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

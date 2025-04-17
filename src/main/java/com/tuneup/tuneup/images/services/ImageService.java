@@ -1,7 +1,9 @@
-package com.tuneup.tuneup.images;
+package com.tuneup.tuneup.images.services;
 
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.StorageOptions;
+import com.tuneup.tuneup.images.entities.Image;
+import com.tuneup.tuneup.images.repositories.ImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import com.google.cloud.storage.Blob;
@@ -9,7 +11,6 @@ import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
