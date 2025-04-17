@@ -32,6 +32,7 @@ jacocoTestReport {
 				"**/enums/**",
 				"**/dtos/**",
 				"**/model/**",
+				"**/exceptions/**",
 		])
 	}))
 	dependsOn test
