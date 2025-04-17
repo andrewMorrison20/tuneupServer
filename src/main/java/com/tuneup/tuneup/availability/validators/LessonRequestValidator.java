@@ -21,8 +21,6 @@ public class LessonRequestValidator {
     }
 
 
-
-
     public LessonRequest fetchAndValidateById(Long id) {
         return lessonRequestRepository.findById(id).orElseThrow(
                 () -> new ValidationException("Lesson request not found for id: " + id)
