@@ -174,7 +174,7 @@ class AppUserControllerTests {
 
     @Test
     void anonymiseSelf_ParsesTokenAndCallsService() throws Exception {
-       
+
         String secret = "NeedANew32CharacterOrMoreSecretKeyHere";
         // Build a claims set with the userId
         JWTClaimsSet claims = new JWTClaimsSet.Builder()
