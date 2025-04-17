@@ -1,7 +1,9 @@
-package com.tuneup.tuneup.qualifications;
+package com.tuneup.tuneup.qualifications.services;
 
 import com.tuneup.tuneup.common.OperationType;
 import com.tuneup.tuneup.qualifications.dtos.QualificationDto;
+import com.tuneup.tuneup.qualifications.entities.Qualification;
+import com.tuneup.tuneup.qualifications.enums.QualificationName;
 import com.tuneup.tuneup.qualifications.repositories.QualificationRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import org.springframework.stereotype.Service;

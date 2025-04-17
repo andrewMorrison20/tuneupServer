@@ -1,8 +1,8 @@
 package com.tuneup.tuneup.qualifications.services;
 
 import com.tuneup.tuneup.common.OperationType;
-import com.tuneup.tuneup.qualifications.*;
 import com.tuneup.tuneup.qualifications.dtos.QualificationDto;
+import com.tuneup.tuneup.qualifications.entities.Qualification;
 import com.tuneup.tuneup.qualifications.mappers.QualificationMapper;
 import com.tuneup.tuneup.qualifications.repositories.QualificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,7 +6,7 @@ import com.tuneup.tuneup.images.entities.Image;
 import com.tuneup.tuneup.pricing.entities.Price;
 import com.tuneup.tuneup.profiles.ProfileType;
 import com.tuneup.tuneup.profiles.enums.LessonType;
-import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import com.tuneup.tuneup.qualifications.entities.ProfileInstrumentQualification;
 import com.tuneup.tuneup.regions.entities.Region;
 import com.tuneup.tuneup.users.model.AppUser;
 import jakarta.persistence.*;

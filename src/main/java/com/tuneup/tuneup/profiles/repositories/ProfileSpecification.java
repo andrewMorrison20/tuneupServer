@@ -5,7 +5,7 @@ import com.tuneup.tuneup.genres.entities.Genre;
 import com.tuneup.tuneup.pricing.entities.Price;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
-import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import com.tuneup.tuneup.qualifications.entities.ProfileInstrumentQualification;
 import com.tuneup.tuneup.regions.repositories.RegionRepository;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;

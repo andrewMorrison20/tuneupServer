@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.qualifications.repositories;
 
-import com.tuneup.tuneup.qualifications.Qualification;
+import com.tuneup.tuneup.qualifications.entities.Qualification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

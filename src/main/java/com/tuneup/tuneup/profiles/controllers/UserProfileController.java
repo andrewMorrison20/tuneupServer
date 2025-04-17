@@ -6,9 +6,7 @@ import com.tuneup.tuneup.profiles.ProfileService;
 import com.tuneup.tuneup.profiles.dtos.ProfileDto;
 
 import com.tuneup.tuneup.profiles.dtos.ProfileSearchCriteriaDto;
-import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

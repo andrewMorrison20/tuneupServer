@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.qualifications.repositories;
 
-import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import com.tuneup.tuneup.qualifications.entities.ProfileInstrumentQualification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

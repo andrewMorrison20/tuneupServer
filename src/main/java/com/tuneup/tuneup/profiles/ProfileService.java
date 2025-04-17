@@ -17,7 +17,7 @@ import com.tuneup.tuneup.profiles.mappers.ProfileMapper;
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 
 import com.tuneup.tuneup.profiles.repositories.ProfileSpecification;
-import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import com.tuneup.tuneup.qualifications.entities.ProfileInstrumentQualification;
 import com.tuneup.tuneup.qualifications.dtos.ProfileInstrumentQualificationDto;
 import com.tuneup.tuneup.qualifications.mappers.ProfileInstrumentQualificationMapper;
 import com.tuneup.tuneup.qualifications.repositories.ProfileInstrumentQualificationRepository;

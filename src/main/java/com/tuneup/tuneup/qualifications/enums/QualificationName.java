@@ -1,4 +1,4 @@
-package com.tuneup.tuneup.qualifications;
+package com.tuneup.tuneup.qualifications.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

@@ -1,7 +1,7 @@
 package com.tuneup.tuneup.Instruments.entities;
 
 import com.tuneup.tuneup.profiles.entities.Profile;
-import com.tuneup.tuneup.qualifications.ProfileInstrumentQualification;
+import com.tuneup.tuneup.qualifications.entities.ProfileInstrumentQualification;
 import jakarta.persistence.*;
 
 import java.util.Set;

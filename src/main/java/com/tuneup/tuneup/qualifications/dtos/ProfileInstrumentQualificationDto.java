@@ -1,6 +1,6 @@
 package com.tuneup.tuneup.qualifications.dtos;
 
-import com.tuneup.tuneup.qualifications.QualificationName;
+import com.tuneup.tuneup.qualifications.enums.QualificationName;
 import org.springframework.stereotype.Component;
 
 @Component

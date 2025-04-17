@@ -1,5 +1,6 @@
-package com.tuneup.tuneup.qualifications;
+package com.tuneup.tuneup.qualifications.entities;
 
+import com.tuneup.tuneup.qualifications.enums.QualificationName;
 import jakarta.persistence.*;
 import java.util.Set;
 
