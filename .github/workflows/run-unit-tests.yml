@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -28,4 +27,45 @@ jobs:
         run: ./gradlew clean assemble
 
       - name: Run unit tests
-        run:  ./gradlew test --tests 'com.tuneup.tuneup.junit.*'
+        run: ./gradlew test --tests 'com.tuneup.tuneup.junit.*'
+
+      # ────────────── JACOCO COVERAGE ──────────────
+      - name: Generate JaCoCo Test Coverage Reports 📝
+        if: always()
+        run: ./gradlew jacocoTestReport --info --stacktrace
+
+      - name: Rename JaCoCo report files ✍️
+        if: always()
+        run: |
+          LABEL=unit
+          find . -path "*/build/reports/jacoco/*.xml" | while read -r file; do
+            mv "$file" "${file%.xml}_${LABEL}.xml"
+          done
+
+      - name: Upload JaCoCo Reports 🛫
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-unit
+          path: '**/build/reports/jacoco/*.xml'
+          retention-days: 1
+
+      # ────────────── UPLOAD TEST RESULTS ──────────────
+      - name: Upload JUnit XML Test Results 🧪
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-xml
+          path: '**/build/test-results/**/*.xml'
+          retention-days: 3
+
+      # ────────────── TEST RESULTS ──────────────
+      - name: Publish Test Results 🏋️‍
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: 'Unit Tests'
+          path: '**/build/test-results/**/*.xml'
+          reporter: java-junit
+
+
