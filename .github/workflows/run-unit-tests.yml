@@ -2,17 +2,16 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -21,14 +20,14 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      - name: Ensure Gradle wrapper is executable
+      - name: Make Gradle executable
         run: chmod +x ./gradlew
 
       - name: Build & compile
         run: ./gradlew clean assemble
 
-      - name: Run only junit‑unit tests
-        run: ./gradlew test --tests 'com.tuneup.tuneup.junit.*'
+      - name: Run only JUnit‑unit tests
+        run: ./gradlew unitTest
 
       - name: Publish test results
         if: always()
@@ -37,7 +36,7 @@ jobs:
           name: test-results
           path: build/test-results
 
-      - name: Publish code coverage report (optional)
+      - name: Publish coverage report
         if: always()
         uses: actions/upload-artifact@v3
         with:
