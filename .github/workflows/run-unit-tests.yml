@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-unit
-          path: '**/build/reports/jacoco/*.xml'
+          path: '**/build/reports/jacoco/test/*.xml'
           retention-days: 1
 
       # ────────────── UPLOAD TEST RESULTS ──────────────
