@@ -3,7 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'jacoco'
-	id 'org.sonarqube' version '4.0.0.2929'
+	id "org.sonarqube" version "6.0.1.5171"
 }
 
 group = 'com.tuneup'
@@ -44,12 +44,11 @@ jacocoTestReport {
 	}
 }
 
-sonarqube {
+sonar {
 	properties {
 		property "sonar.projectKey", "andrewMorrison20_tuneupServer"
 		property "sonar.organization", "andrewmorrison20"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
 	}
 }
 
