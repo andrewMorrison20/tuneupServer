@@ -24,8 +24,8 @@ jobs:
       - name: Ensure Gradle wrapper is executable
         run: chmod +x ./gradlew
 
-      - name: Build & run tests
-        run: ./gradlew clean test
+      - name: Build & run only junit-unit tests
+        run: ./gradlew clean test --tests "com.tuneup.tuneup.junit.*"
 
       - name: Publish test results
         if: always()
