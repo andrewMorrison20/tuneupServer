@@ -11,10 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) checkout
+  
       - uses: actions/checkout@v3
 
-      # 2) install JDK 17 and cache Gradle
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -22,14 +21,11 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      # 3) make sure your wrapper is runnable
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      # 4) compile & package (no tests yet)
       - name: Build & compile
         run: ./gradlew clean assemble
 
-      # 5) run ONLY your unitTest task
       - name: Run unit tests
         run:  ./gradlew test --tests 'com.tuneup.tuneup.junit.*'
