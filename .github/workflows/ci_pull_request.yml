@@ -3,7 +3,7 @@ name: CI pull request
 permissions:
   contents: read
   checks: write
-  
+
 on:
   push:
     branches: [ master ]
