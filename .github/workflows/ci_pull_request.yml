@@ -42,4 +42,3 @@ jobs:
       - name: Submit Dependency Graph
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: gradle/actions/dependency-submission@v4
-
