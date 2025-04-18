@@ -130,11 +130,14 @@ class JwtRequestFilterTest {
         when(request.getServletPath()).thenReturn("/api/resource");
         String validToken = generateValidToken("testUser", List.of("USER"));
         when(request.getHeader("Authorization")).thenReturn("Bearer " + validToken);
-        lenient().when(jwtUtil.validateTokenAndRetrieveSubject(validToken)).thenReturn("testUser");
         when(jwtUtil.isTokenBlacklisted(validToken)).thenReturn(true);
+
         filter.publicDoFilterInternal(request, response, chain);
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         assertNull(auth);
         verify(chain, times(1)).doFilter(request, response);
     }
+
+
 }
