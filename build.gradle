@@ -3,7 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'jacoco'
-	id 'org.sonarqube' version '4.0.0.2929'
+	id "org.sonarqube" version "6.0.1.5171"
 }
 
 group = 'com.tuneup'
@@ -33,6 +33,7 @@ jacocoTestReport {
 				"**/dtos/**",
 				"**/model/**",
 				"**/exceptions/**",
+				"**/TuneupApplicationTests.class"
 		])
 	}))
 	dependsOn test
@@ -43,12 +44,11 @@ jacocoTestReport {
 	}
 }
 
-sonarqube {
+sonar {
 	properties {
 		property "sonar.projectKey", "andrewMorrison20_tuneupServer"
 		property "sonar.organization", "andrewmorrison20"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
 	}
 }
 
@@ -87,8 +87,17 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	implementation 'org.jboss.logging:jboss-logging:3.5.3.Final'
+	testImplementation 'com.h2database:h2:2.2.224'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+test {
+	exclude '**/TuneupApplicationTests.class', 'com/tuneup/tuneup/TuneupApplicationTests.class'
+	testLogging {
+		events "started", "passed", "failed", "skipped"
+		showStandardStreams = true
+	}
 }

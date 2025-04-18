@@ -131,7 +131,9 @@ class JwtRequestFilterTest {
         String validToken = generateValidToken("testUser", List.of("USER"));
         when(request.getHeader("Authorization")).thenReturn("Bearer " + validToken);
         when(jwtUtil.isTokenBlacklisted(validToken)).thenReturn(true);
+
         filter.publicDoFilterInternal(request, response, chain);
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         assertNull(auth);
         verify(chain, times(1)).doFilter(request, response);
