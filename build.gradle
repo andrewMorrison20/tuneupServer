@@ -49,6 +49,7 @@ sonar {
 		property "sonar.projectKey", "andrewMorrison20_tuneupServer"
 		property "sonar.organization", "andrewmorrison20"
 		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.coverage.exclusions","**/entity/**, **/*Dto.java"
 	}
 }
 
