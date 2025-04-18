@@ -94,3 +94,10 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+test {
+	testLogging {
+		events "started", "passed", "failed", "skipped"
+		showStandardStreams = true
+	}
+}
