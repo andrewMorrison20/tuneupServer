@@ -32,4 +32,4 @@ jobs:
 
       # 5) run ONLY your unitTest task
       - name: Run unit tests
-        run: ./gradlew unitTest
+        run:  ./gradlew test --tests 'com.tuneup.tuneup.junit.*'
