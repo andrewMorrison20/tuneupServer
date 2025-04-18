@@ -138,6 +138,4 @@ class JwtRequestFilterTest {
         assertNull(auth);
         verify(chain, times(1)).doFilter(request, response);
     }
-
-
 }
