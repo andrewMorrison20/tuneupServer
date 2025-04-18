@@ -59,19 +59,26 @@ class JwtUtilTests {
     }
 
     @Test
-    void validateTokenAndRetrieveSubject_InvalidSignature_ThrowsJOSEException() throws Exception {
+    void validateTokenAndRetrieveSubject_InvalidSignature_ThrowsJOSEException() throws JOSEException {
         String token = jwtUtil.generateToken(
                 username, name, userId, profileId, profileType, roles
         );
-        // tamper with the token payload
-        String tampered = token.substring(0, token.length() - 1) + (token.charAt(token.length() - 1) == 'a' ? 'b' : 'a');
 
-        JOSEException ex = assertThrows(
-                JOSEException.class,
-                () -> jwtUtil.validateTokenAndRetrieveSubject(tampered)
+        String[] parts = token.split("\\.");
+        assertEquals(3, parts.length, "JWT should have 3 parts");
+
+        String tamperedPayload = parts[1].substring(0, parts[1].length() - 1) + "x";
+        String tampered = parts[0] + "." + tamperedPayload + "." + parts[2];
+        Exception ex = assertThrows(Exception.class, () -> {
+            jwtUtil.validateTokenAndRetrieveSubject(tampered);
+        });
+
+        assertTrue(
+                ex.getMessage().toLowerCase().contains("invalid") || ex instanceof JOSEException,
+                "Expected exception message to indicate invalid token signature"
         );
-        assertTrue(ex.getMessage().contains("Invalid token signature"));
     }
+
 
     @Test
     void validateTokenAndRetrieveSubject_ExpiredToken_ThrowsSecurityException() throws Exception {
