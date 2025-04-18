@@ -33,6 +33,7 @@ jacocoTestReport {
 				"**/dtos/**",
 				"**/model/**",
 				"**/exceptions/**",
+				"**/TuneupApplicationTests.class"
 		])
 	}))
 	dependsOn test
