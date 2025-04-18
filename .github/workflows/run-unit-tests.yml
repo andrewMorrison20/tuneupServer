@@ -1,5 +1,9 @@
 name: Run Unit Tests
 
+permissions:
+  contents: read
+  checks: write
+
 on:
   push:
     branches: [ master ]
