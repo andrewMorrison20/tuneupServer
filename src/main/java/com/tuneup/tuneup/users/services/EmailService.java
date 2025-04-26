@@ -25,7 +25,7 @@ public class EmailService {
      mailSender.send(message);
   }
 
-    @Async
+    @Async("mailExecutor")
     public void sendVerificationEmail(String email, String verificationUrl) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);

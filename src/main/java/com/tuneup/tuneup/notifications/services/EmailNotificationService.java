@@ -17,7 +17,7 @@ public class EmailNotificationService {
         this.appUserService = appUserService;
     }
 
-    @Async
+    @Async("mailExecutor")
     public void sendEmailNotification(NotificationDto notification) {
         String recipientEmail = getUserEmail(notification.getUserId());
         String subject = "Notification: " + notification.getType().toString();

@@ -270,4 +270,12 @@ public class LessonRequestService {
     public LessonRequest getLessonRequestByIdInternal(Long requestId){
         return lessonRequestValidator.fetchAndValidateById(requestId);
     }
+
+    /**
+     * Primarily used for e2e tests
+     * @param lessonRequestId
+     */
+    public void deleteRequest(Long lessonRequestId) {
+        lessonRequestRepository.deleteById(lessonRequestId);
+    }
 }
