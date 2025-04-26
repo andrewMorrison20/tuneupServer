@@ -1,9 +1,19 @@
+buildscript {
+	repositories { mavenCentral() }
+	dependencies {
+		classpath "org.flywaydb:flyway-gradle-plugin:11.7.0"
+		classpath "org.flywaydb:flyway-sqlserver:11.7.0"
+		classpath "com.microsoft.sqlserver:mssql-jdbc:12.6.0.jre11"
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'jacoco'
 	id "org.sonarqube" version "6.0.1.5171"
+	id 'org.flywaydb.flyway' version '11.7.0'
 }
 
 group = 'com.tuneup'
@@ -88,12 +98,23 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	implementation 'org.jboss.logging:jboss-logging:3.5.3.Final'
-	testImplementation 'com.h2database:h2:2.2.224'
+	implementation 'org.flywaydb:flyway-core:11.7.0'
+	implementation 'org.flywaydb:flyway-sqlserver:11.7.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+flyway {
+	url       =  url = 'jdbc:sqlserver://host.docker.internal:1434;databaseName=tuneup_test;encrypt=true;trustServerCertificate=true'
+	user      = 'sa'
+	password  = 'YourStrong!Passw0rd'
+	schemas   = ['dbo']
+	locations = ['classpath:db/migration']
+	driver    = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+}
+
 
 test {
 	exclude '**/TuneupApplicationTests.class', 'com/tuneup/tuneup/TuneupApplicationTests.class'

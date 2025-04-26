@@ -1,20 +1,19 @@
-# Security enable/disable
-# src/test/resources/application-test.yml
-
-# ✅ Existing security override
-security:
-  basic:
-    enabled: false
-
-
 spring:
+
+  # ────── DataSource ──────
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-    driverClassName: org.h2.Driver
+    url: jdbc:sqlserver://localhost:1434;databaseName=tuneup_test
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: sa
-    password:
+    password: YourStrong!Passw0rd
+
+
+  flyway:
+    enabled: true
+    schemas: dbo
+    locations: classpath:db/migration
+
   jpa:
     hibernate:
-      ddl-auto: create
-
-
+      ddl-auto: validate
+    show-sql: false
