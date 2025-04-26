@@ -3,7 +3,7 @@ buildscript {
 	dependencies {
 		classpath "org.flywaydb:flyway-gradle-plugin:11.7.0"
 		classpath "org.flywaydb:flyway-sqlserver:11.7.0"
-		classpath "com.microsoft.sqlserver:mssql-jdbc:12.6.0.jre11"
+		classpath "com.microsoft.sqlserver:mssql-jdbc:12.6.1.jre11"
 	}
 }
 
@@ -80,7 +80,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework:spring-messaging'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.microsoft.sqlserver:mssql-jdbc:12.6.0.jre11'
+	implementation 'com.microsoft.sqlserver:mssql-jdbc:12.6.1.jre11'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	implementation 'com.nimbusds:nimbus-jose-jwt:9.37.2'
@@ -111,8 +111,12 @@ flyway {
 	user      = 'sa'
 	password  = 'YourStrong!Passw0rd'
 	schemas   = ['dbo']
-	locations = ['classpath:db/migration']
+	locations = [
+			'classpath:db/migration',
+			'filesystem:src/main/resources/db/migration'
+	]
 	driver    = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+
 }
 
 
