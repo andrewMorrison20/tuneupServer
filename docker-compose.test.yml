@@ -24,5 +24,5 @@ services:
         /opt/mssql-tools/bin/sqlcmd \
           -S db,1433 -U SA -P 'YourStrong!Passw0rd' \
           -Q "IF DB_ID('tuneup_test') IS NULL CREATE DATABASE tuneup_test;"
-        echo '✅ tuneup_test ready.'
+        echo ' tuneup_test ready.'
     restart: "no"
