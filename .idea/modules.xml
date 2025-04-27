@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tuneup.main.iml" filepath="$PROJECT_DIR$/.idea/modules/tuneup.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/tuneup.test.iml" filepath="$PROJECT_DIR$/.idea/modules/tuneup.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tuneupServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/tuneupServer.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tuneupServer.test.iml" filepath="$PROJECT_DIR$/.idea/modules/tuneupServer.test.iml" />
     </modules>
   </component>
 </project>
