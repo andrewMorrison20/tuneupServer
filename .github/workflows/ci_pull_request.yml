@@ -44,7 +44,7 @@ jobs:
 
   build-backend-image:
     needs: unit-tests
-    uses: ./.github/workflows/build-docker-image.yml
+    uses: ./.github/workflows/ci_build_docker.yml
     with:
       registry:    andrewm95
       image_name:  tuneupserver
