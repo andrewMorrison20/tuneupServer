@@ -43,6 +43,12 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
 
-      - name: Submit Dependency Graph
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/actions/dependency-submission@v4
+
+  build-backend-image:
+    uses: ./.github/workflows/build-docker-image.yml@main
+    with:
+      registry: andrewm95
+      image_name: tuneupserver
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN:    ${{ secrets.DOCKERHUB_TOKEN }}

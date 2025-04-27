@@ -1,0 +1,74 @@
+name: Build Docker Image
+
+permissions:
+  contents: read
+  checks: write
+
+on:
+  workflow_call:
+    inputs:
+      registry:
+        description: 'Docker registry (e.g. yourhub)'
+        required: true
+        type: string
+      image_name:
+        description: 'Name of the image in the registry'
+        required: true
+        type: string
+    outputs:
+      IMAGE:
+        description: 'The newly generated docker image (registry/name:version)'
+        value: ${{ jobs.build-docker-image.outputs.IMAGE_TAG }}
+      IMAGE_VERSION:
+        description: 'Version tag used for this build'
+        value: ${{ jobs.build-docker-image.outputs.IMAGE_VERSION }}
+
+  workflow_dispatch: {}  # allow manual runs if you like
+
+jobs:
+  build-docker-image:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    outputs:
+      IMAGE_TAG: ${{ steps.set-outputs.outputs.IMAGE_TAG }}
+      IMAGE_VERSION: ${{ steps.set-outputs.outputs.IMAGE_VERSION }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Determine image version
+        id: version
+        run: |
+          # If this is a Git tag push, use the tag name; otherwise use the short commit SHA
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "IMAGE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          else
+            echo "IMAGE_VERSION=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Log in to Docker registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push Docker image
+        id: build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ inputs.registry }}/${{ inputs.image_name }}:${{ steps.version.outputs.IMAGE_VERSION }}
+            ${{ inputs.registry }}/${{ inputs.image_name }}:latest
+          cache-from: type=registry,ref=${{ inputs.registry }}/${{ inputs.image_name }}:cache
+          cache-to:   type=registry,ref=${{ inputs.registry }}/${{ inputs.image_name }}:cache,mode=max
+
+      - name: Set job outputs
+        id: set-outputs
+        run: |
+          echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image_name }}:${{ steps.version.outputs.IMAGE_VERSION }}" >> $GITHUB_OUTPUT
+          echo "IMAGE_VERSION=${{ steps.version.outputs.IMAGE_VERSION }}"             >> $GITHUB_OUTPUT
