@@ -44,10 +44,10 @@ jobs:
 
   build-backend-image:
     needs: unit-tests
-    uses: ./.github/workflows/build-docker-image.yml@main
+    uses: ./.github/workflows/build-docker-image.yml
     with:
       registry:    andrewm95
-      image_name:  tuneupserver      
+      image_name:  tuneupserver
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN:    ${{ secrets.DOCKERHUB_TOKEN }}
