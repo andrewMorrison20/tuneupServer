@@ -48,6 +48,4 @@ jobs:
     with:
       registry:    andrewm95
       image_name:  tuneupserver
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN:    ${{ secrets.DOCKERHUB_TOKEN }}
+
