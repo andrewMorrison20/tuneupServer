@@ -17,6 +17,11 @@ public class EmailNotificationService {
         this.appUserService = appUserService;
     }
 
+    /**
+     * Sends an email to a user detailing a notification event.
+     * Executes in a shared thread pool
+     * @param notification the details of the notification to include in the email.
+     */
     @Async("mailExecutor")
     public void sendEmailNotification(NotificationDto notification) {
         String recipientEmail = getUserEmail(notification.getUserId());
@@ -26,6 +31,11 @@ public class EmailNotificationService {
         emailService.sendEmail(recipientEmail, subject, text);
     }
 
+    /**
+     * retrieve an email address relating to a particular user by their id
+     * @param userId the id of the user to get email address for
+     * @return the email address of the user
+     */
     private String getUserEmail(Long userId) {
         return appUserService.findById(userId).getEmail();
     }
