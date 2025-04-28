@@ -26,3 +26,15 @@ services:
           -Q "IF DB_ID('tuneup_test') IS NULL CREATE DATABASE tuneup_test;"
         echo ' tuneup_test ready.'
     restart: "no"
+
+  backend:
+    image: andrewm95/tuneupserver:latest
+    depends_on:
+      - db
+      - init-db
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL:     "jdbc:sqlserver://db:1433;databaseName=tuneup_test;encrypt=true;trustServerCertificate=true"
+      SPRING_DATASOURCE_USERNAME: "SA"
+      SPRING_DATASOURCE_PASSWORD: "YourStrong!Passw0rd"
