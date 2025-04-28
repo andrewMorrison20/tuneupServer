@@ -2,7 +2,7 @@ name: CI pull request
 
 permissions:
   contents: read
-  checks: write
+  checks:    write
 
 on:
   push:
@@ -17,11 +17,10 @@ jobs:
     defaults:
       run:
         shell: bash
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -34,7 +33,7 @@ jobs:
       - name: Compile & package (no tests)
         run: ./gradlew clean assemble
 
-      - name: Run only JUnit‑unit tests
+      - name: Run only JUnit-unit tests
         run: ./gradlew test --tests 'com.tuneup.tuneup.junit.*'
 
       - name: Cache Gradle dependencies
@@ -43,6 +42,12 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties') }}
 
-      - name: Submit Dependency Graph
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/actions/dependency-submission@v4
+  build-backend-image:
+    needs: unit-tests
+    uses: ./.github/workflows/ci_build_docker.yml
+    with:
+      registry:    andrewm95
+      image_name:  tuneupserver
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN:    ${{ secrets.DOCKERHUB_TOKEN }}
