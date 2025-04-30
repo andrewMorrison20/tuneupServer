@@ -1,6 +1,3 @@
-###############################################################################
-# 1) Builder Stage: build with Gradle + JDK21
-###############################################################################
 FROM gradle:7.6-jdk21 AS builder
 WORKDIR /src
 
@@ -15,9 +12,6 @@ RUN ./gradlew --no-daemon dependencies || true
 COPY src/                  src/
 RUN ./gradlew clean bootJar --no-daemon --console=plain --stacktrace --build-cache
 
-###############################################################################
-# 2) Runtime Stage: use JRE 21 so your compiled classes match
-###############################################################################
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
