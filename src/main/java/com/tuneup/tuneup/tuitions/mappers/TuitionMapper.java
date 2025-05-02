@@ -14,7 +14,7 @@ public interface TuitionMapper {
     @Mapping(source = "student.id", target = "studentProfileId")
     TuitionDto toDto(Tuition tuition);
 
-    //ignore since we will fetch and assign manaully
+    //ignore since we will fetch and assign manually
     @Mapping(target = "tutor", ignore = true)
     @Mapping(target = "student", ignore = true)
     Tuition toEntity(TuitionDto tuitionDto);

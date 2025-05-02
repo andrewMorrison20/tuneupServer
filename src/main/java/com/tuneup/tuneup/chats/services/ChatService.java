@@ -91,8 +91,8 @@ public class ChatService {
     }
 
     /**
-     * Gets a page of profiles that do not have a chat histroy with a given profile.
-     * @param profileId id of the profile to fetch chat hitory for
+     * Gets a page of profiles that do not have a chat history with a given profile.
+     * @param profileId id of the profile to fetch chat history for
      * @param pageable page to return
      * @param active if tuition is active or not
      * @return a page of profile dtos

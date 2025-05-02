@@ -65,19 +65,21 @@ public class LessonRequestService {
         this.eventPublisher = eventPublisher;
     }
 
+    /**
+     * Processes an incoming lesson request and adjusts the associated availability slot.
+     * @param requestDto the details of the request
+     * @return The created lesson as a DTO
+     */
     @Transactional
     public LessonRequestDto processLessonRequest(LessonRequestDto requestDto) {
 
         Availability availability = availabilityService.getAvailabilityByIdInternal(requestDto.getAvailabilityId());
-
         lessonRequestValidator.validateDuplicateRequest(requestDto.getStudentProfileId(),availability.getId());
         availabilityService.validateAvailability(availability);
-
         LocalDateTime requestStart = requestDto.getRequestedStartTime();
         LocalDateTime requestEnd = requestDto.getRequestedEndTime();
 
         Availability pendingAvailability = availabilityService.handleAvailabilityAdjustment(availability, requestStart, requestEnd);
-
         return createLessonRequest(requestDto, pendingAvailability);
     }
 

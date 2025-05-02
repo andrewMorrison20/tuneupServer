@@ -2,9 +2,11 @@ package com.tuneup.tuneup.availability.dtos;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 public class AvailabilityDto {
 
     private Long id;

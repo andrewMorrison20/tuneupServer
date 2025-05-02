@@ -19,6 +19,12 @@ public class ChatController {
 
 
     //Websockets dont use response entity
+    /**
+     * Sends a message for a given conversation thread
+     * @param conversationId Id of the thread to subscribe to and send a message on
+     * @param messageDto the message to send
+     * @return the message successfully sent else throw
+     */
     @MessageMapping("/chat/send/{conversationId}")
     @SendTo("/topic/chat/{conversationId}")
     public MessageDto sendMessage(@DestinationVariable Long conversationId, MessageDto messageDto) {

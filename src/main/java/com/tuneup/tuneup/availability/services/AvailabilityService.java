@@ -129,7 +129,10 @@ public class AvailabilityService {
     }
 
     /**
-     *  Adjust the existing availability slot after creating a pending one
+     * Adjusts the current availability slot depending on lesson request time intersection.
+     * @param availability the slot to adjust.
+     * @param requestStart the start time of the requested lesson.
+     * @param requestEnd the end time of the requested lesson
      */
     private void adjustExistingAvailability(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         boolean isSplitRequired = availability.getStartTime().isBefore(requestStart) && availability.getEndTime().isAfter(requestEnd);
@@ -142,7 +145,6 @@ public class AvailabilityService {
         } else if (availability.getEndTime().isAfter(requestEnd)) {
             availability.setStartTime(requestEnd);
         }
-
         availabilityRepository.save(availability);
     }
 

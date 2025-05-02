@@ -12,7 +12,7 @@ public interface AvailabilityMapper {
     @Mapping(source = "profile.id", target = "profileId")
     AvailabilityDto toAvailabilityDto(Availability availability);
 
-    //ignore since we will fetch and assign manaully
+    //ignore since we will fetch and assign manually
     @Mapping(target = "profile", ignore = true)
     Availability toAvailability(AvailabilityDto availabilityDto);
 }

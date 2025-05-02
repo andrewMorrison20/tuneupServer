@@ -28,7 +28,7 @@ public class PaymentController {
     /**
      * Creates a new payment
      * @param paymentDto details the payment to be created
-     * @return payment do
+     * @return details of the newly created payment as dataTransferObject (dto)
      */
     @PostMapping
     public ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto paymentDto) {

@@ -25,6 +25,11 @@ public class RegionService {
         this.regionMapper = regionMapper;
     }
 
+    /**
+     * Fetches the set of regions matching the search query provided
+     * @param query search params to execute search against
+     * @return Set of unique matching regions
+     */
     public Set<RegionDto> getRegions(String query) {
         // Step 1: Check the database cache for matching regions
         List<Region> cachedRegions = regionRepository.findByNameContainingIgnoreCase(query);
@@ -45,6 +50,11 @@ public class RegionService {
         return fetchedRegions.stream().map(regionMapper::toRegionDto).collect(Collectors.toSet());
     }
 
+    /**
+     * Sends a request to nominatim API to retrieve location data matching a given query
+     * @param query parameters to search for
+     * @return List<Region> matching data formatted to Region entities
+     */
     private List<Region> fetchRegionsFromApi(String query) {
         RestTemplate restTemplate = new RestTemplate();
         String url = NOMINATIM_API_URL + "?q=" + query + "&countrycodes=GB&format=json&addressdetails=1";

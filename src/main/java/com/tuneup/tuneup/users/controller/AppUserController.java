@@ -106,6 +106,11 @@ public class AppUserController {
                 .body(response);
     }
 
+    /**
+     * Batch soft deletes users (this operation does not remove personal data - see anonymise)
+     * @param userIds the list of ids corresponding to user accounts to soft delete
+     * @return success status else throw
+     */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/softDeleteBatch")
     public ResponseEntity<Void> softDeleteUsers(@RequestBody List<Long> userIds) {
@@ -114,6 +119,12 @@ public class AppUserController {
     }
 
     //grabbing the id directly from req here to prevent malicious deletes by other authed users
+    /**
+     * Anonymises the personal data associated with a user account and then 'soft deletes'
+     * @param request the request received
+     * @return ok status
+     * @throws ParseException
+     */
     @DeleteMapping("/anonymise")
     public ResponseEntity<Void> anonymiseSelf(HttpServletRequest request) throws ParseException {
         String token = request.getHeader("Authorization").substring(7);
