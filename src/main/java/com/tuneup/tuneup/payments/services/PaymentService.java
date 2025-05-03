@@ -67,6 +67,7 @@ public class PaymentService {
      * @param paymentDto details of the payment to create
      * @return created payment as a dto
      */
+    @Transactional
     public PaymentDto createPayment(PaymentDto paymentDto) {
         if(Boolean.TRUE.equals(paymentRepository.existsByLessonId(paymentDto.getLessonId()))){
             throw new ValidationException("Payment for this lesson already Exists!");
@@ -133,6 +134,7 @@ public class PaymentService {
      * Sends a reminder notification for a payment
      * @param paymentId the id of the payment to generarte notification for
      */
+    @Transactional
     public void sendPaymentReminder(Long paymentId) {
        Payment payment =  paymentRepository.findById(paymentId).orElseThrow(()-> new ValidationException("No Payment found for id : " + paymentId));
        Profile student = payment.getTuition().getStudent();
@@ -154,6 +156,7 @@ public class PaymentService {
      * Runs every day at midnight to mark overdue payments
      */
     @Scheduled(cron = "0 0 0 * * ?") // Runs at 12:00 AM daily
+    @Transactional
     public void markOverduePayments() {
         LocalDateTime today = LocalDate.now().atStartOfDay();
 
