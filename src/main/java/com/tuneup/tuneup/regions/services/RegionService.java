@@ -98,6 +98,11 @@ public class RegionService {
         return regions;
     }
 
+    /**
+     * Derive the primary region name from the raw json returned by the API
+     * @param address the raw address
+     * @return Primary name as string
+     */
     private String getPrimaryRegionName(Map<String, Object> address) {
         // Extract the primary region name (city or town)
         if (address.containsKey("city")) {
@@ -111,6 +116,11 @@ public class RegionService {
         }
     }
 
+    /**
+     * Retrieve the parent region (or create one) for a given region
+     * @param parentName
+     * @return the region associated with the parentname
+     */
     private Region getOrCreateParentRegion(String parentName) {
         // Check if the parent region (e.g., county) exists in the database
         return regionRepository.findByName(parentName)

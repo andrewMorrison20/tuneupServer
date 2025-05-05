@@ -18,6 +18,8 @@ public class ReviewDto {
     private long rating;
     private long reviewerProfileId;
     private String reviewerName;
+    private Long tuitionId;
+    private long profileId;
 
     public long getReviewerProfileId() {
         return reviewerProfileId;
@@ -35,8 +37,6 @@ public class ReviewDto {
         this.tuitionId = tuitionId;
     }
 
-    private Long tuitionId;
-    private long profileId;
 
     public long getId() {
         return id;

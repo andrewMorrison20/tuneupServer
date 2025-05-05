@@ -31,6 +31,12 @@ public class ReviewService {
         this.profileService = profileService;
     }
 
+    /**
+     * Retrieve all reviews for a given profile, not batched, (reviews unlikely to even reach 10s of thousands for a given person over their lifetime)
+     *
+     * @param profileId id of the profile to retrieve reviews for
+     * @return all existing reviews for a profile
+     */
     public Set<ReviewDto> getAll(long profileId) {
 
         Set<Review> reviews = reviewRepository.findAllByProfileId(profileId);
@@ -39,6 +45,11 @@ public class ReviewService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Create a new reivew
+     * @param reviewDto review to create
+     * @return newly created review
+     */
     @Transactional
     public ReviewDto createReview(ReviewDto reviewDto) {
         reviewValidator.validateReviewDto(reviewDto);
@@ -53,6 +64,10 @@ public class ReviewService {
         return reviewMapper.toReviewDto(savedReview);
     }
 
+    /**
+     * Update the average rating of a profile
+     * @param profile profile to update
+     */
     private void updateProfileAverageRating(Profile profile) {
         long profileId = profile.getId();
         Set<Review> reviews = reviewRepository.findAllByProfileId(profileId);

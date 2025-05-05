@@ -21,13 +21,21 @@ public class QualificationController {
         this.qualificationService = qualificationService;
     }
 
+    /**
+     * Retrieve all existing qualifications from the db
+     * @return the set of qualifications
+     */
     @GetMapping
     public ResponseEntity<Set<QualificationDto>> getAllQualifications() {
         Set<QualificationDto> qualifications = qualificationService.getAllQualifications ();
         return ResponseEntity.ok(qualifications);
     }
 
-
+    /**
+     * Batch create qualifications - for admins
+     * @param qualificationDtos the set of qualifications to create
+     * @return newly created qualifications
+     */
     @PostMapping("/batch")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<QualificationDto>> batchCreateQualifications(
@@ -37,12 +45,22 @@ public class QualificationController {
     }
 
 
+    /**
+     * Retrieve a qualification entity by its Id
+     * @param id id of the qualification to retrieve
+     * @return QualificationDto
+     */
     @GetMapping("/{id}")
     public ResponseEntity<QualificationDto> getQualificationById(@PathVariable Long id) {
         QualificationDto qualificationDto = qualificationService.getQualificationById(id);
         return ResponseEntity.ok(qualificationDto);
     }
 
+    /**
+     * Create a single qualification
+     * @param qualificationDto qualification to create
+     * @return newly created qualification
+     */
     @PostMapping
     public ResponseEntity<QualificationDto> addQualification(@RequestBody QualificationDto qualificationDto) {
 
@@ -50,7 +68,12 @@ public class QualificationController {
         return ResponseEntity.status(201).body(savedQualification);
     }
 
-
+    /**
+     * Update a qualification
+     * @param id id of the qualification to update
+     * @param qualificationDto the updated fields
+     * @return update qualification
+     */
     @PutMapping("/{id}")
     public ResponseEntity<QualificationDto> updateQualification(
             @PathVariable Long id,
@@ -58,6 +81,11 @@ public class QualificationController {
         QualificationDto updatedQualification = qualificationService.updateQualification(id, qualificationDto);
         return ResponseEntity.ok(updatedQualification);}
 
+    /**
+     * Delete a qualification by its id
+     * @param id id of the qualification to delete
+     * @return success status
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteQualification(@PathVariable Long id) {
         try {

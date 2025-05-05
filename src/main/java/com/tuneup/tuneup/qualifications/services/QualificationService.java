@@ -27,7 +27,10 @@ public class QualificationService {
         this.qualificationValidator = qualificationValidator;
     }
 
-
+    /**
+     * Retrieve all existing qualifications. Not batched since qualifications are finite entity, wouldn't expect this to even reach 100.
+     * @return existing qualifications
+     */
     public Set<QualificationDto> getAllQualifications() {
         return qualificationRepository.findAll().stream().
         map(qualificationMapper::toQualificationDto)
@@ -47,6 +50,11 @@ public class QualificationService {
         return qualificationMapper.toQualificationDto(qualification);
     }
 
+    /**
+     * Create a new qualification
+     * @param qualificationDto qualification to create
+     * @return newly created qualification
+     */
     public QualificationDto addQualification(QualificationDto qualificationDto) {
         qualificationValidator.validateQualification(OperationType.CREATE,qualificationDto);
         Qualification qualification = qualificationMapper.toQualification(qualificationDto);
@@ -54,6 +62,11 @@ public class QualificationService {
         return qualificationMapper.toQualificationDto(qualification);
     }
 
+    /**
+     * Batch create a set of qualifiations
+     * @param qualificationDtos the qualifications to create
+     * @return thew newly created qualifications
+     */
     @Transactional
     public List<QualificationDto> batchCreateQualifications(List<QualificationDto> qualificationDtos) {
         // Validate and map DTOs to entities
@@ -73,6 +86,12 @@ public class QualificationService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Update a qualification
+     * @param id id of the qual to update
+     * @param updatedQualificationDto the updated fields
+     * @return updated qualification
+     */
     public QualificationDto updateQualification(Long id, QualificationDto updatedQualificationDto) {
         // Validate the input for update and fetch the existing qualification
         Qualification existingQualification = qualificationValidator.validateQualification(OperationType.UPDATE, updatedQualificationDto);
@@ -85,7 +104,10 @@ public class QualificationService {
         return qualificationMapper.toQualificationDto(updatedQualification);
     }
 
-    // Delete a qualification
+    /**
+     * Delete a qualification by its id
+     * @param id the id of the qualification to delete
+     */
     public void deleteQualification(Long id) {
         Qualification qualification = qualificationValidator.validateAndFetchById(id);
         qualificationRepository.delete(qualification);
