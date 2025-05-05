@@ -2,6 +2,7 @@ package com.tuneup.tuneup.junit.validators;
 
 import com.tuneup.tuneup.profiles.repositories.ProfileRepository;
 import com.tuneup.tuneup.reviews.dtos.ReviewDto;
+import com.tuneup.tuneup.reviews.repositories.ReviewRepository;
 import com.tuneup.tuneup.users.exceptions.ValidationException;
 import com.tuneup.tuneup.reviews.validators.ReviewValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,8 @@ class ReviewValidatorTests {
 
     @Mock
     private ProfileRepository profileRepository;
-
+    @Mock
+    private ReviewRepository reviewRepository;
     @InjectMocks
     private ReviewValidator validator;
 
@@ -36,6 +38,7 @@ class ReviewValidatorTests {
     void validateReviewDto_DoesNotThrow_WhenBothProfilesExist() {
         when(profileRepository.existsById(1L)).thenReturn(true);
         when(profileRepository.existsById(2L)).thenReturn(true);
+        when(reviewRepository.existsByProfileIdAndReviewerProfileId(anyLong(),anyLong())).thenReturn(false);
 
         assertDoesNotThrow(() -> validator.validateReviewDto(dto));
 

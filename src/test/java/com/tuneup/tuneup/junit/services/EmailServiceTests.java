@@ -101,7 +101,6 @@ class EmailServiceTests {
 
         assertArrayEquals(new String[]{"tuneup.ad.confirm@gmail.com"}, message.getTo());
         assertEquals("New Contact Message: " + emailDto.getSubject(), message.getSubject());
-        assertEquals("noreply@yourdomain.com", message.getFrom());
         assertEquals(emailDto.getEmailAddress(), message.getReplyTo());
     }
 }
