@@ -8,7 +8,7 @@ public class EmailDto {
 
     private String message;
     private String name;
-    private String emailAddress;
+    private String email;
 
     public String getMessage() {
         return message;
@@ -26,12 +26,12 @@ public class EmailDto {
         this.name = name;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSubject() {

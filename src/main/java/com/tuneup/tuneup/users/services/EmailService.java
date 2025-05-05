@@ -54,7 +54,7 @@ public class EmailService {
         %s
         """.formatted(
                 emailDto.getName(),
-                emailDto.getEmailAddress(),
+                emailDto.getEmail(),
                 emailDto.getSubject(),
                 emailDto.getMessage()
         );
@@ -63,7 +63,7 @@ public class EmailService {
         message.setTo("tuneup.ad.confirm@gmail.com");
         message.setSubject("New Contact Message: " + emailDto.getSubject());
         message.setText(body);
-        message.setReplyTo(emailDto.getEmailAddress());
+        message.setReplyTo(emailDto.getEmail());
 
         mailSender.send(message);
     }

@@ -77,7 +77,7 @@ class EmailServiceTests {
 
         EmailDto emailDto = new EmailDto();
         emailDto.setName("John Doe");
-        emailDto.setEmailAddress("john@example.com");
+        emailDto.setEmail("john@example.com");
         emailDto.setSubject("Test FAQ Subject");
         emailDto.setMessage("This is a test message.");
 
@@ -101,6 +101,6 @@ class EmailServiceTests {
 
         assertArrayEquals(new String[]{"tuneup.ad.confirm@gmail.com"}, message.getTo());
         assertEquals("New Contact Message: " + emailDto.getSubject(), message.getSubject());
-        assertEquals(emailDto.getEmailAddress(), message.getReplyTo());
+        assertEquals(emailDto.getEmail(), message.getReplyTo());
     }
 }
