@@ -49,6 +49,12 @@ public class AppUserService {
         this.emailService = emailService;
     }
 
+    /**
+     * Create a new user
+     * @param appUserDto user to create
+     * @param profileType type of profile to create for user
+     * @return AppUserDto newly created user
+     */
     @Transactional
     public AppUserDto createUser(AppUserDto appUserDto,ProfileType profileType) {
         appUserValidator.validateAppUserCreation(appUserDto);
@@ -83,6 +89,10 @@ public class AppUserService {
         emailService.sendVerificationEmail(email, verificationUrl);
     }
 
+    /**
+     * Retrieve all users
+     * @return List AppUSerDto the list of existing users
+     */
     public List<AppUserDto> findAll() {
         List<AppUser> appUsers = appUserRepository.findAll();
         return appUsers.stream()
@@ -90,11 +100,21 @@ public class AppUserService {
                 .toList();
     }
 
+    /**
+     * Find a user by their associatedId
+     * @param appUserId id of user to find
+     * @return AppUser the user entity
+     */
     public AppUser findById(Long appUserId) {
         return appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new RuntimeException("AppUser with ID " + appUserId + " not found"));
     }
 
+    /**
+     * Fetch a user account entity by their associated email address
+     * @param email the email of the app account to retrieve
+     * @return AppUserDto - user account
+     */
     public AppUserDto getUserByEmail(String email) {
         AppUser user = appUserRepository.findByEmail(email);
         return appUserMapper.toAppUserDto(user);
@@ -103,6 +123,12 @@ public class AppUserService {
     /*this should probably use reflection rather than series of conditionals, Also there is a better way to carry out validation,
     should ideally have a single call to the validator, possibly pass an array of changed values along side the new dto and  alter the checks in validator
     one to revisit
+     */
+
+    /**
+     * Update a user account
+     * @param appUserDto updated fields
+     * @return AppUserDto updated account as Dto
      */
     @Transactional
     public AppUserDto updateUser(AppUserDto appUserDto) {
@@ -137,6 +163,11 @@ public class AppUserService {
         return updateUserDto;
     }
 
+    /**
+     * Verify a password reset request based on JWT
+     * @param token temporary access token
+     * @param newPassword updated password
+     */
     @Transactional
     public void verifyPasswordReset(String token, String newPassword) {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
@@ -153,6 +184,10 @@ public class AppUserService {
         passwordResetTokenRepository.delete(resetToken);
     }
 
+    /**
+     * Carry out email verification for a registered account
+     * @param token Temporary jwt to auth on
+     */
     @Transactional
     public void verifyEmail(String token) {
         EmailVerificationToken verificationToken = emailVerificationTokenRepository.findByToken(token)
@@ -169,7 +204,11 @@ public class AppUserService {
         emailVerificationTokenRepository.delete(verificationToken);
     }
 
-
+    /**
+     * Create a password reset token for user
+     * @param email the email address to send the token to
+     * @return the temporary token
+     */
     public String generateResetToken(String email) {
        AppUser user = appUserRepository.findByEmail(email);
        if(user == null){
@@ -185,6 +224,11 @@ public class AppUserService {
         return token;
     }
 
+    /**
+     * Generate a temporary verification token
+     * @param user user to generate token for
+     * @return temporary token
+     */
     public String generateVerificationToken(AppUser user) {
         String token = UUID.randomUUID().toString();
         EmailVerificationToken verificationToken = new EmailVerificationToken(

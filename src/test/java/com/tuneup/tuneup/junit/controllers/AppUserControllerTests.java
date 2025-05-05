@@ -22,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -74,10 +73,10 @@ class AppUserControllerTests {
     }
 
     @Test
-    void getUserByUsername_ReturnsDto() {
+    void getUserByEmail_ReturnsDto() {
         when(appUserService.getUserByEmail("a@b.com")).thenReturn(dto1);
 
-        ResponseEntity<AppUserDto> resp = controller.getUserByUsername("a@b.com");
+        ResponseEntity<AppUserDto> resp = controller.getUserByEmail("a@b.com");
 
         assertEquals(200, resp.getStatusCodeValue());
         assertSame(dto1, resp.getBody());

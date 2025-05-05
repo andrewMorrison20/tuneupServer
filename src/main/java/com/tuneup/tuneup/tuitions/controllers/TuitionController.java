@@ -19,12 +19,24 @@ public class TuitionController {
         this.tuitionService = tuitionService;
     }
 
+    /**
+     * REtrieve a tuition by its associated id
+     * @param id id of the tuition to fetch
+     * @return tuition entity
+     */
     @GetMapping("/{id}")
     public ResponseEntity<TuitionDto> getTuitionById(@PathVariable Long id) {
         TuitionDto tuitionDto = tuitionService.getTuitionById(id);
         return ResponseEntity.ok(tuitionDto);
     }
 
+    /**
+     * Retireve all tuitions for an associated profile
+     * @param profileId id of profile to fetch tuitions for
+     * @param active status of the tuition
+     * @param pageable
+     * @return associated tuitions
+     */
     @GetMapping("/tuitionsByProfile/{profileId}")
     public ResponseEntity<Page<ProfileDto>> getTuitionsByProfile(
             @PathVariable Long profileId,
@@ -35,6 +47,12 @@ public class TuitionController {
         return ResponseEntity.ok(tuitionProfileDtos);
     }
 
+    /**
+     * Fetch the tuition between two profiles by their ids
+     * @param studentProfileId student profile id of the tuition
+     * @param tutorProfileId tutor profile of the tuition
+     * @return tuition
+     */
     @GetMapping("/byStudentAndTutor")
     public ResponseEntity<TuitionDto> getTuitionByStudentAndTutor(
             @RequestParam Long studentProfileId,
@@ -43,24 +61,45 @@ public class TuitionController {
         return ResponseEntity.ok(tuitionDto);
     }
 
+    /**
+     * Create a new tuition for given profiles
+     * @param tuitionDto tuition to create
+     * @return newly created tuition
+     */
     @PostMapping
     public ResponseEntity<TuitionDto> createTuition(@RequestBody TuitionDto tuitionDto) {
         TuitionDto createdTuition = tuitionService.createTuition(tuitionDto);
         return ResponseEntity.ok(createdTuition);
     }
 
+    /**
+     * Update an existing tuition
+     * @param id id of the tuition to update
+     * @param tuitionDto uopdated fields
+     * @return the updated tuition
+     */
     @PutMapping("/{id}")
     public ResponseEntity<TuitionDto> updateTuition(@PathVariable Long id, @RequestBody TuitionDto tuitionDto) {
         TuitionDto updatedTuition = tuitionService.updateTuition(id, tuitionDto);
         return ResponseEntity.ok(updatedTuition);
     }
 
-@PatchMapping("/{id}/deactivate")
+    /**
+     * Deactivate a given tuition
+     * @param id id of the tuition to deactivate
+     * @return success status
+     */
+    @PatchMapping("/{id}/deactivate")
             public ResponseEntity<Void> deactivateTuition(@PathVariable Long id) {
         tuitionService.deactivateTuition(id);
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Delete a tuition
+     * @param id of tuition to delete
+     * @return success status
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTuition(@PathVariable Long id) {
         tuitionService.deleteTuition(id);

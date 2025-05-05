@@ -63,7 +63,6 @@ public class EmailService {
         message.setTo("tuneup.ad.confirm@gmail.com");
         message.setSubject("New Contact Message: " + emailDto.getSubject());
         message.setText(body);
-        message.setFrom("noreply@yourdomain.com");
         message.setReplyTo(emailDto.getEmailAddress());
 
         mailSender.send(message);

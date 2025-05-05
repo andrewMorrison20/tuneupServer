@@ -18,6 +18,11 @@ public class EmailController {
         this.emailService = emailService;
     }
 
+    /**
+     * Send wa query to the admin account
+     * @param emailDto email to send
+     * @return success Status
+     */
     @PostMapping("/contact")
     public ResponseEntity<String> sendAdminEmail(@RequestBody EmailDto emailDto) {
         emailService.sendFaqEmail(emailDto);

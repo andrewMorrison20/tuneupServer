@@ -18,6 +18,11 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Configuration for auth checks on endpoints.
+ * To publicly expose an endpoint without auth add it to the requestMatchers()
+ * To allow request from other origins add the url pattern to setAllowedOriginPatterns()
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -81,5 +86,4 @@ public class SecurityConfig {
 
         return source;
     }
-
 }
