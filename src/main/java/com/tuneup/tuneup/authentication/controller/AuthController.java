@@ -45,7 +45,12 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Endpoint to handle login and generate JWT
+    /**
+     * End point to handle authenticiation and JWT generation.
+     * @param loginRequest Details of the user attempting to auth
+     * @return LoginResponseDto
+     * @throws Exception
+     */
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginResponseDto login(@RequestBody LoginRequestDto loginRequest) throws Exception {
         // Authenticate the user
@@ -75,6 +80,11 @@ public class AuthController {
         return new LoginResponseDto(token);
     }
 
+    /**
+     * Logs user out, blacklists token
+     * @param authHeader
+     * @return logged out message
+     */
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "").trim();

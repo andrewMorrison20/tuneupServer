@@ -39,6 +39,9 @@ public class NotificationService {
         this.notificationMapper = notificationMapper;
     }
 
+    /*
+    * Listens for a notification event and invokes create notification
+     */
     @Async("notificationExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleNotificationEvent(NotificationEvent event) {
@@ -48,7 +51,7 @@ public class NotificationService {
     /**
      * Creates a notificaiton and saves it to the db, also broadcasts the notification via websockets
      * @param type the type of notification
-     * @param message the message to include in the notificaiton
+     * @param message the message to include in the notification
      * @param userId the id of the user to notify
      * @return the notification as a dto
      */
@@ -72,6 +75,11 @@ public class NotificationService {
         return dto;
     }
 
+    /**
+     * Retrieves all unread notifications from the database for a given user
+     * @param userId Id of the user to retrieve notifications for
+     * @return the set of unread notifications
+     */
     public Set<NotificationDto> getUnreadNotifications(Long userId){
        List<Notification> notifications = notificationRepository.findByUserIdAndReadFalse(userId);
        return notifications.stream().map(notificationMapper::toDto).collect(Collectors.toSet());

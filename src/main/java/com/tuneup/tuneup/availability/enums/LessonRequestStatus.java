@@ -3,6 +3,9 @@ package com.tuneup.tuneup.availability.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Used in the lesson request entity to normalise status.
+ */
 public enum LessonRequestStatus {
     PENDING("pending"),
     CONFIRMED("confirmed"),

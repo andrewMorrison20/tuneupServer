@@ -133,6 +133,11 @@ public class AddressService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Create an Address data transfer object from raw address json
+     * @param result the raw address object to convert
+     * @return address fromatted as DTO
+     */
     private AddressDto convertToAddressDto(Map<String, Object> result) {
         AddressDto dto = new AddressDto();
 
@@ -176,12 +181,20 @@ public class AddressService {
         return "";
     }
 
-
+    /**
+     * Extract the postcode from a raw address
+     * @param address raw address
+     * @return postcode
+     */
     private String extractPostcode(String address) {
         return address.replaceAll(".*(\\b[A-Z]{1,2}\\d[A-Z\\d]?\\s*\\d[A-Z]{2}\\b).*", "$1");
     }
 
-
+    /**
+     * Fetch the address for lessons by associated tuition
+     * @param tuitionId the id of the tuition to fetch location for
+     * @return AddressDto - address of lessons
+     */
     @Transactional(readOnly = true)
     public AddressDto getAddressByTuitionId(Long tuitionId) {
         //hitting tuition repository directly to avoid circular dependency of tuitionService ->appUserService -> addressService
@@ -192,16 +205,18 @@ public class AddressService {
                 .getTutor()
                 .getId();
 
-
         //Error handling in service layer instead of validation layer since tuition Repo hit directly (tuitionValidation does not belong in address validator).
-
         Address lessonAddress = addressRepository.findByProfileId(profileId)
                 .orElseThrow(() -> new ValidationException("No address found for tuition ID: " + tuitionId));
 
         return addressMapper.toDto(lessonAddress);
     }
 
-
+    /**
+     * Retrieve any matching entries
+     * @param addressDto the address to check for duplicates
+     * @return either match or empty
+     */
     public Optional<Address> getMatchingDuplicateAddress(AddressDto addressDto){
 
         Set<Address> addresses = addressRepository.findAllByPostcode(addressDto.getPostcode());
@@ -210,6 +225,11 @@ public class AddressService {
                 .findFirst();
     }
 
+    /**
+     * Creates a new address if not present in db. If exists updates address,
+     * @param addressDto
+     * @return Updated/New Address as Dto
+     */
     @Transactional
     public AddressDto createOrUpdateAddress(AddressDto addressDto) {
 
@@ -232,5 +252,3 @@ public class AddressService {
     }
 
 }
-
-

@@ -13,6 +13,20 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "tuition_id", nullable = false)
+    private Tuition tuition;
+
+    @OneToOne
+    @JoinColumn(name = "availability_id", nullable = false, unique = true)
+    private Availability availability;
+
+    @Enumerated(EnumType.STRING)
+    private LessonStatus lessonStatus;
+
+    @Enumerated(EnumType.STRING)
+    private LessonType lessonType;
+
     public Availability getAvailability() {
         return availability;
     }
@@ -37,14 +51,6 @@ public class Lesson {
         this.id = id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "tuition_id", nullable = false)
-    private Tuition tuition;
-
-    @OneToOne
-    @JoinColumn(name = "availability_id", nullable = false,unique = true)
-    private Availability availability;
-
     public LessonStatus getLessonStatus() {
         return lessonStatus;
     }
@@ -52,12 +58,6 @@ public class Lesson {
     public void setLessonStatus(LessonStatus lessonStatus) {
         this.lessonStatus = lessonStatus;
     }
-
-    @Enumerated(EnumType.STRING)
-    private LessonStatus lessonStatus;
-
-    @Enumerated(EnumType.STRING)
-    private LessonType lessonType;
 
     public LessonType getLessonType() {
         return lessonType;

@@ -89,6 +89,4 @@ public class LessonController {
         Set<LessonDto> lessons = lessonService.getCompletedLessonsByTuitionId(studentId, tutorId);
         return ResponseEntity.ok(lessons);
     }
-
-
 }

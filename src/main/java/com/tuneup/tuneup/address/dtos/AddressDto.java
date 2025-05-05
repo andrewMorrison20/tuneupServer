@@ -6,6 +6,13 @@ import org.springframework.stereotype.Component;
 public class AddressDto {
 
     private long id;
+    private Double latitude;
+    private Double longitude;
+    private String addressLine1;
+    private String addressLine2;
+    private String city;
+    private String country;
+    private String postcode;
 
     public long getId() {
         return id;
@@ -14,12 +21,6 @@ public class AddressDto {
     public void setId(long id) {
         this.id = id;
     }
-
-    private String postcode;
-    private String city;
-    private String country;
-    private String addressLine1;
-    private String addressLine2;
 
     public Double getLongitude() {
         return longitude;
@@ -36,9 +37,6 @@ public class AddressDto {
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
-
-    private Double latitude;
-    private Double longitude;
 
     public String getPostcode() {
         return this.postcode;

@@ -4,6 +4,7 @@ import com.tuneup.tuneup.availability.enums.LessonRequestStatus;
 import com.tuneup.tuneup.profiles.entities.Profile;
 import com.tuneup.tuneup.profiles.enums.LessonType;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,13 +35,6 @@ public class LessonRequest {
     @JoinColumn(name = "availability_id")
     private Availability availability;
 
-    public LessonType getLessonType() {
-        return lessonType;
-    }
-
-    public void setLessonType(LessonType lessonType) {
-        this.lessonType = lessonType;
-    }
 
     @Enumerated(EnumType.STRING)
     private LessonType lessonType;
@@ -54,6 +48,7 @@ public class LessonRequest {
     public LocalDateTime getRequestedEndTime() {
         return availability != null ? availability.getEndTime() : null;
     }
+
     public Availability getAvailability() {
         return availability;
     }
@@ -62,7 +57,16 @@ public class LessonRequest {
         this.availability = availability;
     }
 
-    public LessonRequest() {}
+    public LessonRequest() {
+    }
+
+    public LessonType getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(LessonType lessonType) {
+        this.lessonType = lessonType;
+    }
 
     public Long getId() {
         return id;
@@ -87,7 +91,6 @@ public class LessonRequest {
     public void setTutor(Profile tutor) {
         this.tutor = tutor;
     }
-
 
     public LessonRequestStatus getStatus() {
         return status;

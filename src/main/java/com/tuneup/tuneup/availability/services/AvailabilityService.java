@@ -1,4 +1,5 @@
 package com.tuneup.tuneup.availability.services;
+
 import com.tuneup.tuneup.availability.entities.Availability;
 import com.tuneup.tuneup.availability.dtos.AvailabilityDto;
 import com.tuneup.tuneup.availability.enums.AvailabilityStatus;
@@ -31,12 +32,24 @@ public class AvailabilityService {
         this.availabilityMapper = availabilityMapper;
     }
 
+    /**
+     * Retrieve all availability for an associated profile.
+     *
+     * @param profileId id of the profile to retrieve available slots for
+     * @return Set Availability - the set of available slots
+     */
     public Set<Availability> getUnbookedAvailabilityByProfile(Long profileId) {
 
         profileValidator.validateProfileId(profileId);
         return availabilityRepository.findByProfileIdAndStatus(profileId, AvailabilityStatus.AVAILABLE);
     }
 
+    /**
+     * Get all existing availability for a given profile (all statuses)
+     *
+     * @param profileId the id of the profile to retrieve availability for.
+     * @return Set of AvailabilityDto
+     */
     public Set<AvailabilityDto> getAllAvailabilityByProfile(Long profileId) {
         profileValidator.validateProfileId(profileId);
         return availabilityRepository.findByProfileId(profileId)
@@ -45,6 +58,13 @@ public class AvailabilityService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Runs in a transaction (see @Transactional) batch create a set of availability for a given profile.
+     *
+     * @param profileId        Id of the profile to create slots for
+     * @param availabilityDtos set of availability slots to create
+     * @return Set AvailabilityDto - newly created slots
+     */
     @Transactional
     public Set<AvailabilityDto> batchCreate(Long profileId, List<AvailabilityDto> availabilityDtos) {
 
@@ -64,6 +84,13 @@ public class AvailabilityService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Create a single Availability slot for a given profile.
+     *
+     * @param profileId       id of the profile to create new slot for
+     * @param availabilityDto the slot to create
+     * @return AvailabilityDto - the newly created slot
+     */
     @Transactional
     public AvailabilityDto createAvailability(Long profileId, AvailabilityDto availabilityDto) {
 
@@ -77,22 +104,39 @@ public class AvailabilityService {
         return availabilityMapper.toAvailabilityDto(availability);
     }
 
+    /**
+     * Get all availability slots for a given profile within a predefined period.
+     *
+     * @param profileId Id of the profile to retrieve slots for
+     * @param start     start of the time period
+     * @param end       end of the time period
+     * @return Set AvailabilityDto-  the set of existing slots in that period.
+     */
     public Set<AvailabilityDto> getProfilePeriodAvailability(Long profileId, LocalDateTime start, LocalDateTime end) {
 
         profileValidator.validateProfileId(profileId);
-        Set<Availability> availability = availabilityRepository.findProfilePeriodSlots(profileId,start,end);
+        Set<Availability> availability = availabilityRepository.findProfilePeriodSlots(profileId, start, end);
 
         return availability.stream()
-                .map(availabilityMapper :: toAvailabilityDto)
+                .map(availabilityMapper::toAvailabilityDto)
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * FOR INTERNAL USE ONLY.
+     * Get a full availability Entity by its Id.
+     *
+     * @param id of the slot to retrieve
+     * @return Availability - the existing slot in the DB
+     */
     public Availability getAvailabilityByIdInternal(Long id) {
         return availabilityValidator.fetchAndValidateById(id);
     }
 
     /**
-     *  Validate if availability slot is still available
+     * Validate if availability slot is still available
+     *
+     * @param availability - the slot to validate
      */
     protected void validateAvailability(Availability availability) {
         if (availability.getStatus().equals(AvailabilityStatus.BOOKED)) {
@@ -101,7 +145,7 @@ public class AvailabilityService {
     }
 
     /**
-     *  Handles availability adjustment logic
+     * Handles availability adjustment logic
      */
     @Transactional
     public Availability handleAvailabilityAdjustment(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
@@ -113,7 +157,12 @@ public class AvailabilityService {
     }
 
     /**
-     *  Create a pending availability slot and adjust the existing availability
+     * Create a pending availability slot and adjust the existing availability
+     *
+     * @param availability the slots to create
+     * @param requestStart start time of the request
+     * @param requestEnd   end time of the request
+     * @return Availability - the newly created slot
      */
     private Availability createPendingSlot(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         Availability pendingAvailability = new Availability();
@@ -130,9 +179,10 @@ public class AvailabilityService {
 
     /**
      * Adjusts the current availability slot depending on lesson request time intersection.
+     *
      * @param availability the slot to adjust.
      * @param requestStart the start time of the requested lesson.
-     * @param requestEnd the end time of the requested lesson
+     * @param requestEnd   the end time of the requested lesson
      */
     private void adjustExistingAvailability(Availability availability, LocalDateTime requestStart, LocalDateTime requestEnd) {
         boolean isSplitRequired = availability.getStartTime().isBefore(requestStart) && availability.getEndTime().isAfter(requestEnd);
@@ -149,7 +199,11 @@ public class AvailabilityService {
     }
 
     /**
-     *  Creates a new availability slot
+     * Creates a new availability slot when a request partially consumes the existing slot.
+     *
+     * @param original the existing slot - prior to receiving a request against it.
+     * @param start    start time of the request.
+     * @param end      end time of the request
      */
     private void createNewAvailability(Availability original, LocalDateTime start, LocalDateTime end) {
         Availability newAvailability = new Availability();
@@ -160,6 +214,13 @@ public class AvailabilityService {
         availabilityRepository.save(newAvailability);
     }
 
+    /**
+     * Update the status of
+     *
+     * @param availability
+     * @param availabilityStatus
+     * @return
+     */
     public AvailabilityDto updateAvailabilityStatus(Availability availability, AvailabilityStatus availabilityStatus) {
 
         availability.setStatus(availabilityStatus);
@@ -169,7 +230,8 @@ public class AvailabilityService {
 
     /**
      * Update an eixsitng availability slot for a given profile
-     * @param profileId the profile that the availability relates to
+     *
+     * @param profileId       the profile that the availability relates to
      * @param availabilityDto the  availability to update
      * @return the updated availability
      */
@@ -181,11 +243,11 @@ public class AvailabilityService {
                         "No availability found for id : " + availabilityDto.getId()
                 ));
 
-        if(!profileId.equals(availability.getProfile().getId())){
+        if (!profileId.equals(availability.getProfile().getId())) {
             throw new ValidationException("This availability slot cannot be edited by a profile that did not create it. incorrect id : " + profileId);
         }
 
-        if(availabilityDto.getStatus()!=null){
+        if (availabilityDto.getStatus() != null) {
 
             availability.setStatus(availabilityDto.getStatus());
         }
@@ -200,10 +262,11 @@ public class AvailabilityService {
 
     /**
      * Delete an availability slot for a given profile id
-     * @param profileId the id of the profile attempting delete
+     *
+     * @param profileId      the id of the profile attempting delete
      * @param availabilityId the id of the slot to delete
      */
-    public void deleteAvailabilityById(Long profileId, Long availabilityId){
+    public void deleteAvailabilityById(Long profileId, Long availabilityId) {
 
         Availability availability = availabilityRepository
                 .findById(availabilityId)
@@ -211,14 +274,15 @@ public class AvailabilityService {
                         "No availability found for id : " + availabilityId
                 ));
 
-        if(!profileId.equals(availability.getProfile().getId())){
-            throw new ValidationException("Profile attempting delete does not have permission. Incorrect Id : "+ profileId);
+        if (!profileId.equals(availability.getProfile().getId())) {
+            throw new ValidationException("Profile attempting delete does not have permission. Incorrect Id : " + profileId);
         }
         availabilityRepository.delete(availability);
     }
 
     /**
      * delete an availability
+     *
      * @param availability to delete
      */
     public void deleteAvailability(Availability availability) {
@@ -226,9 +290,10 @@ public class AvailabilityService {
     }
 
     /**
-     * save an availability
+     * save an availability, Used in lesson service to prevent accessing repo layer.
+     *
      * @param availability to save
-     * @return
+     * @return new created Availability
      */
     public Availability save(Availability availability) {
         return availabilityRepository.save(availability);

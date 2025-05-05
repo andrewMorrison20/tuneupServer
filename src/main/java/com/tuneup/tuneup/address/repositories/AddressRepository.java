@@ -19,8 +19,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     Optional<Address> findByProfileId(@Param("profileId") Long profileId);
 
 
-
-
     @Query("SELECT a FROM Address a WHERE a.addressLine1 = :addressLine1 AND a.postcode = :postcode")
     Address findAddressIdByAddressLine1AndPostcode(@Param("addressLine1") String addressLine1,
                                                    @Param("postcode") String postcode);

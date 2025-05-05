@@ -15,6 +15,12 @@ public class Address {
     private String addressLine1;
     private String addressLine2;
     private String city;
+    private String country;
+    private String postcode;
+    private Double longitude;
+    private Double latitude;
+    @OneToMany(mappedBy = "address")
+    private Set<AppUser> users;
 
     public Double getLongitude() {
         return longitude;
@@ -31,11 +37,6 @@ public class Address {
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
-
-    private String country;
-    private String postcode;
-    private Double longitude;
-    private Double latitude;
 
     public Long getId() {
         return id;
@@ -92,9 +93,6 @@ public class Address {
     public void setUsers(Set<AppUser> users) {
         this.users = users;
     }
-
-    @OneToMany(mappedBy = "address")
-    private Set<AppUser> users;
 
 }
 

@@ -20,9 +20,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     Set<Lesson> findCompletedLessonsWithoutPayment(@Param("tuitionId") Long tuitionId,
                                                    @Param("status") LessonStatus status);
 
-
-
-
     Set<Lesson> findAllByTuitionId(Long tuitionId);
 
     @Query("SELECT l FROM Lesson l " +
