@@ -16,7 +16,7 @@ A Spring Boot–based back‑end for TuneUp. Provides REST APIs for all resource
 ## ⚙ Configuration & Conventions
 
 * All environment‑specific overrides live in `src/main/resources/application-*.yml`.
-* **Service Account Key**: must be named `tuneup-cloud-key.json` in the project root (and is in `.gitignore`).
+* **Service Account Key**: must be named `tuneup-cloud-key.json` in the src/main/resources directory (and is in `.gitignore`).
 * **Flyway Migrations**:
 
     * On startup, Flyway will run all `db/migration/*.sql` scripts.
