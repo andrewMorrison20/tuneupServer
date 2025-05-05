@@ -9,6 +9,11 @@ public class PaymentDto {
 
 
     private Long tuitionId;
+    private LocalDateTime lessonDate;
+    private Double amount;
+    private PaymentStatus status;
+    private Long lessonId;
+    private LocalDateTime paidOn;
 
     public LocalDateTime getPaidOn() {
         return paidOn;
@@ -17,12 +22,6 @@ public class PaymentDto {
     public void setPaidOn(LocalDateTime paidOn) {
         this.paidOn = paidOn;
     }
-
-    private LocalDateTime lessonDate;
-    private Double amount;
-    private PaymentStatus status;
-    private Long lessonId;
-    private LocalDateTime paidOn;
 
     public LocalDateTime getReminderSentOn() {
         return reminderSentOn;

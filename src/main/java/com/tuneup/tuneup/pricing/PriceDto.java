@@ -7,6 +7,8 @@ public class PriceDto {
     private long id;
     private String period;
     private boolean standardPricing;
+    private Double rate;
+    private String description;
 
     public long getId() {
         return id;
@@ -23,10 +25,6 @@ public class PriceDto {
     public void setStandardPricing(boolean standardPricing) {
         this.standardPricing = standardPricing;
     }
-
-    private Double rate;
-    private String description;
-
 
     public String getPeriod() {
         return period;

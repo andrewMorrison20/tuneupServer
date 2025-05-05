@@ -1,5 +1,8 @@
 package com.tuneup.tuneup.notifications.enums;
 
+/**
+ * Enum to denote the different types of notifications
+ */
 public enum NotificationType {
     NEW_CHAT("New Chat Message"),
     LESSON_REQUEST("Lesson Request"),

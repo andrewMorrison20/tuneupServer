@@ -62,8 +62,6 @@ public class MessageDto {
         this.senderProfileId = senderProfileId;
     }
 
-
-
     public String getContent() {
         return content;
     }

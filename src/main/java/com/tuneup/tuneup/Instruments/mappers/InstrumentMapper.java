@@ -17,5 +17,4 @@ public interface InstrumentMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "id", target = "id")
     InstrumentDto toInstrumentDto(Instrument instrument);
-
 }

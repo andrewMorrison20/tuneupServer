@@ -23,6 +23,15 @@ public class Payment {
     private Lesson lesson;
 
     private LocalDateTime reminderSentOn;
+    private Double amount;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
+    private LocalDateTime dueDate;
+
+    private LocalDateTime paidOn;
+    private String invoiceUrl;
 
     public Lesson getLesson() {
         return lesson;
@@ -48,14 +57,6 @@ public class Payment {
         this.tuition = tuition;
     }
 
-    private Double amount;
-
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus status;
-
-    private LocalDateTime dueDate;
-
-    private LocalDateTime paidOn;
 
     public LocalDateTime getPaidOn() {
         return paidOn;
@@ -105,7 +106,4 @@ public class Payment {
     public void setInvoiceUrl(String invoiceUrl) {
         this.invoiceUrl = invoiceUrl;
     }
-
-    private String invoiceUrl;
-
 }

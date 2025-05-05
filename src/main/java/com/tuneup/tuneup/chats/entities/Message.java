@@ -31,8 +31,12 @@ public class Message {
     @Column(nullable = false)
     private Boolean isRead = false;
 
+    //Transients aren't persisted to the db for the message entity
     @Transient
     private String senderName;
+
+    @Transient
+    private String senderProfilePictureUrl;
 
     public String getSenderProfilePictureUrl() {
         return senderProfilePictureUrl;
@@ -49,10 +53,6 @@ public class Message {
     public void setSenderName(String senderName) {
         this.senderName = senderName;
     }
-
-    @Transient
-    private String senderProfilePictureUrl;
-
 
     public Conversation getConversation() {
         return conversation;
@@ -102,6 +102,9 @@ public class Message {
         return id;
     }
 
+    /**
+     * Grab the fields required at front end from the db prior to conversion to dto
+     */
     @PostLoad
     private void populateTransientFields() {
         if (senderProfile != null) {

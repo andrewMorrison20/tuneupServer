@@ -23,6 +23,10 @@ public class InstrumentService {
         this.instrumentMapper = instrumentMapper;
     }
 
+    /**
+     * Retrieve all instruments from the db. This is not chunked, set of instruments is a finite entity, wouldn't expect this to even reach 100.
+     * @return Set InstrumentDto - the existing instruments
+     */
     public Set<InstrumentDto> findall() {
        List<Instrument> instruments = instrumentRepository.findAll();
         return instruments.stream()

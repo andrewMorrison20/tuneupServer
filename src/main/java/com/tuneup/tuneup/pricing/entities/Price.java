@@ -58,7 +58,6 @@ public class Price {
         this.profiles = profiles;
     }
 
-
     public long getId() {
         return id;
     }

@@ -14,13 +14,22 @@ public class LessonRequestValidator {
         this.lessonRequestRepository = lessonRequestRepository;
     }
 
+    /**
+     * Checks for duplicate entries prior to creating request.
+     * @param studentId the id of the student profile making the request
+     * @param availabilityId the slot being booked against
+     */
     public void validateDuplicateRequest(Long studentId, Long availabilityId) {
         if (lessonRequestRepository.existsByStudentIdAndAvailabilityId(studentId, availabilityId)) {
             throw new ValidationException("Request already exists for Student and availability: " + availabilityId);
         }
     }
 
-
+    /**
+     * Retrieves lesson request if it exists, else throws. This is carried out here instead of at service layer to centralise validation exception handling
+     * @param id the id of the slot to fetch
+     * @return the LessonRequest or throw
+     */
     public LessonRequest fetchAndValidateById(Long id) {
         return lessonRequestRepository.findById(id).orElseThrow(
                 () -> new ValidationException("Lesson request not found for id: " + id)

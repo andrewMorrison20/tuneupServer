@@ -17,7 +17,6 @@ import java.util.Set;
 @Entity
 public class Profile {
 
-    // Fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -73,7 +72,6 @@ public class Profile {
 
     private LocalDateTime deletedAt;
 
-    // Getters and Setters
 
     public long getId() {
         return id;

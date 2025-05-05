@@ -36,6 +36,11 @@ public class PaymentController {
     }
 
 
+    /**
+     * Delete payments by their ids
+     * @param paymentIds the set of payments to delete
+     * @return success status
+     */
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deletePayments(@RequestBody List<Long> paymentIds) {
         paymentService.deletePayments(paymentIds);

@@ -21,12 +21,25 @@ public class ChatHistoryController {
         this.chatService = chatService;
     }
 
+    /**
+     * Creates a new conversation
+     * @param request the details of the new conversation to create
+     * @return ConversationDto - new created conversation entity as a dto
+     */
     @PostMapping("/conversation/start")
     public ResponseEntity<ConversationDto> startConversation(@RequestBody ConversationRequestDto request) {
         ConversationDto conversation = chatService.startConversation(request.getUserId(), request.getParticipantId());
         return ResponseEntity.ok(conversation);
     }
 
+    /**
+     * Fetch the profiles for which there is no chat history
+     * @param profileId the id of the profile to fetch profiles for
+     * @param page
+     * @param size
+     * @param active
+     * @return Page ProfileDto
+     */
     @GetMapping("/noHistory/{profileId}")
     public ResponseEntity<Page<ProfileDto>> getProfilesWithoutChatHistory(
             @PathVariable Long profileId,
@@ -40,6 +53,13 @@ public class ChatHistoryController {
         return ResponseEntity.ok(profiles);
     }
 
+    /**
+     * Fetch all conversations for a given profile.
+     * @param profileId the id of the profile to fetch conversations for
+     * @param page
+     * @param size
+     * @return Page ConversationDto - set of existing conversations
+     */
     @GetMapping("/conversations/{profileId}")
     public ResponseEntity<Page<ConversationDto>> getUserConversations(
             @PathVariable Long profileId,
@@ -52,6 +72,12 @@ public class ChatHistoryController {
         return ResponseEntity.ok(conversations);
     }
 
+    /**
+     * Fetch all messages for a given conversation
+     * @param conversationId id of the conversation to fetch messages for
+     * @param pageable
+     * @return Page Message Dto - set of messages for the conversation
+     */
     @GetMapping("/conversation/{conversationId}/messages")
     public Page<MessageDto> getMessages(@PathVariable Long conversationId, Pageable pageable) {
         return chatService.getConversationMessages(conversationId, pageable);

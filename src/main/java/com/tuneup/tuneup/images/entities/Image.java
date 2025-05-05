@@ -9,6 +9,13 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
+    private String url;
+
+    private String filename;
+
+    private String description;
+
     public String getUrl() {
         return url;
     }
@@ -33,11 +40,6 @@ public class Image {
         this.description = description;
     }
 
-    @Column(nullable = false)
-    private String url;
-
-    private String description;
-
     public String getFilename() {
         return filename;
     }
@@ -46,5 +48,4 @@ public class Image {
         this.filename = filename;
     }
 
-    private String filename;
 }

@@ -20,6 +20,11 @@ public class PriceValidator {
         this.priceRepository = priceRepository;
     }
 
+    /**
+     * Validate a price dto set before creation, centralised here to avoid complex logic splitting across service and validator layers
+     * @param priceDtoSet set of prices to validate
+     * @return the set of created prices
+     */
     public Set<Price> validateOrCreatePricing(Set<PriceDto> priceDtoSet) {
 
         Map<Boolean, List<PriceDto>> partitioned = priceDtoSet.stream()
@@ -32,6 +37,11 @@ public class PriceValidator {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Validate prices, fetch if existing, create if not (but still valid)
+     * @param priceDtoSet prices to validate and create
+     * @return set Price - the set of valid prices
+     */
     public Set<Price> validateOrCreateStandardPricing(Set<PriceDto> priceDtoSet) {
         return priceDtoSet.stream()
                 .map(dto -> {
@@ -51,6 +61,11 @@ public class PriceValidator {
     }
 
 
+    /**
+     * Validate and create custom pricing
+     * @param priceDtoSet set of prices to validate
+     * @return Set Price - valid pricing
+     */
     public Set<Price> validateOrCreateCustomPricing(Set<PriceDto> priceDtoSet) {
         return priceDtoSet.stream()
                 .map(dto -> priceRepository.findByRateAndDescription(dto.getRate(), dto.getDescription())
@@ -65,6 +80,10 @@ public class PriceValidator {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Validate a price prior to creation
+     * @param priceDto price to validate
+     */
     public void validatePriceDto(PriceDto priceDto) {
 
         validatePeriod(priceDto.getPeriod());
@@ -78,12 +97,20 @@ public class PriceValidator {
         }
     }
 
+    /**
+     * Validate the rate of the price
+     * @param rate rate to validate
+     */
     private void validateRate(Double rate) {
         if (rate == null || rate <= 0) {
             throw new ValidationException("Rate must be a positive number.");
         }
     }
 
+    /**
+     * Validate the period of the price
+     * @param period period to validate
+     */
     private void validatePeriod(String period) {
         try {
             Period.valueOf(period);
@@ -92,12 +119,15 @@ public class PriceValidator {
         }
     }
 
+    /**
+     * retrieve a price by id
+     * @param id
+     * @return price
+     */
     public Price fetchAndValidateById(long id) {
         return priceRepository.findById(id)
                 .orElseThrow(() -> new ValidationException("Price with that ID not found"));
     }
-
-
 }
 
 

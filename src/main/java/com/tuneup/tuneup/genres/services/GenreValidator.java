@@ -13,10 +13,13 @@ public class GenreValidator {
         this.genreRepository = genreRepository;
     }
 
+    /**
+     * Check for duplicates prior to creation
+     * @param genreDto genre to check for duplicates
+     */
     public void validateGenre(GenreDto genreDto){
         if(genreRepository.existsByName(genreDto.getName())){
             throw new ValidationException("Genre Already Exsits!");
-        };
-
+        }
     }
 }

@@ -286,6 +286,14 @@ public class ProfileService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Retrieve the set of profiles associated via a tuition that don't have a chat history
+     * @param profileId the id of the profile to fetch profiles for
+     * @param isTutor indicator of if the profile is a tutor
+     * @param active
+     * @param pageable
+     * @return Page ProfileDto - page of the associated profiles
+     */
     public Page<ProfileDto> getProfilesWithoutChatHistory(Long profileId, boolean isTutor, boolean active, Pageable pageable) {
         return profileRepository.findProfilesWithoutChatHistory(profileId, isTutor, active, pageable)
                 .map(profileMapper::toProfileDto);

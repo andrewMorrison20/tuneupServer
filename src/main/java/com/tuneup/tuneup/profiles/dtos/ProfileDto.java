@@ -23,6 +23,11 @@ public class ProfileDto {
     private long appUserId;
     private Double averageRating;
     private LessonType lessonType;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Set<PriceDto> prices;
+    private Set<GenreDto> genres;
+
+    private ImageDto profilePicture;
 
     public LessonType getLessonType() {
         return lessonType;
@@ -40,11 +45,6 @@ public class ProfileDto {
         this.averageRating = averageRating;
     }
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Set<PriceDto> prices;
-    private Set<GenreDto> genres;
-
-    private ImageDto profilePicture;
 
     public ImageDto getProfilePicture() {
         return profilePicture;
@@ -79,6 +79,7 @@ public class ProfileDto {
     public Set<PriceDto> getPrices() {
         return prices;
     }
+
     public void setPrices(Set<PriceDto> prices) {
         this.prices = prices;
     }

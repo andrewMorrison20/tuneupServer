@@ -84,14 +84,14 @@ public class LessonRequestService {
     }
 
 
-
     /**
-     * Creates and saves a new lesson request
-     * @
+     * Creates a new lesson request against an existing availability slot.
+     * @param requestDto the request to create
+     * @param pendingAvailability the availability slot to book against
+     * @return LessonRequest- the newly created request
      */
     public LessonRequestDto createLessonRequest(LessonRequestDto requestDto, Availability pendingAvailability) {
 
-        //TO-DO validate lesson request - lesson type
         LessonRequest lessonRequest = lessonRequestMapper.toLessonRequest(requestDto);
         lessonRequest.setStudent(profileService.fetchProfileEntityInternal(requestDto.getStudentProfileId()));
         lessonRequest.setTutor(profileService.fetchProfileEntityInternal(requestDto.getTutorProfileId()));
@@ -158,6 +158,12 @@ public class LessonRequestService {
                 .map(lessonRequestMapper::toDto);
     }
 
+    /**
+     * Get the full set of profiles that have sent/received lesson request for the send/receiver id
+     * @param profileId the id to find profiles by
+     * @param pageable
+     * @return Page ProfileDto - the set of profiles related to the search profile
+     */
     public Page<ProfileDto> getAllRequestProfilesByProfileId(Long profileId, Pageable pageable) {
         Profile profile = profileService.fetchProfileEntityInternal(profileId);
 
@@ -193,6 +199,12 @@ public class LessonRequestService {
                 .map(profileMapper::toProfileDto);
     }
 
+    /**
+     * Update the stauts of an existing lesson Request and create a lesson if required
+     * @param lessonRequestId the id of the lesson request to update
+     * @param lessonReqStatus the status to update to
+     * @param autoDeclineConflicts - automatically delete/decline any other request that matches this criteria
+     */
     @Transactional
     public void updateLessonRequestStatus(Long lessonRequestId, String lessonReqStatus, Boolean autoDeclineConflicts) {
         LessonRequest request = getLessonRequestByIdInternal(lessonRequestId);
@@ -240,6 +252,11 @@ public class LessonRequestService {
         lessonRequestRepository.delete(request);
     }
 
+    /**
+     * Handles the followup adjustments to availability when a lesson request is updated
+     * @param request the request being updated
+     * @param availability the associated slot
+     */
     private void handleConfirmedRequest(LessonRequest request, Availability availability) {
         availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.BOOKED);
 
@@ -254,10 +271,18 @@ public class LessonRequestService {
         }
     }
 
+    /**
+     * Handle the decline of requests, set availability back to available
+     * @param availability the slot to
+     */
     private void handleDeclinedRequest(Availability availability) {
         availabilityService.updateAvailabilityStatus(availability, AvailabilityStatus.AVAILABLE);
     }
 
+    /**
+     * Reject any other requests for the same availability slot
+     * @param availability the availability slot to update status for.
+     */
     private void declineConflictingRequests(Availability availability) {
         Set<LessonRequest> conflictingRequests = lessonRequestRepository.findAllByAvailabilityId(availability.getId());
         if (!conflictingRequests.isEmpty()) {

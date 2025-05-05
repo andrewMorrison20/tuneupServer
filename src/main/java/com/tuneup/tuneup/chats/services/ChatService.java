@@ -131,6 +131,12 @@ public class ChatService {
         return  conversationMapper.toDto(savedConversation);
     }
 
+    /**
+     * Fetch all conversations for a given profile
+     * @param profileId
+     * @param pageable
+     * @return Page ConversationDto - the set of conversation from the DB
+     */
     public Page<ConversationDto> getProfileConversations(Long profileId, Pageable pageable) {
         Page<Conversation> conversations = conversationRepository.findByProfileId(profileId, pageable);
         return conversations.map(conversationMapper::toDto);

@@ -25,6 +25,10 @@ public class GenreService {
         this.genreValidator = genreValidator;
     }
 
+    /**
+     * Retrieve all genres from the database. List of genres is a finite entity hence not batched/chunked. Wouldn't expect this to even be in the hundreds.
+     * @return set of existing genres.
+     */
     public Set<GenreDto> getAll(){
         List<Genre> genres = genreRepository.findAll();
         return genres.stream()
@@ -32,6 +36,11 @@ public class GenreService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Create a new genre
+     * @param genreDto genre to creat
+     * @return newly created genre
+     */
     @Transactional
     public GenreDto createGenre(GenreDto genreDto) {
         genreValidator.validateGenre(genreDto);

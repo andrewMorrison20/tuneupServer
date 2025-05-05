@@ -22,6 +22,11 @@ public class ImageController {
         this.imageMapper = imageMapper;
     }
 
+    /**
+     * Uploads an image the google cloud storage and creates an associated entity in the database
+     * @param file image to upload
+     * @return approrpiate status
+     */
     @PostMapping
     public ResponseEntity<?> uploadProfilePicture(@RequestParam("file") MultipartFile file) {
         try {
@@ -36,6 +41,11 @@ public class ImageController {
         }
     }
 
+    /**
+     * Retrieve an image from the google cloud storage - primarily for admistrative use, front end uses signed urls since bucket is public
+     * @param fileName
+     * @return
+     */
     @GetMapping("/{fileName}")
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable String fileName) {
         try {

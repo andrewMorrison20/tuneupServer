@@ -25,12 +25,21 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    /**
+     * Find all notifications in the db for a given user
+     * @param userId the id of the user to find notifications for
+     * @return List Notification - the list of unread notifications
+     */
     @GetMapping("/{userId}")
     public List<Notification> getNotifications(@PathVariable Long userId) {
        return notificationRepository.findByUserIdAndReadFalse(userId);
 
     }
 
+    /**
+     * Mark a notification as read
+     * @param notificationId the id of the notification to mark as read
+     */
     @PostMapping("/{notificationId}/mark-read")
     public void markAsRead(@PathVariable Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId)
@@ -39,6 +48,11 @@ public class NotificationController {
         notificationRepository.save(notification);
     }
 
+    /**
+     * Get all unread notifications for a given user
+     * @param userId the id of the user to grab notifications for
+     * @return Set NotificationDto- the set of unread notifications
+     */
     @GetMapping("/unread/{userId}")
     public ResponseEntity<Set<NotificationDto>> getUnreadNotifications(@PathVariable Long userId) {
         Set<NotificationDto> unreadDtos = notificationService.getUnreadNotifications(userId);

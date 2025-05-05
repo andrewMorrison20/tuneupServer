@@ -23,7 +23,8 @@ public class Instrument {
     private Set<ProfileInstrumentQualification> userProfileInstrumentQualifications;
 
 
-    public Instrument() {}
+    public Instrument() {
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -33,17 +34,16 @@ public class Instrument {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public long getId(){
+    public long getId() {
         return this.id;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
 
     }
-
 }

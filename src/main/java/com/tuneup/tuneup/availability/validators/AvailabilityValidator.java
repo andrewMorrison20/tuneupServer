@@ -17,6 +17,10 @@ public class AvailabilityValidator {
         this.availabilityRepository = availabilityRepository;
     }
 
+    /**
+     * Validate an incoming availability dto
+     * @param availabilityDto the details of the request to validate
+     */
     public void validateAvailabilityDto(AvailabilityDto availabilityDto) {
         validateStartAndEndTime(availabilityDto);
         List<Availability> overlappingAvailabilities = availabilityRepository.findOverlappingAvailabilities(
@@ -30,6 +34,10 @@ public class AvailabilityValidator {
         }
     }
 
+    /**
+     * Checks the db for any conflicting slots (duplicates)
+     * @param availabilityDto the details of the slot to validate
+     */
     private void validateStartAndEndTime(AvailabilityDto availabilityDto) {
         if (availabilityDto.getStartTime() == null || availabilityDto.getEndTime() == null) {
             throw new ValidationException(" Start Time and End Time must not be null.");
@@ -45,6 +53,11 @@ public class AvailabilityValidator {
         }
     }
 
+    /**
+     * Retrieves availbility if it exists, else throws. This is carried out here instead of at service layer to centralise validation exception handling
+     * @param id the id of the slot to fetch
+     * @return the availability or throw
+     */
         public Availability fetchAndValidateById(Long id) {
         return availabilityRepository.findById(id)
                 .orElseThrow(() -> new ValidationException("No existing Availability slot with id: " + id));

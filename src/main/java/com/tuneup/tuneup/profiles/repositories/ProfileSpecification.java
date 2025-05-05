@@ -21,6 +21,13 @@ import static java.util.Collections.min;
 
 public class ProfileSpecification {
 
+    /**
+     * Used to dynamically build a predicate to search the db against.
+     * @param criteria the search criteria
+     * @param regionRepository
+     * @param availabilityRepository
+     * @return Specification Profile
+     */
     public static Specification<Profile> bySearchCriteria(ProfileSearchCriteriaDto criteria, RegionRepository regionRepository, AvailabilityRepository availabilityRepository) {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();

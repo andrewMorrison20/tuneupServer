@@ -18,11 +18,20 @@ public class InstrumentController {
     }
 
 
+    /**
+     * Get all existing instruments
+     * @return Set InstrumentDto
+     */
     @GetMapping
     public ResponseEntity<Set<InstrumentDto>> getAllInstruments() {
         return ResponseEntity.ok(instrumentService.findall());
     }
 
+    /**
+     * Create a new Instrument
+     * @param instrumentDto instrument to create
+     * @return newly created instrument
+     */
     @PostMapping
     public ResponseEntity<InstrumentDto> createInstrument(@RequestBody InstrumentDto instrumentDto) {
         InstrumentDto createdInstrument = instrumentService.createInstrument(instrumentDto);

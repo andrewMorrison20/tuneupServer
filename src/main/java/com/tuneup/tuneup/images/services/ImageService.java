@@ -19,6 +19,7 @@ import java.util.UUID;
 @Service
 public class ImageService {
 
+    //Name of the google cloud bucket for images
     @Value("${gcs.bucket.name}")
     private String bucketName;
     private final Storage storage;

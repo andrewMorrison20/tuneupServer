@@ -16,6 +16,9 @@ public class ProfileSearchCriteriaDto {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Set<LessonType> lessonType;
+    private String keyword;
+    private Set<Long> instrument;
+    private Set<Long> genre;
 
     public Set<LessonType> getLessonType() {
         return lessonType;
@@ -82,7 +85,7 @@ public class ProfileSearchCriteriaDto {
         this.profileType = profileType;
     }
 
-    public String getCountry(){
+    public String getCountry() {
         return country;
     }
 
@@ -106,8 +109,6 @@ public class ProfileSearchCriteriaDto {
         this.keyword = keyword;
     }
 
-    private Set<Long> instrument;
-    private Set<Long> genre;
 
     public Set<Long> getGenre() {
         return genre;
@@ -117,5 +118,4 @@ public class ProfileSearchCriteriaDto {
         this.genre = genre;
     }
 
-    private String keyword;
 }

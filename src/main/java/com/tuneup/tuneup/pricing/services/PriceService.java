@@ -24,6 +24,11 @@ public class PriceService {
         this.priceValidator = priceValidator;
     }
 
+    /**
+     * Create a new price
+     * @param priceDto price to create
+     * @return PriceDto newly created price aas Dto
+     */
     @Transactional
     public PriceDto createPrice(PriceDto priceDto) {
         priceValidator.validatePriceDto(priceDto);
@@ -31,6 +36,10 @@ public class PriceService {
         return priceMapper.toPriceDto(persistedPrice);
     }
 
+    /**
+     * Retrieve all existing prices from the database
+     * @return Set PriceDto the set of existing price dtos
+     */
     public Set<PriceDto> getAllPrices() {
         List<Price> allPrices = priceRepository.findAll();
         return allPrices.stream()
@@ -38,6 +47,10 @@ public class PriceService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Retrieve all standard pricing from the database
+     * @return Set priceDto - the set of existing standard pricing
+     */
     public Set<PriceDto> getStandardPrices() {
         Set<Price> allPrices = priceRepository.findByStandardPricingTrue();
         return allPrices.stream()
@@ -45,13 +58,22 @@ public class PriceService {
                 .collect(Collectors.toSet());
     }
 
-
+    /**
+     * Delete a price by its id
+     * @param id price to delete
+     * @return boolean result of operation ( true if successful)
+     */
     public boolean deletePrice(Long id) {
         Price price = priceValidator.fetchAndValidateById(id);
         priceRepository.delete(price);
         return true;
     }
 
+    /**
+     * Retrieve a price by its id
+     * @param id price to retrieve
+     * @return existing price
+     */
     public PriceDto getById(Long id) {
       return priceMapper.toPriceDto(priceValidator.fetchAndValidateById(id));
     }
